@@ -1,3 +1,5 @@
 *.suo
 *.cache
 *.txt
+Reserve/Reserve/obj/
+*.exe
