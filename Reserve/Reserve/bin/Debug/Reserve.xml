@@ -6,7 +6,20 @@ Reserve
 </name>
 </assembly>
 <members>
-<member name="F:Reserve.JpDateTextBox._inputFormat">
+<member name="P:Reserve.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Reserve.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:Reserve.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="F:Reserve.JpDateTextBox._inputFormat">
 	<summary>入力用の書式パターン</summary>
 </member><member name="F:Reserve.JpDateTextBox._displayFormat">
 	<summary>表示用の書式パターン</summary>
@@ -64,19 +77,6 @@ Reserve
  YYYYMMDD形式で入力し和暦形式で表示する
  </summary>
 	<remarks></remarks>
-</member><member name="P:Reserve.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:Reserve.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:Reserve.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
 </member>
 </members>
 </doc>

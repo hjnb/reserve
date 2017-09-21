@@ -720,9 +720,8 @@ Public Class 予約データ
             For Each row As DataGridViewRow In DataGridView1.SelectedRows
                 selectedRowsIndexList.Add(row.Index)
             Next
-            selectedRowsIndexList.Reverse()
+            selectedRowsIndexList.Sort()
         End If
-        Console.WriteLine(selectedRowsIndexList)
 
         Dim objExcel As Object
         Dim objWorkBooks As Object
@@ -821,155 +820,148 @@ Public Class 予約データ
             oSheet.Range("43:77").RowHeight = 15
         Else
 
-            'Dim xlPasteRange As Excel.Range = oSheet.Range("B40")
-            'oSheet.Paste(xlPasteRange)
+            ''1枚作成
+            'Dim type As String = ""
+            'Dim border As Excel.Border = Nothing
+            'Dim rowIndex As Integer = 4
 
-            'oSheet.Range("40:40").RowHeight = 6
-            'oSheet.Range("41:41").RowHeight = 24
-            'oSheet.Range("42:42").RowHeight = 54
-            'oSheet.Range("43:77").RowHeight = 15
+            ''セルに書き込み
+            'Dim excelIndex As Integer = 0
+            'For Each i As Integer In selectedRowsIndexList
+            '    oSheet.Range("B" & (rowIndex + excelIndex)).Value = excelIndex + 1 'No
+            '    oSheet.Range("C" & (rowIndex + excelIndex)).Value = DataGridView1("Ymd", i).FormattedValue '予約日
 
+            '    '予約日で区切りの罫線をいれる
+            '    If i <> 0 AndAlso DataGridView1("Ymd", i).Value <> DataGridView1("Ymd", i - 1).Value Then
+            '        border = oSheet.Range("B" & (rowIndex + excelIndex), "AA" & (rowIndex + excelIndex)).Borders(Excel.XlBordersIndex.xlEdgeTop)
+            '        border.LineStyle = Excel.XlLineStyle.xlContinuous
+            '        border.Weight = Excel.XlBorderWeight.xlThin
+            '    End If
 
-            '1枚作成
-            Dim type As String = ""
-            Dim border As Excel.Border = Nothing
-            Dim rowIndex As Integer = 4
+            '    oSheet.Range("D" & (rowIndex + excelIndex)).Value = DataGridView1("day", i).FormattedValue '曜日
+            '    oSheet.Range("E" & (rowIndex + excelIndex)).Value = DataGridView1("Apm", i).FormattedValue '予約時間
+            '    oSheet.Range("F" & (rowIndex + excelIndex)).Value = DataGridView1("Syu", i).FormattedValue '種別
+            '    oSheet.Range("G" & (rowIndex + excelIndex)).Value = DataGridView1("Nam", i).FormattedValue '氏名
+            '    oSheet.Range("H" & (rowIndex + excelIndex)).Value = DataGridView1("Kana", i).FormattedValue 'カナ
+            '    oSheet.Range("I" & (rowIndex + excelIndex)).Value = DataGridView1("Sex", i).FormattedValue '性別
+            '    oSheet.Range("J" & (rowIndex + excelIndex)).Value = DataGridView1("Birth", i).FormattedValue '生年月日
+            '    oSheet.Range("K" & (rowIndex + excelIndex)).Value = DataGridView1("age", i).FormattedValue '年齢
 
-            'セルに書き込み
-            For Each i As Integer In selectedRowsIndexList
-                oSheet.Range("B" & (rowIndex + i)).Value = i + 1 'No
+            '    '企業名
+            '    If DataGridView1("Ind", i).FormattedValue.ToString.Length > 10 Then
+            '        oSheet.Range("L" & (rowIndex + excelIndex)).Value = DataGridView1("Ind", i).FormattedValue.ToString.Substring(0, 10)
+            '    Else
+            '        oSheet.Range("L" & (rowIndex + excelIndex)).Value = DataGridView1("Ind", i).FormattedValue
+            '    End If
 
-                oSheet.Range("C" & (rowIndex + i)).Value = DataGridView1("Ymd", i).FormattedValue '予約日
-                '予約日で区切りの罫線をいれる
-                If i <> 0 AndAlso DataGridView1("Ymd", i).Value <> DataGridView1("Ymd", i - 1).Value Then
-                    border = oSheet.Range("B" & (rowIndex + i), "AA" & (rowIndex + i)).Borders(Excel.XlBordersIndex.xlEdgeTop)
-                    border.LineStyle = Excel.XlLineStyle.xlContinuous
-                    border.Weight = Excel.XlBorderWeight.xlThin
-                End If
+            '    oSheet.Range("M" & (rowIndex + excelIndex)).Value = DataGridView1("Ymd2", i).FormattedValue '結果渡日
+            '    oSheet.Range("N" & (rowIndex + excelIndex)).Value = DataGridView1("Send", i).FormattedValue '来院郵送
 
-                oSheet.Range("D" & (rowIndex + i)).Value = DataGridView1("day", i).FormattedValue '曜日
-                oSheet.Range("E" & (rowIndex + i)).Value = DataGridView1("Apm", i).FormattedValue '予約時間
-                oSheet.Range("F" & (rowIndex + i)).Value = DataGridView1("Syu", i).FormattedValue '種別
-                oSheet.Range("G" & (rowIndex + i)).Value = DataGridView1("Nam", i).FormattedValue '氏名
-                oSheet.Range("H" & (rowIndex + i)).Value = DataGridView1("Kana", i).FormattedValue 'カナ
-                oSheet.Range("I" & (rowIndex + i)).Value = DataGridView1("Sex", i).FormattedValue '性別
-                oSheet.Range("J" & (rowIndex + i)).Value = DataGridView1("Birth", i).FormattedValue '生年月日
-                oSheet.Range("K" & (rowIndex + i)).Value = DataGridView1("age", i).FormattedValue '年齢
+            '    '窓口負担
+            '    If DataGridView1("Futan", i).FormattedValue = 0 Then
+            '        oSheet.Range("O" & (rowIndex + excelIndex)).Value = ""
+            '    Else
+            '        oSheet.Range("O" & (rowIndex + excelIndex)).Value = DataGridView1("Futan", i).FormattedValue
+            '    End If
 
-                '企業名
-                If DataGridView1("Ind", i).FormattedValue.ToString.Length > 10 Then
-                    oSheet.Range("L" & (rowIndex + i)).Value = DataGridView1("Ind", i).FormattedValue.ToString.Substring(0, 10)
-                Else
-                    oSheet.Range("L" & (rowIndex + i)).Value = DataGridView1("Ind", i).FormattedValue
-                End If
+            '    oSheet.Range("P" & (rowIndex + excelIndex)).Value = DataGridView1("Memo1", i).FormattedValue 'メモ
 
-                oSheet.Range("M" & (rowIndex + i)).Value = DataGridView1("Ymd2", i).FormattedValue '結果渡日
-                oSheet.Range("N" & (rowIndex + i)).Value = DataGridView1("Send", i).FormattedValue '来院郵送
+            '    type = DataGridView1("Syu", i).FormattedValue
+            '    If type = "個人" Then
+            '        If DataGridView1("Kjn1", i).Value = 1 Then
+            '            oSheet.Range("Q" & (rowIndex + excelIndex)).Value = 1 '血液
+            '        Else
+            '            oSheet.Range("Q" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kjn2", i).Value = 1 Then
+            '            oSheet.Range("R" & (rowIndex + excelIndex)).Value = 1 '心電図
+            '        Else
+            '            oSheet.Range("R" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kjn3", i).Value = 1 Then
+            '            oSheet.Range("S" & (rowIndex + excelIndex)).Value = 1 '胸部XP
+            '        Else
+            '            oSheet.Range("S" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kjn4", i).Value = 1 Then
+            '            oSheet.Range("T" & (rowIndex + excelIndex)).Value = 1 '超音波
+            '        Else
+            '            oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kjn5", i).Value = 1 Then
+            '            oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+            '        Else
+            '            oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kjn6", i).Value = 1 Then
+            '            oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+            '        Else
+            '            oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '    ElseIf type = "企業" Then
+            '        If DataGridView1("Kig1", i).Value = 1 Then
+            '            oSheet.Range("Q" & (rowIndex + excelIndex)).Value = 1 '血液
+            '        Else
+            '            oSheet.Range("Q" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kig2", i).Value = 1 Then
+            '            oSheet.Range("R" & (rowIndex + excelIndex)).Value = 1 '心電図
+            '        Else
+            '            oSheet.Range("R" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kig3", i).Value = 1 Then
+            '            oSheet.Range("S" & (rowIndex + excelIndex)).Value = 1 '胸部XP
+            '        Else
+            '            oSheet.Range("S" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kig4", i).Value = 1 Then
+            '            oSheet.Range("T" & (rowIndex + excelIndex)).Value = 1 '超音波
+            '        Else
+            '            oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kig5", i).Value = 1 Then
+            '            oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+            '        Else
+            '            oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Kig6", i).Value = 1 Then
+            '            oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+            '        Else
+            '            oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '    ElseIf type = "生活" Then
+            '        oSheet.Range("Q" & (rowIndex + excelIndex)).Value = 1 '血液
+            '        oSheet.Range("R" & (rowIndex + excelIndex)).Value = 1 '心電図
+            '        oSheet.Range("S" & (rowIndex + excelIndex)).Value = 1 '胸部XP
 
-                '窓口負担
-                If DataGridView1("Futan", i).FormattedValue = 0 Then
-                    oSheet.Range("O" & (rowIndex + i)).Value = ""
-                Else
-                    oSheet.Range("O" & (rowIndex + i)).Value = DataGridView1("Futan", i).FormattedValue
-                End If
-
-                oSheet.Range("P" & (rowIndex + i)).Value = DataGridView1("Memo1", i).FormattedValue 'メモ
-
-                type = DataGridView1("Syu", i).FormattedValue
-                If type = "個人" Then
-                    If DataGridView1("Kjn1", i).Value = 1 Then
-                        oSheet.Range("Q" & (rowIndex + i)).Value = 1 '血液
-                    Else
-                        oSheet.Range("Q" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kjn2", i).Value = 1 Then
-                        oSheet.Range("R" & (rowIndex + i)).Value = 1 '心電図
-                    Else
-                        oSheet.Range("R" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kjn3", i).Value = 1 Then
-                        oSheet.Range("S" & (rowIndex + i)).Value = 1 '胸部XP
-                    Else
-                        oSheet.Range("S" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kjn4", i).Value = 1 Then
-                        oSheet.Range("T" & (rowIndex + i)).Value = 1 '超音波
-                    Else
-                        oSheet.Range("T" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kjn5", i).Value = 1 Then
-                        oSheet.Range("U" & (rowIndex + i)).Value = 1 '胃Ba
-                    Else
-                        oSheet.Range("U" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kjn6", i).Value = 1 Then
-                        oSheet.Range("V" & (rowIndex + i)).Value = 1 '胃カメラ
-                    Else
-                        oSheet.Range("V" & (rowIndex + i)).Value = ""
-                    End If
-                ElseIf type = "企業" Then
-                    If DataGridView1("Kig1", i).Value = 1 Then
-                        oSheet.Range("Q" & (rowIndex + i)).Value = 1 '血液
-                    Else
-                        oSheet.Range("Q" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kig2", i).Value = 1 Then
-                        oSheet.Range("R" & (rowIndex + i)).Value = 1 '心電図
-                    Else
-                        oSheet.Range("R" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kig3", i).Value = 1 Then
-                        oSheet.Range("S" & (rowIndex + i)).Value = 1 '胸部XP
-                    Else
-                        oSheet.Range("S" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kig4", i).Value = 1 Then
-                        oSheet.Range("T" & (rowIndex + i)).Value = 1 '超音波
-                    Else
-                        oSheet.Range("T" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kig5", i).Value = 1 Then
-                        oSheet.Range("U" & (rowIndex + i)).Value = 1 '胃Ba
-                    Else
-                        oSheet.Range("U" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Kig6", i).Value = 1 Then
-                        oSheet.Range("V" & (rowIndex + i)).Value = 1 '胃カメラ
-                    Else
-                        oSheet.Range("V" & (rowIndex + i)).Value = ""
-                    End If
-                ElseIf type = "生活" Then
-                    oSheet.Range("Q" & (rowIndex + i)).Value = 1 '血液
-                    oSheet.Range("R" & (rowIndex + i)).Value = 1 '心電図
-                    oSheet.Range("S" & (rowIndex + i)).Value = 1 '胸部XP
-
-                    If DataGridView1("Sei3", i).Value = 1 Then
-                        oSheet.Range("U" & (rowIndex + i)).Value = 1 '胃Ba
-                    Else
-                        oSheet.Range("U" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Sei4", i).Value = 1 Then
-                        oSheet.Range("V" & (rowIndex + i)).Value = 1 '胃カメラ
-                    Else
-                        oSheet.Range("V" & (rowIndex + i)).Value = ""
-                    End If
-                ElseIf type = "特定" Then
-                    oSheet.Range("W" & (rowIndex + i)).Value = DataGridView1("Tok1", i).Value '保険種別
-                    oSheet.Range("Y" & (rowIndex + i)).Value = 3 '採血数
-                ElseIf type = "がん" Then
-                    If DataGridView1("Gan1", i).Value = 1 Then
-                        oSheet.Range("Z" & (rowIndex + i)).Value = 1 '胃がん
-                    Else
-                        oSheet.Range("Z" & (rowIndex + i)).Value = ""
-                    End If
-                    If DataGridView1("Gan2", i).Value = 1 Then
-                        oSheet.Range("AA" & (rowIndex + i)).Value = 1 '大腸がん
-                    Else
-                        oSheet.Range("AA" & (rowIndex + i)).Value = ""
-                    End If
-                End If
-
-            Next
+            '        If DataGridView1("Sei3", i).Value = 1 Then
+            '            oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+            '        Else
+            '            oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Sei4", i).Value = 1 Then
+            '            oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+            '        Else
+            '            oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '    ElseIf type = "特定" Then
+            '        oSheet.Range("W" & (rowIndex + excelIndex)).Value = DataGridView1("Tok1", i).Value '保険種別
+            '        oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 3 '採血数
+            '    ElseIf type = "がん" Then
+            '        If DataGridView1("Gan1", i).Value = 1 Then
+            '            oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 1 '胃がん
+            '        Else
+            '            oSheet.Range("Z" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '        If DataGridView1("Gan2", i).Value = 1 Then
+            '            oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '大腸がん
+            '        Else
+            '            oSheet.Range("AA" & (rowIndex + excelIndex)).Value = ""
+            '        End If
+            '    End If
+            '    excelIndex += 1
+            'Next
+            writeReserveList(oSheet, selectedRowsIndexList)
 
         End If
 
@@ -986,13 +978,154 @@ Public Class 予約データ
         Marshal.ReleaseComObject(objWorkBook)
         Marshal.ReleaseComObject(objExcel)
         oSheet = Nothing
+
         objWorkBook = Nothing
         objExcel = Nothing
-
-        'Me.SendToBack()
     End Sub
 
-    Private Sub writeReserveList()
+    Private Sub writeReserveList(ByVal oSheet As Object, ByVal selectedRowsIndexList As ArrayList)
+        '1枚作成
+        Dim type As String = ""
+        Dim border As Excel.Border = Nothing
+        Dim rowIndex As Integer = 4
+
+        'セルに書き込み
+        Dim excelIndex As Integer = 0
+        For Each i As Integer In selectedRowsIndexList
+
+            oSheet.Range("B" & (rowIndex + excelIndex)).Value = excelIndex + 1 'No
+            oSheet.Range("C" & (rowIndex + excelIndex)).Value = DataGridView1("Ymd", i).FormattedValue '予約日
+
+            '予約日で区切りの罫線をいれる
+            If i <> 0 AndAlso DataGridView1("Ymd", i).Value <> DataGridView1("Ymd", i - 1).Value Then
+                border = oSheet.Range("B" & (rowIndex + excelIndex), "AA" & (rowIndex + excelIndex)).Borders(Excel.XlBordersIndex.xlEdgeTop)
+                border.LineStyle = Excel.XlLineStyle.xlContinuous
+                border.Weight = Excel.XlBorderWeight.xlThin
+            End If
+
+            oSheet.Range("D" & (rowIndex + excelIndex)).Value = DataGridView1("day", i).FormattedValue '曜日
+            oSheet.Range("E" & (rowIndex + excelIndex)).Value = DataGridView1("Apm", i).FormattedValue '予約時間
+            oSheet.Range("F" & (rowIndex + excelIndex)).Value = DataGridView1("Syu", i).FormattedValue '種別
+            oSheet.Range("G" & (rowIndex + excelIndex)).Value = DataGridView1("Nam", i).FormattedValue '氏名
+            oSheet.Range("H" & (rowIndex + excelIndex)).Value = DataGridView1("Kana", i).FormattedValue 'カナ
+            oSheet.Range("I" & (rowIndex + excelIndex)).Value = DataGridView1("Sex", i).FormattedValue '性別
+            oSheet.Range("J" & (rowIndex + excelIndex)).Value = DataGridView1("Birth", i).FormattedValue '生年月日
+            oSheet.Range("K" & (rowIndex + excelIndex)).Value = DataGridView1("age", i).FormattedValue '年齢
+
+            '企業名
+            If DataGridView1("Ind", i).FormattedValue.ToString.Length > 10 Then
+                oSheet.Range("L" & (rowIndex + excelIndex)).Value = DataGridView1("Ind", i).FormattedValue.ToString.Substring(0, 10)
+            Else
+                oSheet.Range("L" & (rowIndex + excelIndex)).Value = DataGridView1("Ind", i).FormattedValue
+            End If
+
+            oSheet.Range("M" & (rowIndex + excelIndex)).Value = DataGridView1("Ymd2", i).FormattedValue '結果渡日
+            oSheet.Range("N" & (rowIndex + excelIndex)).Value = DataGridView1("Send", i).FormattedValue '来院郵送
+
+            '窓口負担
+            If DataGridView1("Futan", i).FormattedValue = 0 Then
+                oSheet.Range("O" & (rowIndex + excelIndex)).Value = ""
+            Else
+                oSheet.Range("O" & (rowIndex + excelIndex)).Value = DataGridView1("Futan", i).FormattedValue
+            End If
+
+            oSheet.Range("P" & (rowIndex + excelIndex)).Value = DataGridView1("Memo1", i).FormattedValue 'メモ
+
+            type = DataGridView1("Syu", i).FormattedValue
+            If type = "個人" Then
+                If DataGridView1("Kjn1", i).Value = 1 Then
+                    oSheet.Range("Q" & (rowIndex + excelIndex)).Value = 1 '血液
+                Else
+                    oSheet.Range("Q" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kjn2", i).Value = 1 Then
+                    oSheet.Range("R" & (rowIndex + excelIndex)).Value = 1 '心電図
+                Else
+                    oSheet.Range("R" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kjn3", i).Value = 1 Then
+                    oSheet.Range("S" & (rowIndex + excelIndex)).Value = 1 '胸部XP
+                Else
+                    oSheet.Range("S" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kjn4", i).Value = 1 Then
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = 1 '超音波
+                Else
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kjn5", i).Value = 1 Then
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+                Else
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kjn6", i).Value = 1 Then
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                Else
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+                End If
+            ElseIf type = "企業" Then
+                If DataGridView1("Kig1", i).Value = 1 Then
+                    oSheet.Range("Q" & (rowIndex + excelIndex)).Value = 1 '血液
+                Else
+                    oSheet.Range("Q" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kig2", i).Value = 1 Then
+                    oSheet.Range("R" & (rowIndex + excelIndex)).Value = 1 '心電図
+                Else
+                    oSheet.Range("R" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kig3", i).Value = 1 Then
+                    oSheet.Range("S" & (rowIndex + excelIndex)).Value = 1 '胸部XP
+                Else
+                    oSheet.Range("S" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kig4", i).Value = 1 Then
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = 1 '超音波
+                Else
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kig5", i).Value = 1 Then
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+                Else
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kig6", i).Value = 1 Then
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                Else
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+                End If
+            ElseIf type = "生活" Then
+                oSheet.Range("Q" & (rowIndex + excelIndex)).Value = 1 '血液
+                oSheet.Range("R" & (rowIndex + excelIndex)).Value = 1 '心電図
+                oSheet.Range("S" & (rowIndex + excelIndex)).Value = 1 '胸部XP
+
+                If DataGridView1("Sei3", i).Value = 1 Then
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+                Else
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Sei4", i).Value = 1 Then
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                Else
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+                End If
+            ElseIf type = "特定" Then
+                oSheet.Range("W" & (rowIndex + excelIndex)).Value = DataGridView1("Tok1", i).Value '保険種別
+                oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 3 '採血数
+            ElseIf type = "がん" Then
+                If DataGridView1("Gan1", i).Value = 1 Then
+                    oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 1 '胃がん
+                Else
+                    oSheet.Range("Z" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Gan2", i).Value = 1 Then
+                    oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '大腸がん
+                Else
+                    oSheet.Range("AA" & (rowIndex + excelIndex)).Value = ""
+                End If
+            End If
+            excelIndex += 1
+        Next
 
     End Sub
 

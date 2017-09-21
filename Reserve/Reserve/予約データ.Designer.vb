@@ -1065,7 +1065,7 @@ Partial Class 予約データ
         '
         'btnSelectClear
         '
-        Me.btnSelectClear.Location = New System.Drawing.Point(172, 285)
+        Me.btnSelectClear.Location = New System.Drawing.Point(181, 285)
         Me.btnSelectClear.Name = "btnSelectClear"
         Me.btnSelectClear.Size = New System.Drawing.Size(67, 23)
         Me.btnSelectClear.TabIndex = 36
