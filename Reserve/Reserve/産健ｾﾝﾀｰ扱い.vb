@@ -53,6 +53,19 @@ Public Class 産健ｾﾝﾀｰ扱い
         sankenDataGridView.Columns("Sanken").Width = 40
         sankenDataGridView.Columns("Sanken").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
 
+        '重複表示の制御処理
+        Dim rowsCount As Integer = sankenDataGridView.Rows.Count
+        For i = 0 To rowsCount - 1
+            If i <> 0 AndAlso sankenDataGridView(0, i).Value = sankenDataGridView(0, i - 1).Value Then
+                sankenDataGridView.Rows.RemoveAt(i - 1)
+                rowsCount -= 1
+                i -= 1
+            End If
+            If i = rowsCount - 1 Then
+                Exit For
+            End If
+        Next
+
     End Sub
 
     Private Sub sankenDataGridView_CellPainting(ByVal sender As Object, _

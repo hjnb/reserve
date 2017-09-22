@@ -19,64 +19,6 @@ Reserve
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
-</member><member name="F:Reserve.JpDateTextBox._inputFormat">
-	<summary>入力用の書式パターン</summary>
-</member><member name="F:Reserve.JpDateTextBox._displayFormat">
-	<summary>表示用の書式パターン</summary>
-</member><member name="F:Reserve.JpDateTextBox._value">
-	<summary></summary>
-</member><member name="M:Reserve.JpDateTextBox.#ctor">
-	<summary>
-	</summary>
-	<remarks></remarks>
-</member><member name="M:Reserve.JpDateTextBox.HandlerFocusChanged(System.Object,System.EventArgs)">
-	<summary>
- GotFocus/LostFocusのイベント発生時にハンドラでフォーマットの切り替えを行う
- </summary>
-	<param name="sender"></param>
-	<param name="e"></param>
-	<remarks></remarks>
-</member><member name="M:Reserve.JpDateTextBox.HandlerValueChanged(System.Object,System.EventArgs)">
-	<summary>
-	</summary>
-	<param name="sender"></param>
-	<param name="e"></param>
-	<remarks></remarks>
-</member><member name="M:Reserve.JpDateTextBox.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)">
-	<summary>
-	</summary>
-	<param name="e"></param>
-	<remarks></remarks>
-</member><member name="M:Reserve.JpDateTextBox.OnValidating(System.ComponentModel.CancelEventArgs)">
-	<summary>
-	</summary>
-	<param name="e"></param>
-	<remarks></remarks>
-</member><member name="M:Reserve.JpDateTextBox.Parse(System.String)">
-	<summary>
- 文字列のDate化
- </summary>
-	<param name="s"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:Reserve.JpDateTextBox.Value">
-	<summary>
-	</summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:Reserve.JpDateTextBox.DisplayFormat">
-	<summary>
- 表示書式
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="T:Reserve.JpDateTextBox">
-	<summary>
- YYYYMMDD形式で入力し和暦形式で表示する
- </summary>
-	<remarks></remarks>
 </member>
 </members>
 </doc>
