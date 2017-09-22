@@ -23,7 +23,6 @@ Partial Class 予約データ
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.btnRequestVoucher = New System.Windows.Forms.Button()
         Me.btnPrint = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRegist = New System.Windows.Forms.Button()
@@ -56,7 +55,7 @@ Partial Class 予約データ
         Me.personalTabPage = New System.Windows.Forms.TabPage()
         Me.personalWindowPay = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.RadioButton3 = New System.Windows.Forms.RadioButton()
+        Me.personalNone = New System.Windows.Forms.RadioButton()
         Me.personalStomachCamera = New System.Windows.Forms.RadioButton()
         Me.personalStomachBa = New System.Windows.Forms.RadioButton()
         Me.personalUltrasonic = New System.Windows.Forms.CheckBox()
@@ -66,7 +65,7 @@ Partial Class 予約データ
         Me.companyTabPage = New System.Windows.Forms.TabPage()
         Me.companyWindowPay = New System.Windows.Forms.TextBox()
         Me.Label14 = New System.Windows.Forms.Label()
-        Me.RadioButton6 = New System.Windows.Forms.RadioButton()
+        Me.companyNone = New System.Windows.Forms.RadioButton()
         Me.companyStomachCamera = New System.Windows.Forms.RadioButton()
         Me.companyStomachBa = New System.Windows.Forms.RadioButton()
         Me.companyUltrasonic = New System.Windows.Forms.CheckBox()
@@ -74,11 +73,11 @@ Partial Class 予約データ
         Me.companyElectro = New System.Windows.Forms.CheckBox()
         Me.companyBlood = New System.Windows.Forms.CheckBox()
         Me.lifeStyleTabPage = New System.Windows.Forms.TabPage()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.lifeStyleWindowPay = New System.Windows.Forms.TextBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.RadioButton4 = New System.Windows.Forms.RadioButton()
+        Me.lifeStyleNone = New System.Windows.Forms.RadioButton()
         Me.lifeStyleStomachCamera = New System.Windows.Forms.RadioButton()
         Me.lifeStyleStomachBa = New System.Windows.Forms.RadioButton()
         Me.specificTabPage = New System.Windows.Forms.TabPage()
@@ -86,7 +85,7 @@ Partial Class 予約データ
         Me.diabetesBox = New System.Windows.Forms.ComboBox()
         Me.prostateCancerBox = New System.Windows.Forms.ComboBox()
         Me.cardiacBox = New System.Windows.Forms.ComboBox()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.specificWindowPay = New System.Windows.Forms.TextBox()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
@@ -105,7 +104,7 @@ Partial Class 予約データ
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.cancerTabPage = New System.Windows.Forms.TabPage()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.cancerWindowPay = New System.Windows.Forms.TextBox()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.colorectalCancerBox = New System.Windows.Forms.CheckBox()
         Me.gastricCancerBox = New System.Windows.Forms.CheckBox()
@@ -118,6 +117,7 @@ Partial Class 予約データ
         Me.eraBox = New System.Windows.Forms.ComboBox()
         Me.monthBox = New System.Windows.Forms.ComboBox()
         Me.btnSelectClear = New System.Windows.Forms.Button()
+        Me.btnInputClear = New System.Windows.Forms.Button()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.personalTabPage.SuspendLayout()
@@ -137,38 +137,29 @@ Partial Class 予約データ
         Me.DataGridView1.Size = New System.Drawing.Size(683, 249)
         Me.DataGridView1.TabIndex = 0
         '
-        'btnRequestVoucher
-        '
-        Me.btnRequestVoucher.Location = New System.Drawing.Point(633, 277)
-        Me.btnRequestVoucher.Name = "btnRequestVoucher"
-        Me.btnRequestVoucher.Size = New System.Drawing.Size(75, 23)
-        Me.btnRequestVoucher.TabIndex = 1
-        Me.btnRequestVoucher.Text = "依頼伝票"
-        Me.btnRequestVoucher.UseVisualStyleBackColor = True
-        '
         'btnPrint
         '
-        Me.btnPrint.Location = New System.Drawing.Point(552, 277)
+        Me.btnPrint.Location = New System.Drawing.Point(552, 262)
         Me.btnPrint.Name = "btnPrint"
-        Me.btnPrint.Size = New System.Drawing.Size(75, 23)
+        Me.btnPrint.Size = New System.Drawing.Size(75, 38)
         Me.btnPrint.TabIndex = 2
         Me.btnPrint.Text = "印刷"
         Me.btnPrint.UseVisualStyleBackColor = True
         '
         'btnDelete
         '
-        Me.btnDelete.Location = New System.Drawing.Point(471, 277)
+        Me.btnDelete.Location = New System.Drawing.Point(471, 262)
         Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(75, 23)
+        Me.btnDelete.Size = New System.Drawing.Size(75, 38)
         Me.btnDelete.TabIndex = 3
         Me.btnDelete.Text = "削除"
         Me.btnDelete.UseVisualStyleBackColor = True
         '
         'btnRegist
         '
-        Me.btnRegist.Location = New System.Drawing.Point(390, 277)
+        Me.btnRegist.Location = New System.Drawing.Point(390, 262)
         Me.btnRegist.Name = "btnRegist"
-        Me.btnRegist.Size = New System.Drawing.Size(75, 23)
+        Me.btnRegist.Size = New System.Drawing.Size(75, 38)
         Me.btnRegist.TabIndex = 4
         Me.btnRegist.Text = "登録"
         Me.btnRegist.UseVisualStyleBackColor = True
@@ -406,7 +397,7 @@ Partial Class 予約データ
         Me.personalTabPage.BackColor = System.Drawing.Color.White
         Me.personalTabPage.Controls.Add(Me.personalWindowPay)
         Me.personalTabPage.Controls.Add(Me.Label13)
-        Me.personalTabPage.Controls.Add(Me.RadioButton3)
+        Me.personalTabPage.Controls.Add(Me.personalNone)
         Me.personalTabPage.Controls.Add(Me.personalStomachCamera)
         Me.personalTabPage.Controls.Add(Me.personalStomachBa)
         Me.personalTabPage.Controls.Add(Me.personalUltrasonic)
@@ -436,16 +427,16 @@ Partial Class 予約データ
         Me.Label13.TabIndex = 7
         Me.Label13.Text = "窓口負担"
         '
-        'RadioButton3
+        'personalNone
         '
-        Me.RadioButton3.AutoSize = True
-        Me.RadioButton3.Location = New System.Drawing.Point(200, 128)
-        Me.RadioButton3.Name = "RadioButton3"
-        Me.RadioButton3.Size = New System.Drawing.Size(42, 16)
-        Me.RadioButton3.TabIndex = 6
-        Me.RadioButton3.TabStop = True
-        Me.RadioButton3.Text = "なし"
-        Me.RadioButton3.UseVisualStyleBackColor = True
+        Me.personalNone.AutoSize = True
+        Me.personalNone.Location = New System.Drawing.Point(200, 128)
+        Me.personalNone.Name = "personalNone"
+        Me.personalNone.Size = New System.Drawing.Size(42, 16)
+        Me.personalNone.TabIndex = 6
+        Me.personalNone.TabStop = True
+        Me.personalNone.Text = "なし"
+        Me.personalNone.UseVisualStyleBackColor = True
         '
         'personalStomachCamera
         '
@@ -513,7 +504,7 @@ Partial Class 予約データ
         '
         Me.companyTabPage.Controls.Add(Me.companyWindowPay)
         Me.companyTabPage.Controls.Add(Me.Label14)
-        Me.companyTabPage.Controls.Add(Me.RadioButton6)
+        Me.companyTabPage.Controls.Add(Me.companyNone)
         Me.companyTabPage.Controls.Add(Me.companyStomachCamera)
         Me.companyTabPage.Controls.Add(Me.companyStomachBa)
         Me.companyTabPage.Controls.Add(Me.companyUltrasonic)
@@ -544,16 +535,16 @@ Partial Class 予約データ
         Me.Label14.TabIndex = 8
         Me.Label14.Text = "窓口負担"
         '
-        'RadioButton6
+        'companyNone
         '
-        Me.RadioButton6.AutoSize = True
-        Me.RadioButton6.Location = New System.Drawing.Point(200, 128)
-        Me.RadioButton6.Name = "RadioButton6"
-        Me.RadioButton6.Size = New System.Drawing.Size(42, 16)
-        Me.RadioButton6.TabIndex = 7
-        Me.RadioButton6.TabStop = True
-        Me.RadioButton6.Text = "なし"
-        Me.RadioButton6.UseVisualStyleBackColor = True
+        Me.companyNone.AutoSize = True
+        Me.companyNone.Location = New System.Drawing.Point(200, 128)
+        Me.companyNone.Name = "companyNone"
+        Me.companyNone.Size = New System.Drawing.Size(42, 16)
+        Me.companyNone.TabIndex = 7
+        Me.companyNone.TabStop = True
+        Me.companyNone.Text = "なし"
+        Me.companyNone.UseVisualStyleBackColor = True
         '
         'companyStomachCamera
         '
@@ -619,11 +610,11 @@ Partial Class 予約データ
         '
         'lifeStyleTabPage
         '
-        Me.lifeStyleTabPage.Controls.Add(Me.TextBox1)
+        Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleWindowPay)
         Me.lifeStyleTabPage.Controls.Add(Me.Button1)
         Me.lifeStyleTabPage.Controls.Add(Me.CheckBox2)
         Me.lifeStyleTabPage.Controls.Add(Me.CheckBox1)
-        Me.lifeStyleTabPage.Controls.Add(Me.RadioButton4)
+        Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleNone)
         Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleStomachCamera)
         Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleStomachBa)
         Me.lifeStyleTabPage.Location = New System.Drawing.Point(4, 22)
@@ -633,12 +624,12 @@ Partial Class 予約データ
         Me.lifeStyleTabPage.Text = "生活"
         Me.lifeStyleTabPage.UseVisualStyleBackColor = True
         '
-        'TextBox1
+        'lifeStyleWindowPay
         '
-        Me.TextBox1.Location = New System.Drawing.Point(281, 137)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(62, 19)
-        Me.TextBox1.TabIndex = 12
+        Me.lifeStyleWindowPay.Location = New System.Drawing.Point(281, 137)
+        Me.lifeStyleWindowPay.Name = "lifeStyleWindowPay"
+        Me.lifeStyleWindowPay.Size = New System.Drawing.Size(62, 19)
+        Me.lifeStyleWindowPay.TabIndex = 12
         '
         'Button1
         '
@@ -671,16 +662,16 @@ Partial Class 予約データ
         Me.CheckBox1.Text = "付加健診"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
-        'RadioButton4
+        'lifeStyleNone
         '
-        Me.RadioButton4.AutoSize = True
-        Me.RadioButton4.Location = New System.Drawing.Point(200, 104)
-        Me.RadioButton4.Name = "RadioButton4"
-        Me.RadioButton4.Size = New System.Drawing.Size(42, 16)
-        Me.RadioButton4.TabIndex = 8
-        Me.RadioButton4.TabStop = True
-        Me.RadioButton4.Text = "なし"
-        Me.RadioButton4.UseVisualStyleBackColor = True
+        Me.lifeStyleNone.AutoSize = True
+        Me.lifeStyleNone.Location = New System.Drawing.Point(200, 104)
+        Me.lifeStyleNone.Name = "lifeStyleNone"
+        Me.lifeStyleNone.Size = New System.Drawing.Size(42, 16)
+        Me.lifeStyleNone.TabIndex = 8
+        Me.lifeStyleNone.TabStop = True
+        Me.lifeStyleNone.Text = "なし"
+        Me.lifeStyleNone.UseVisualStyleBackColor = True
         '
         'lifeStyleStomachCamera
         '
@@ -710,7 +701,7 @@ Partial Class 予約データ
         Me.specificTabPage.Controls.Add(Me.diabetesBox)
         Me.specificTabPage.Controls.Add(Me.prostateCancerBox)
         Me.specificTabPage.Controls.Add(Me.cardiacBox)
-        Me.specificTabPage.Controls.Add(Me.TextBox2)
+        Me.specificTabPage.Controls.Add(Me.specificWindowPay)
         Me.specificTabPage.Controls.Add(Me.Button2)
         Me.specificTabPage.Controls.Add(Me.Label25)
         Me.specificTabPage.Controls.Add(Me.Label24)
@@ -771,12 +762,12 @@ Partial Class 予約データ
         Me.cardiacBox.Size = New System.Drawing.Size(51, 20)
         Me.cardiacBox.TabIndex = 22
         '
-        'TextBox2
+        'specificWindowPay
         '
-        Me.TextBox2.Location = New System.Drawing.Point(303, 142)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(62, 19)
-        Me.TextBox2.TabIndex = 18
+        Me.specificWindowPay.Location = New System.Drawing.Point(303, 142)
+        Me.specificWindowPay.Name = "specificWindowPay"
+        Me.specificWindowPay.Size = New System.Drawing.Size(62, 19)
+        Me.specificWindowPay.TabIndex = 18
         '
         'Button2
         '
@@ -934,7 +925,7 @@ Partial Class 予約データ
         '
         'cancerTabPage
         '
-        Me.cancerTabPage.Controls.Add(Me.TextBox3)
+        Me.cancerTabPage.Controls.Add(Me.cancerWindowPay)
         Me.cancerTabPage.Controls.Add(Me.Button3)
         Me.cancerTabPage.Controls.Add(Me.colorectalCancerBox)
         Me.cancerTabPage.Controls.Add(Me.gastricCancerBox)
@@ -945,12 +936,12 @@ Partial Class 予約データ
         Me.cancerTabPage.Text = "がん"
         Me.cancerTabPage.UseVisualStyleBackColor = True
         '
-        'TextBox3
+        'cancerWindowPay
         '
-        Me.TextBox3.Location = New System.Drawing.Point(247, 127)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(62, 19)
-        Me.TextBox3.TabIndex = 19
+        Me.cancerWindowPay.Location = New System.Drawing.Point(247, 127)
+        Me.cancerWindowPay.Name = "cancerWindowPay"
+        Me.cancerWindowPay.Size = New System.Drawing.Size(62, 19)
+        Me.cancerWindowPay.TabIndex = 19
         '
         'Button3
         '
@@ -1072,11 +1063,21 @@ Partial Class 予約データ
         Me.btnSelectClear.Text = "選択解除"
         Me.btnSelectClear.UseVisualStyleBackColor = True
         '
+        'btnInputClear
+        '
+        Me.btnInputClear.Location = New System.Drawing.Point(219, 220)
+        Me.btnInputClear.Name = "btnInputClear"
+        Me.btnInputClear.Size = New System.Drawing.Size(63, 20)
+        Me.btnInputClear.TabIndex = 37
+        Me.btnInputClear.Text = "入力クリア"
+        Me.btnInputClear.UseVisualStyleBackColor = True
+        '
         '予約データ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(733, 609)
+        Me.Controls.Add(Me.btnInputClear)
         Me.Controls.Add(Me.btnSelectClear)
         Me.Controls.Add(Me.monthBox)
         Me.Controls.Add(Me.eraBox)
@@ -1109,7 +1110,6 @@ Partial Class 予約データ
         Me.Controls.Add(Me.btnRegist)
         Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnPrint)
-        Me.Controls.Add(Me.btnRequestVoucher)
         Me.Controls.Add(Me.DataGridView1)
         Me.Name = "予約データ"
         Me.Text = "予約データ"
@@ -1132,7 +1132,6 @@ Partial Class 予約データ
 
     End Sub
     Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
-    Friend WithEvents btnRequestVoucher As System.Windows.Forms.Button
     Friend WithEvents btnPrint As System.Windows.Forms.Button
     Friend WithEvents btnDelete As System.Windows.Forms.Button
     Friend WithEvents btnRegist As System.Windows.Forms.Button
@@ -1169,7 +1168,7 @@ Partial Class 予約データ
     Friend WithEvents cancerTabPage As System.Windows.Forms.TabPage
     Friend WithEvents referenceTabPage As System.Windows.Forms.TabPage
     Friend WithEvents personalBlood As System.Windows.Forms.CheckBox
-    Friend WithEvents RadioButton3 As System.Windows.Forms.RadioButton
+    Friend WithEvents personalNone As System.Windows.Forms.RadioButton
     Friend WithEvents personalStomachCamera As System.Windows.Forms.RadioButton
     Friend WithEvents personalStomachBa As System.Windows.Forms.RadioButton
     Friend WithEvents personalUltrasonic As System.Windows.Forms.CheckBox
@@ -1181,17 +1180,17 @@ Partial Class 予約データ
     Friend WithEvents companyUltrasonic As System.Windows.Forms.CheckBox
     Friend WithEvents companyChestXP As System.Windows.Forms.CheckBox
     Friend WithEvents companyElectro As System.Windows.Forms.CheckBox
-    Friend WithEvents RadioButton6 As System.Windows.Forms.RadioButton
+    Friend WithEvents companyNone As System.Windows.Forms.RadioButton
     Friend WithEvents companyStomachCamera As System.Windows.Forms.RadioButton
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents companyWindowPay As System.Windows.Forms.TextBox
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents lifeStyleStomachCamera As System.Windows.Forms.RadioButton
     Friend WithEvents lifeStyleStomachBa As System.Windows.Forms.RadioButton
-    Friend WithEvents RadioButton4 As System.Windows.Forms.RadioButton
+    Friend WithEvents lifeStyleNone As System.Windows.Forms.RadioButton
     Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents lifeStyleWindowPay As System.Windows.Forms.TextBox
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents sankenCenterButton As System.Windows.Forms.RadioButton
     Friend WithEvents HealthButton As System.Windows.Forms.RadioButton
@@ -1215,16 +1214,17 @@ Partial Class 予約データ
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents Label25 As System.Windows.Forms.Label
     Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents specificWindowPay As System.Windows.Forms.TextBox
     Friend WithEvents cardiacBox As System.Windows.Forms.ComboBox
     Friend WithEvents gastricCancerRiskBox As System.Windows.Forms.ComboBox
     Friend WithEvents diabetesBox As System.Windows.Forms.ComboBox
     Friend WithEvents prostateCancerBox As System.Windows.Forms.ComboBox
     Friend WithEvents gastricCancerBox As System.Windows.Forms.CheckBox
     Friend WithEvents colorectalCancerBox As System.Windows.Forms.CheckBox
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents cancerWindowPay As System.Windows.Forms.TextBox
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents referenceListBox As System.Windows.Forms.ListBox
     Friend WithEvents personListBox As System.Windows.Forms.ListBox
     Friend WithEvents btnSelectClear As System.Windows.Forms.Button
+    Friend WithEvents btnInputClear As System.Windows.Forms.Button
 End Class

@@ -23,9 +23,6 @@ Public Class 予約データ
         'セルの編集不可
         DataGridView1.ReadOnly = True
 
-        'DataGridView1でセル、行、列が複数選択されないようにする
-        'DataGridView1.MultiSelect = False
-
         'セルを選択すると行全体が選択されるようにする
         DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
 
@@ -38,8 +35,6 @@ Public Class 予約データ
         TabControl1.SizeMode = TabSizeMode.Fixed
         TabControl1.ItemSize = New Size(65, 25)
         TabControl1.SelectedTab = referenceTabPage
-
-
 
     End Sub
 
@@ -168,31 +163,31 @@ Public Class 予約データ
             personalBlood.Checked = False
         End If
         '心電図
-        If DataGridView1("Kig2", rowIndex).Value = 1 Then
+        If DataGridView1("Kjn2", rowIndex).Value = 1 Then
             personalElectro.Checked = True
         Else
             personalElectro.Checked = False
         End If
         '胸部XP
-        If DataGridView1("Kig3", rowIndex).Value = 1 Then
+        If DataGridView1("Kjn3", rowIndex).Value = 1 Then
             personalChestXP.Checked = True
         Else
             personalChestXP.Checked = False
         End If
         '超音波
-        If DataGridView1("Kig4", rowIndex).Value = 1 Then
+        If DataGridView1("Kjn4", rowIndex).Value = 1 Then
             personalUltrasonic.Checked = True
         Else
             personalUltrasonic.Checked = False
         End If
         '胃バリウム
-        If DataGridView1("Kig5", rowIndex).Value = 1 Then
+        If DataGridView1("Kjn5", rowIndex).Value = 1 Then
             personalStomachBa.Checked = True
         Else
             personalStomachBa.Checked = False
         End If
         '胃カメラ
-        If DataGridView1("Kig6", rowIndex).Value = 1 Then
+        If DataGridView1("Kjn6", rowIndex).Value = 1 Then
             personalStomachCamera.Checked = True
         Else
             personalStomachCamera.Checked = False
@@ -313,7 +308,6 @@ Public Class 予約データ
             couponTicketBox.Checked = False
         End If
 
-
         'がん
         '胃がん
         If DataGridView1("Gan1", rowIndex).Value = 1 Then
@@ -327,13 +321,6 @@ Public Class 予約データ
         Else
             colorectalCancerBox.Checked = False
         End If
-
-        '参照
-
-        
-
-
-
 
     End Sub
 
@@ -729,6 +716,7 @@ Public Class 予約データ
         Dim oSheet As Object
 
         objExcel = CreateObject("Excel.Application")
+
         objWorkBooks = objExcel.Workbooks
         'objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Hakojun\事務\さかもと\Patient -入院患者-\Patient.xls")
         objWorkBook = objWorkBooks.Open("C:\Users\yoshi\Desktop\Reserve.xls")
@@ -787,6 +775,8 @@ Public Class 予約データ
             oSheet.Range("120:120").RowHeight = 54
             oSheet.Range("121:155").RowHeight = 15
 
+            writeReserveList(oSheet, selectedRowsIndexList)
+
         ElseIf selectedRowsIndexList.Count > 70 Then
             '3枚作成
             '指定位置にペーストする(2枚目)
@@ -807,6 +797,8 @@ Public Class 予約データ
             oSheet.Range("80:80").RowHeight = 24
             oSheet.Range("81:81").RowHeight = 54
             oSheet.Range("82:116").RowHeight = 15
+
+            writeReserveList(oSheet, selectedRowsIndexList)
 
         ElseIf selectedRowsIndexList.Count > 35 Then
             '2枚作成
@@ -851,7 +843,11 @@ Public Class 予約データ
         'セルに書き込み
         Dim excelIndex As Integer = 0
         For Each i As Integer In selectedRowsIndexList
-            If excelIndex > 34 Then
+            If excelIndex > 104 Then
+                rowIndex = 16
+            ElseIf excelIndex > 69 Then
+                rowIndex = 12
+            ElseIf excelIndex > 34 Then
                 rowIndex = 8
             End If
 
@@ -992,16 +988,15 @@ Public Class 予約データ
     End Sub
 
     Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
-        Dim deleteFlg As Boolean = False
+        Dim selectedRowsCount As Integer = 0
         For i = 0 To DataGridView1.Rows.Count - 1
             If DataGridView1.Rows.Item(i).Selected = True Then
-                deleteFlg = True
-                Exit For
+                selectedRowsCount = selectedRowsCount + 1
             End If
         Next
 
-        If deleteFlg = False Then
-            MsgBox("選択されていません")
+        If selectedRowsCount <> 1 Then
+            MsgBox("削除対象の行を１つ選択してください")
             Return
         End If
 
@@ -1021,6 +1016,7 @@ Public Class 予約データ
         adapter.Fill(table)
 
         MsgBox("削除しました")
+        reserveListViewReload()
 
     End Sub
 
@@ -1145,6 +1141,7 @@ Public Class 予約データ
     End Sub
 
     Private Sub inputClear()
+        '左の入力エリアのクリア
         typeBox.Text = ""
         companyNameBox.Text = ""
         nameBox.Text = ""
@@ -1159,10 +1156,90 @@ Public Class 予約データ
         memo2Box.Text = ""
     End Sub
 
+    Private Sub tabPageInputClear()
+        '右の各タブの入力エリアのクリア
+        '個人タブ
+        personalBlood.Checked = False
+        personalElectro.Checked = False
+        personalChestXP.Checked = False
+        personalUltrasonic.Checked = False
+        personalStomachBa.Checked = False
+        personalStomachCamera.Checked = False
+        personalNone.Checked = False
+        personalWindowPay.Text = ""
+
+        '企業タブ
+        companyBlood.Checked = False
+        companyElectro.Checked = False
+        companyChestXP.Checked = False
+        companyUltrasonic.Checked = False
+        companyStomachBa.Checked = False
+        companyStomachCamera.Checked = False
+        companyNone.Checked = False
+        companyWindowPay.Text = ""
+
+        '生活タブ
+        lifeStyleStomachBa.Checked = False
+        lifeStyleStomachCamera.Checked = False
+        lifeStyleNone.Checked = False
+        lifeStyleWindowPay.Text = ""
+
+        '特定タブ
+        insuranceTypeBox.Text = ""
+        biochemistryBox.Text = ""
+        bloodSugarBox.Text = ""
+        anemiaBox.Text = ""
+        couponTicketBox.Checked = False
+        cardiacBox.Text = ""
+        gastricCancerRiskBox.Text = ""
+        diabetesBox.Text = ""
+        prostateCancerBox.Text = ""
+        specificWindowPay.Text = ""
+
+        'がんタブ
+        gastricCancerBox.Checked = False
+        colorectalCancerBox.Checked = False
+        cancerWindowPay.Text = ""
+
+        '参照タブ
+        If diagnoseButton.Checked = True Then
+            HealthButton.Checked = True
+            diagnoseButton.Checked = True
+        Else
+            diagnoseButton.Checked = True
+        End If
+    End Sub
+
     Private Sub btnSelectClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelectClear.Click
         Dim rowsCount As Integer = DataGridView1.Rows.Count
         For i = 0 To rowsCount - 1
             DataGridView1.Rows.Item(i).Selected = False
         Next
+    End Sub
+
+    Private Sub btnInputClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInputClear.Click
+        inputClear()
+        tabPageInputClear()
+        TabControl1.SelectedTab = referenceTabPage
+    End Sub
+
+    Private Sub reserveListViewReload()
+        DataGridView1.DataSource = New DataTable
+        DataGridView1.Columns.Clear()
+
+        '一覧表示の初期設定
+        initialSetting4DataGridView()
+
+        'セルの編集不可
+        DataGridView1.ReadOnly = True
+
+        'セルを選択すると行全体が選択されるようにする
+        DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+        For Each c As DataGridViewColumn In DataGridView1.Columns
+            c.SortMode = DataGridViewColumnSortMode.NotSortable
+        Next c
+
+        DataGridView1.AllowUserToAddRows = False
     End Sub
 End Class

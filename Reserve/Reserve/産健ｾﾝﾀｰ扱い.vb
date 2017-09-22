@@ -78,4 +78,8 @@ Public Class 産健ｾﾝﾀｰ扱い
             e.Handled = True
         End If
     End Sub
+
+    Private Sub btnRegist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRegist.Click
+
+    End Sub
 End Class
