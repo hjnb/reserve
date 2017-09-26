@@ -510,6 +510,38 @@ Public Class 予約データ
         Return warekiStr
     End Function
 
+    Private Function convertBirthday(ByVal adBirthday As String) As String
+        Dim convertStr As String = ""
+        Dim yyyy As Integer = Integer.Parse(adBirthday.Substring(0, 4))
+        Dim MM As String = adBirthday.Substring(5, 2)
+        Dim dd As String = adBirthday.Substring(8, 2)
+
+        If yyyy >= 1990 Then
+            Dim era As Integer = yyyy - 1988
+            convertStr = "H" & If(era < 10, "0" & era, era) & "/" & MM & "/" & dd
+        ElseIf yyyy = 1989 Then
+            If MM = "01" AndAlso dd < "08" Then
+                convertStr = "S64" & "/" & MM & "/" & dd
+            Else
+                convertStr = "H01" & "/" & MM & "/" & dd
+            End If
+        ElseIf yyyy >= 1927 Then
+            Dim era As Integer = yyyy - 1925
+            convertStr = "S" & If(era < 10, "0" & era, era) & "/" & MM & "/" & dd
+        ElseIf yyyy = 1926 Then
+            If MM = "12" AndAlso dd < "25" Then
+                convertStr = "T15" & "/" & MM & "/" & dd
+            Else
+                convertStr = "S01" & "/" & MM & "/" & dd
+            End If
+        ElseIf yyyy >= 1912 Then
+            Dim era As Integer = yyyy - 1911
+            convertStr = "T" & If(era < 10, "0" & era, era) & "/" & MM & "/" & dd
+        End If
+
+        Return convertStr
+    End Function
+
     Private Sub addColumn()
         DataGridView1.Columns.Add("day", "曜日")
         DataGridView1.Columns("day").DisplayIndex = 1
@@ -646,6 +678,117 @@ Public Class 予約データ
                 Exit For
             End If
         Next
+
+    End Sub
+
+    Private Sub reloadDataGridView()
+
+        '一覧表示
+        displayReserveList()
+
+        '曜日、年齢の列を追加
+        addColumn()
+
+        '西暦を和暦表示に変更
+        convertJapanCalender()
+
+        '年齢の表示設定
+        displayAgeColumn()
+
+        '曜日の表示設定
+        displayDayColumun()
+
+        '列名、幅の設定
+        '固定
+        DataGridView1.Columns(3).Frozen = True
+
+        DataGridView1.Columns(0).HeaderText = "予約日"
+        DataGridView1.Columns(0).Width = 50
+        DataGridView1.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+        DataGridView1.Columns("day").HeaderText = "曜"
+        DataGridView1.Columns("day").Width = 30
+        DataGridView1.Columns("day").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("day").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+        DataGridView1.Columns(1).HeaderText = "AmPm"
+        DataGridView1.Columns(1).Width = 50
+        DataGridView1.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+        DataGridView1.Columns(2).HeaderText = "種別"
+        DataGridView1.Columns(2).Width = 40
+        DataGridView1.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+        DataGridView1.Columns(3).HeaderText = "氏名"
+        DataGridView1.Columns(3).Width = 90
+
+        DataGridView1.Columns(4).HeaderText = "カナ"
+        DataGridView1.Columns(4).Width = 80
+
+        DataGridView1.Columns(5).HeaderText = "性別"
+        DataGridView1.Columns(5).Width = 35
+        DataGridView1.Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+        DataGridView1.Columns(6).HeaderText = "生年月日"
+        DataGridView1.Columns(6).Width = 80
+        DataGridView1.Columns(6).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+        DataGridView1.Columns("age").HeaderText = "年齢"
+        DataGridView1.Columns("age").Width = 40
+        DataGridView1.Columns("age").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("age").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+        DataGridView1.Columns(7).HeaderText = "企業名"
+        DataGridView1.Columns(7).Width = 130
+
+        DataGridView1.Columns(8).HeaderText = "結果渡日"
+        DataGridView1.Columns(8).Width = 60
+
+        DataGridView1.Columns(9).HeaderText = "来院郵送"
+        DataGridView1.Columns(9).Width = 60
+
+        DataGridView1.Columns(10).HeaderText = "メモ1"
+        DataGridView1.Columns(10).Width = 80
+
+        DataGridView1.Columns(11).HeaderText = "メモ2"
+        DataGridView1.Columns(11).Width = 80
+
+        DataGridView1.Columns(12).HeaderText = "窓口負担"
+        DataGridView1.Columns(12).Width = 60
+
+        For i As Integer = 0 To 12
+            DataGridView1.Columns(i).HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        Next
+
+        '非表示の列
+        DataGridView1.Columns("Kjn1").Visible = False
+        DataGridView1.Columns("Kjn2").Visible = False
+        DataGridView1.Columns("Kjn3").Visible = False
+        DataGridView1.Columns("Kjn4").Visible = False
+        DataGridView1.Columns("Kjn5").Visible = False
+        DataGridView1.Columns("Kjn6").Visible = False
+        DataGridView1.Columns("Kig1").Visible = False
+        DataGridView1.Columns("Kig2").Visible = False
+        DataGridView1.Columns("Kig3").Visible = False
+        DataGridView1.Columns("Kig4").Visible = False
+        DataGridView1.Columns("Kig5").Visible = False
+        DataGridView1.Columns("Kig6").Visible = False
+        DataGridView1.Columns("Sei1").Visible = False
+        DataGridView1.Columns("Sei2").Visible = False
+        DataGridView1.Columns("Sei3").Visible = False
+        DataGridView1.Columns("Sei4").Visible = False
+        DataGridView1.Columns("Tok1").Visible = False
+        DataGridView1.Columns("Tok2").Visible = False
+        DataGridView1.Columns("Tok3").Visible = False
+        DataGridView1.Columns("Tok4").Visible = False
+        DataGridView1.Columns("Tok5").Visible = False
+        DataGridView1.Columns("Tok6").Visible = False
+        DataGridView1.Columns("Tok7").Visible = False
+        DataGridView1.Columns("Tok8").Visible = False
+        DataGridView1.Columns("Tok9").Visible = False
+        DataGridView1.Columns("Gan1").Visible = False
+        DataGridView1.Columns("Gan2").Visible = False
+        DataGridView1.Columns("Sanken").Visible = False
 
     End Sub
 
@@ -1016,6 +1159,9 @@ Public Class 予約データ
         adapter.Fill(table)
 
         MsgBox("削除しました")
+        inputClear()
+        tabPageInputClear()
+        TabControl1.SelectedTab = referenceTabPage
         reserveListViewReload()
 
     End Sub
@@ -1131,7 +1277,12 @@ Public Class 予約データ
             ElseIf reader("Sex") = 2 Then
                 sexBox.Text = "女"
             End If
-            birthDayBox.Text = reader("Birth")
+            If HealthButton.Checked Then
+                birthDayBox.Text = reader("Birth")
+            Else
+                birthDayBox.Text = convertBirthday(reader("Birth"))
+            End If
+
         End While
         reader.Close()
         Cn.Close()
@@ -1228,7 +1379,7 @@ Public Class 予約データ
         DataGridView1.Columns.Clear()
 
         '一覧表示の初期設定
-        initialSetting4DataGridView()
+        reloadDataGridView()
 
         'セルの編集不可
         DataGridView1.ReadOnly = True
