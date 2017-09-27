@@ -8,6 +8,7 @@ Public Class 予約データ
     Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
     Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Diagnose.mdb"
     Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Health3.mdb"
+    Public calendarIconPath As String = System.IO.Path.GetFullPath("C:\Users\yoshi\Desktop\calendar.png")
 
     Public initFlg As Boolean = True
 
@@ -35,6 +36,9 @@ Public Class 予約データ
         TabControl1.SizeMode = TabSizeMode.Fixed
         TabControl1.ItemSize = New Size(65, 25)
         TabControl1.SelectedTab = referenceTabPage
+
+        'btnShowCalendar.Text = ""
+        btnShowCalendar.Image = System.Drawing.Image.FromFile(calendarIconPath)
 
     End Sub
 
@@ -134,7 +138,12 @@ Public Class 予約データ
         ampmBox.Text = ampm
 
         '予約日の表示処理(和暦で表示させる)
-        reserveDateBox.Text = convertADToWareki(reserveDay.Substring(0, 4)) & reserveDay.Substring(4, 6)
+        'reserveDateBox.Text = convertADToWareki(reserveDay.Substring(0, 4)) & reserveDay.Substring(4, 6)
+
+        '仮
+        reserveEraBox.Text = convertADToWareki(reserveDay.Substring(0, 4))
+        reserveMonthBox.Text = reserveDay.Substring(5, 2)
+        reserveDayBox.Text = reserveDay.Substring(8, 2)
 
         postBox.Text = post
         memo1Box.Text = memo1
@@ -1299,7 +1308,9 @@ Public Class 予約データ
         kanaBox.Text = ""
         sexBox.Text = ""
         birthDayBox.Text = ""
-        reserveDateBox.Text = ""
+        reserveEraBox.Text = ""
+        reserveMonthBox.Text = ""
+        reserveDayBox.Text = ""
         ampmBox.Text = ""
         resultDayBox.Text = ""
         postBox.Text = ""
@@ -1392,5 +1403,57 @@ Public Class 予約データ
         Next c
 
         DataGridView1.AllowUserToAddRows = False
+    End Sub
+
+    Private Sub btnUpMonth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpMonth.Click
+        Dim currentMonthStr As String = monthBox.Text
+        Dim currentMonthInt As Integer = Integer.Parse(currentMonthStr)
+        Dim uppedMonthStr As String = ""
+        If currentMonthInt = 12 Then
+            Dim eraStr As String = eraBox.Text.Substring(1, 2)
+            If eraStr <> "30" Then
+                eraBox.Text = eraBox.Items(eraBox.SelectedIndex + 1)
+                monthBox.Text = "01"
+            End If
+        Else
+            uppedMonthStr = If((currentMonthInt + 1) >= 10, (currentMonthInt + 1), "0" & (currentMonthInt + 1))
+            monthBox.Text = uppedMonthStr
+        End If
+    End Sub
+
+    Private Sub btnDownMonth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDownMonth.Click
+        Dim currentMonthStr As String = monthBox.Text
+        Dim currentMonthInt As Integer = Integer.Parse(currentMonthStr)
+        Dim downedMonthStr As String = ""
+        If currentMonthInt = 1 Then
+            Dim eraStr As String = eraBox.Text.Substring(1, 2)
+            If eraStr <> "22" Then
+                eraBox.Text = eraBox.Items(eraBox.SelectedIndex - 1)
+                monthBox.Text = "12"
+            End If
+        Else
+            downedMonthStr = If((currentMonthInt - 1) >= 10, (currentMonthInt - 1), "0" & (currentMonthInt - 1))
+            monthBox.Text = downedMonthStr
+        End If
+    End Sub
+
+    Private Sub btnShowCalendar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowCalendar.Click
+        If reserveCalendar.Visible = True Then
+            reserveCalendar.Visible = False
+        Else
+            '入力されている日付をカレンダーに反映させる処理をここで
+
+
+            reserveCalendar.Visible = True
+        End If
+    End Sub
+
+    Private Sub reserveCalendar_DateSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.DateRangeEventArgs) Handles reserveCalendar.DateSelected
+        Dim adStr As String = reserveCalendar.SelectionStart
+        Dim warekiStr = convertBirthday(adStr)
+        reserveEraBox.Text = warekiStr.Substring(0, 3)
+        reserveMonthBox.Text = warekiStr.Substring(4, 2)
+        reserveDayBox.Text = warekiStr.Substring(7, 2)
+        reserveCalendar.Visible = False
     End Sub
 End Class

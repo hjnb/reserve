@@ -35,7 +35,6 @@ Partial Class 予約データ
         Me.nameBox = New System.Windows.Forms.TextBox()
         Me.kanaBox = New System.Windows.Forms.TextBox()
         Me.birthDayBox = New System.Windows.Forms.TextBox()
-        Me.reserveDateBox = New System.Windows.Forms.TextBox()
         Me.resultDayBox = New System.Windows.Forms.TextBox()
         Me.memo1Box = New System.Windows.Forms.TextBox()
         Me.memo2Box = New System.Windows.Forms.TextBox()
@@ -118,6 +117,15 @@ Partial Class 予約データ
         Me.monthBox = New System.Windows.Forms.ComboBox()
         Me.btnSelectClear = New System.Windows.Forms.Button()
         Me.btnInputClear = New System.Windows.Forms.Button()
+        Me.reserveEraBox = New System.Windows.Forms.TextBox()
+        Me.reserveMonthBox = New System.Windows.Forms.TextBox()
+        Me.reserveDayBox = New System.Windows.Forms.TextBox()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.btnUpMonth = New System.Windows.Forms.Button()
+        Me.btnDownMonth = New System.Windows.Forms.Button()
+        Me.btnShowCalendar = New System.Windows.Forms.Button()
+        Me.reserveCalendar = New System.Windows.Forms.MonthCalendar()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.personalTabPage.SuspendLayout()
@@ -239,13 +247,6 @@ Partial Class 予約データ
         Me.birthDayBox.Name = "birthDayBox"
         Me.birthDayBox.Size = New System.Drawing.Size(121, 19)
         Me.birthDayBox.TabIndex = 16
-        '
-        'reserveDateBox
-        '
-        Me.reserveDateBox.Location = New System.Drawing.Point(81, 130)
-        Me.reserveDateBox.Name = "reserveDateBox"
-        Me.reserveDateBox.Size = New System.Drawing.Size(121, 19)
-        Me.reserveDateBox.TabIndex = 17
         '
         'resultDayBox
         '
@@ -1072,11 +1073,98 @@ Partial Class 予約データ
         Me.btnInputClear.Text = "入力クリア"
         Me.btnInputClear.UseVisualStyleBackColor = True
         '
+        'reserveEraBox
+        '
+        Me.reserveEraBox.Location = New System.Drawing.Point(81, 130)
+        Me.reserveEraBox.MaxLength = 3
+        Me.reserveEraBox.Name = "reserveEraBox"
+        Me.reserveEraBox.Size = New System.Drawing.Size(31, 19)
+        Me.reserveEraBox.TabIndex = 38
+        '
+        'reserveMonthBox
+        '
+        Me.reserveMonthBox.Location = New System.Drawing.Point(121, 130)
+        Me.reserveMonthBox.MaxLength = 2
+        Me.reserveMonthBox.Name = "reserveMonthBox"
+        Me.reserveMonthBox.Size = New System.Drawing.Size(27, 19)
+        Me.reserveMonthBox.TabIndex = 39
+        '
+        'reserveDayBox
+        '
+        Me.reserveDayBox.Location = New System.Drawing.Point(157, 130)
+        Me.reserveDayBox.MaxLength = 2
+        Me.reserveDayBox.Name = "reserveDayBox"
+        Me.reserveDayBox.Size = New System.Drawing.Size(27, 19)
+        Me.reserveDayBox.TabIndex = 40
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(113, 134)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(7, 12)
+        Me.Label26.TabIndex = 41
+        Me.Label26.Text = "."
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(149, 134)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(7, 12)
+        Me.Label27.TabIndex = 42
+        Me.Label27.Text = "."
+        '
+        'btnUpMonth
+        '
+        Me.btnUpMonth.Font = New System.Drawing.Font("MS UI Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+        Me.btnUpMonth.Location = New System.Drawing.Point(126, 280)
+        Me.btnUpMonth.Name = "btnUpMonth"
+        Me.btnUpMonth.Size = New System.Drawing.Size(27, 16)
+        Me.btnUpMonth.TabIndex = 43
+        Me.btnUpMonth.Text = " ▲"
+        Me.btnUpMonth.UseVisualStyleBackColor = True
+        '
+        'btnDownMonth
+        '
+        Me.btnDownMonth.Font = New System.Drawing.Font("MS UI Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+        Me.btnDownMonth.Location = New System.Drawing.Point(126, 298)
+        Me.btnDownMonth.Name = "btnDownMonth"
+        Me.btnDownMonth.Size = New System.Drawing.Size(27, 16)
+        Me.btnDownMonth.TabIndex = 44
+        Me.btnDownMonth.Text = " ▼"
+        Me.btnDownMonth.UseVisualStyleBackColor = True
+        '
+        'btnShowCalendar
+        '
+        Me.btnShowCalendar.BackColor = System.Drawing.SystemColors.InactiveBorder
+        Me.btnShowCalendar.Location = New System.Drawing.Point(208, 129)
+        Me.btnShowCalendar.Name = "btnShowCalendar"
+        Me.btnShowCalendar.Size = New System.Drawing.Size(22, 22)
+        Me.btnShowCalendar.TabIndex = 45
+        Me.btnShowCalendar.UseVisualStyleBackColor = False
+        '
+        'reserveCalendar
+        '
+        Me.reserveCalendar.Location = New System.Drawing.Point(3, 1)
+        Me.reserveCalendar.Name = "reserveCalendar"
+        Me.reserveCalendar.TabIndex = 46
+        Me.reserveCalendar.Visible = False
+        '
         '予約データ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(733, 609)
+        Me.Controls.Add(Me.reserveCalendar)
+        Me.Controls.Add(Me.btnShowCalendar)
+        Me.Controls.Add(Me.btnDownMonth)
+        Me.Controls.Add(Me.btnUpMonth)
+        Me.Controls.Add(Me.Label27)
+        Me.Controls.Add(Me.Label26)
+        Me.Controls.Add(Me.reserveDayBox)
+        Me.Controls.Add(Me.reserveMonthBox)
+        Me.Controls.Add(Me.reserveEraBox)
         Me.Controls.Add(Me.btnInputClear)
         Me.Controls.Add(Me.btnSelectClear)
         Me.Controls.Add(Me.monthBox)
@@ -1097,7 +1185,6 @@ Partial Class 予約データ
         Me.Controls.Add(Me.memo2Box)
         Me.Controls.Add(Me.memo1Box)
         Me.Controls.Add(Me.resultDayBox)
-        Me.Controls.Add(Me.reserveDateBox)
         Me.Controls.Add(Me.birthDayBox)
         Me.Controls.Add(Me.kanaBox)
         Me.Controls.Add(Me.nameBox)
@@ -1144,7 +1231,6 @@ Partial Class 予約データ
     Friend WithEvents nameBox As System.Windows.Forms.TextBox
     Friend WithEvents kanaBox As System.Windows.Forms.TextBox
     Friend WithEvents birthDayBox As System.Windows.Forms.TextBox
-    Friend WithEvents reserveDateBox As System.Windows.Forms.TextBox
     Friend WithEvents resultDayBox As System.Windows.Forms.TextBox
     Friend WithEvents memo1Box As System.Windows.Forms.TextBox
     Friend WithEvents memo2Box As System.Windows.Forms.TextBox
@@ -1227,4 +1313,13 @@ Partial Class 予約データ
     Friend WithEvents personListBox As System.Windows.Forms.ListBox
     Friend WithEvents btnSelectClear As System.Windows.Forms.Button
     Friend WithEvents btnInputClear As System.Windows.Forms.Button
+    Friend WithEvents reserveEraBox As System.Windows.Forms.TextBox
+    Friend WithEvents reserveMonthBox As System.Windows.Forms.TextBox
+    Friend WithEvents reserveDayBox As System.Windows.Forms.TextBox
+    Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents Label27 As System.Windows.Forms.Label
+    Friend WithEvents btnUpMonth As System.Windows.Forms.Button
+    Friend WithEvents btnDownMonth As System.Windows.Forms.Button
+    Friend WithEvents btnShowCalendar As System.Windows.Forms.Button
+    Friend WithEvents reserveCalendar As System.Windows.Forms.MonthCalendar
 End Class
