@@ -37,7 +37,6 @@ Public Class 予約データ
         TabControl1.ItemSize = New Size(65, 25)
         TabControl1.SelectedTab = referenceTabPage
 
-        'btnShowCalendar.Text = ""
         btnShowCalendar.Image = System.Drawing.Image.FromFile(calendarIconPath)
 
     End Sub
@@ -1121,7 +1120,12 @@ Public Class 予約データ
                 End If
             ElseIf type = "特定" Then
                 oSheet.Range("W" & (rowIndex + excelIndex)).Value = DataGridView1("Tok1", i).Value '保険種別
-                oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 3 '採血数
+                If DataGridView1("Tok1", i).Value = "国保" Then
+                    oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 3 '採血数
+                ElseIf DataGridView1("Tok1", i).Value = "社・家" Then
+                    oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 2 '採血数
+                End If
+
             ElseIf type = "がん" Then
                 If DataGridView1("Gan1", i).Value = 1 Then
                     oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 1 '胃がん
@@ -1441,9 +1445,10 @@ Public Class 予約データ
         If reserveCalendar.Visible = True Then
             reserveCalendar.Visible = False
         Else
-            '入力されている日付をカレンダーに反映させる処理をここで
-
-
+            '入力されている値があれば日付をカレンダーに反映
+            If reserveEraBox.Text <> "" AndAlso reserveMonthBox.Text <> "" AndAlso reserveDayBox.Text <> "" Then
+                reserveCalendar.SetDate(New Date(convertWarekiToAD(reserveEraBox.Text), Integer.Parse(reserveMonthBox.Text), Integer.Parse(reserveDayBox.Text)))
+            End If
             reserveCalendar.Visible = True
         End If
     End Sub
@@ -1455,5 +1460,51 @@ Public Class 予約データ
         reserveMonthBox.Text = warekiStr.Substring(4, 2)
         reserveDayBox.Text = warekiStr.Substring(7, 2)
         reserveCalendar.Visible = False
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        If lifeStyleStomachBa.Checked = True OrElse lifeStyleStomachCamera.Checked = True Then
+            lifeStyleWindowPay.Text = "7038"
+        Else
+            lifeStyleWindowPay.Text = "3750"
+        End If
+    End Sub
+
+    Private Sub insuranceTypeBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles insuranceTypeBox.SelectedIndexChanged
+        If insuranceTypeBox.Text = "国保" Then
+            biochemistryBox.Text = "○"
+            bloodSugarBox.Text = "○"
+            anemiaBox.Text = "○"
+        ElseIf insuranceTypeBox.Text = "社・家" Then
+            biochemistryBox.Text = "○"
+            bloodSugarBox.Text = "○"
+            anemiaBox.Text = "×"
+        End If
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Dim totalPay As Integer = 0
+
+        If insuranceTypeBox.Text = "社・家" Then
+            totalPay = totalPay + 1160
+        End If
+
+        If cardiacBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
+            totalPay = totalPay + 1550
+        End If
+
+        If gastricCancerRiskBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
+            totalPay = totalPay + 3600
+        End If
+
+        If diabetesBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
+            totalPay = totalPay + 1400
+        End If
+
+        If prostateCancerBox.Text = "○" Then
+            totalPay = totalPay + 1550
+        End If
+
+        specificWindowPay.Text = totalPay
     End Sub
 End Class

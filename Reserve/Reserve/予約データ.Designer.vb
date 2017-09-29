@@ -1146,7 +1146,7 @@ Partial Class 予約データ
         '
         'reserveCalendar
         '
-        Me.reserveCalendar.Location = New System.Drawing.Point(3, 1)
+        Me.reserveCalendar.Location = New System.Drawing.Point(3, -1)
         Me.reserveCalendar.Name = "reserveCalendar"
         Me.reserveCalendar.TabIndex = 46
         Me.reserveCalendar.Visible = False
