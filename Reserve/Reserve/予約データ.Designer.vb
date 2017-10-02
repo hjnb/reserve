@@ -34,7 +34,6 @@ Partial Class 予約データ
         Me.postBox = New System.Windows.Forms.ComboBox()
         Me.nameBox = New System.Windows.Forms.TextBox()
         Me.kanaBox = New System.Windows.Forms.TextBox()
-        Me.birthDayBox = New System.Windows.Forms.TextBox()
         Me.resultDayBox = New System.Windows.Forms.TextBox()
         Me.memo1Box = New System.Windows.Forms.TextBox()
         Me.memo2Box = New System.Windows.Forms.TextBox()
@@ -126,6 +125,13 @@ Partial Class 予約データ
         Me.btnDownMonth = New System.Windows.Forms.Button()
         Me.btnShowCalendar = New System.Windows.Forms.Button()
         Me.reserveCalendar = New System.Windows.Forms.MonthCalendar()
+        Me.printPreview = New System.Windows.Forms.RadioButton()
+        Me.print = New System.Windows.Forms.RadioButton()
+        Me.birthDayEraBox = New System.Windows.Forms.TextBox()
+        Me.birthDayMonthBox = New System.Windows.Forms.TextBox()
+        Me.birthDayDateBox = New System.Windows.Forms.TextBox()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.Label29 = New System.Windows.Forms.Label()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.personalTabPage.SuspendLayout()
@@ -142,7 +148,7 @@ Partial Class 予約データ
         Me.DataGridView1.Location = New System.Drawing.Point(25, 318)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowTemplate.Height = 21
-        Me.DataGridView1.Size = New System.Drawing.Size(683, 249)
+        Me.DataGridView1.Size = New System.Drawing.Size(683, 260)
         Me.DataGridView1.TabIndex = 0
         '
         'btnPrint
@@ -240,13 +246,6 @@ Partial Class 予約データ
         Me.kanaBox.Name = "kanaBox"
         Me.kanaBox.Size = New System.Drawing.Size(121, 19)
         Me.kanaBox.TabIndex = 15
-        '
-        'birthDayBox
-        '
-        Me.birthDayBox.Location = New System.Drawing.Point(81, 112)
-        Me.birthDayBox.Name = "birthDayBox"
-        Me.birthDayBox.Size = New System.Drawing.Size(121, 19)
-        Me.birthDayBox.TabIndex = 16
         '
         'resultDayBox
         '
@@ -435,7 +434,6 @@ Partial Class 予約データ
         Me.personalNone.Name = "personalNone"
         Me.personalNone.Size = New System.Drawing.Size(42, 16)
         Me.personalNone.TabIndex = 6
-        Me.personalNone.TabStop = True
         Me.personalNone.Text = "なし"
         Me.personalNone.UseVisualStyleBackColor = True
         '
@@ -1138,24 +1136,92 @@ Partial Class 予約データ
         'btnShowCalendar
         '
         Me.btnShowCalendar.BackColor = System.Drawing.SystemColors.InactiveBorder
-        Me.btnShowCalendar.Location = New System.Drawing.Point(208, 129)
+        Me.btnShowCalendar.Location = New System.Drawing.Point(202, 129)
         Me.btnShowCalendar.Name = "btnShowCalendar"
-        Me.btnShowCalendar.Size = New System.Drawing.Size(22, 22)
+        Me.btnShowCalendar.Size = New System.Drawing.Size(19, 20)
         Me.btnShowCalendar.TabIndex = 45
         Me.btnShowCalendar.UseVisualStyleBackColor = False
         '
         'reserveCalendar
         '
-        Me.reserveCalendar.Location = New System.Drawing.Point(3, -1)
+        Me.reserveCalendar.Location = New System.Drawing.Point(3, 148)
         Me.reserveCalendar.Name = "reserveCalendar"
         Me.reserveCalendar.TabIndex = 46
         Me.reserveCalendar.Visible = False
+        '
+        'printPreview
+        '
+        Me.printPreview.AutoSize = True
+        Me.printPreview.Checked = True
+        Me.printPreview.Location = New System.Drawing.Point(639, 262)
+        Me.printPreview.Name = "printPreview"
+        Me.printPreview.Size = New System.Drawing.Size(67, 16)
+        Me.printPreview.TabIndex = 47
+        Me.printPreview.TabStop = True
+        Me.printPreview.Text = "プレビュー"
+        Me.printPreview.UseVisualStyleBackColor = True
+        '
+        'print
+        '
+        Me.print.AutoSize = True
+        Me.print.Location = New System.Drawing.Point(639, 284)
+        Me.print.Name = "print"
+        Me.print.Size = New System.Drawing.Size(47, 16)
+        Me.print.TabIndex = 48
+        Me.print.Text = "印刷"
+        Me.print.UseVisualStyleBackColor = True
+        '
+        'birthDayEraBox
+        '
+        Me.birthDayEraBox.Location = New System.Drawing.Point(81, 112)
+        Me.birthDayEraBox.Name = "birthDayEraBox"
+        Me.birthDayEraBox.Size = New System.Drawing.Size(31, 19)
+        Me.birthDayEraBox.TabIndex = 49
+        '
+        'birthDayMonthBox
+        '
+        Me.birthDayMonthBox.Location = New System.Drawing.Point(121, 112)
+        Me.birthDayMonthBox.Name = "birthDayMonthBox"
+        Me.birthDayMonthBox.Size = New System.Drawing.Size(27, 19)
+        Me.birthDayMonthBox.TabIndex = 50
+        '
+        'birthDayDateBox
+        '
+        Me.birthDayDateBox.Location = New System.Drawing.Point(157, 112)
+        Me.birthDayDateBox.Name = "birthDayDateBox"
+        Me.birthDayDateBox.Size = New System.Drawing.Size(27, 19)
+        Me.birthDayDateBox.TabIndex = 51
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(113, 116)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(7, 12)
+        Me.Label28.TabIndex = 52
+        Me.Label28.Text = "."
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Location = New System.Drawing.Point(149, 116)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(7, 12)
+        Me.Label29.TabIndex = 53
+        Me.Label29.Text = "."
         '
         '予約データ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(733, 609)
+        Me.Controls.Add(Me.Label29)
+        Me.Controls.Add(Me.Label28)
+        Me.Controls.Add(Me.birthDayDateBox)
+        Me.Controls.Add(Me.birthDayMonthBox)
+        Me.Controls.Add(Me.birthDayEraBox)
+        Me.Controls.Add(Me.print)
+        Me.Controls.Add(Me.printPreview)
         Me.Controls.Add(Me.reserveCalendar)
         Me.Controls.Add(Me.btnShowCalendar)
         Me.Controls.Add(Me.btnDownMonth)
@@ -1185,7 +1251,6 @@ Partial Class 予約データ
         Me.Controls.Add(Me.memo2Box)
         Me.Controls.Add(Me.memo1Box)
         Me.Controls.Add(Me.resultDayBox)
-        Me.Controls.Add(Me.birthDayBox)
         Me.Controls.Add(Me.kanaBox)
         Me.Controls.Add(Me.nameBox)
         Me.Controls.Add(Me.postBox)
@@ -1230,7 +1295,6 @@ Partial Class 予約データ
     Friend WithEvents postBox As System.Windows.Forms.ComboBox
     Friend WithEvents nameBox As System.Windows.Forms.TextBox
     Friend WithEvents kanaBox As System.Windows.Forms.TextBox
-    Friend WithEvents birthDayBox As System.Windows.Forms.TextBox
     Friend WithEvents resultDayBox As System.Windows.Forms.TextBox
     Friend WithEvents memo1Box As System.Windows.Forms.TextBox
     Friend WithEvents memo2Box As System.Windows.Forms.TextBox
@@ -1322,4 +1386,11 @@ Partial Class 予約データ
     Friend WithEvents btnDownMonth As System.Windows.Forms.Button
     Friend WithEvents btnShowCalendar As System.Windows.Forms.Button
     Friend WithEvents reserveCalendar As System.Windows.Forms.MonthCalendar
+    Friend WithEvents printPreview As System.Windows.Forms.RadioButton
+    Friend WithEvents print As System.Windows.Forms.RadioButton
+    Friend WithEvents birthDayEraBox As System.Windows.Forms.TextBox
+    Friend WithEvents birthDayMonthBox As System.Windows.Forms.TextBox
+    Friend WithEvents birthDayDateBox As System.Windows.Forms.TextBox
+    Friend WithEvents Label28 As System.Windows.Forms.Label
+    Friend WithEvents Label29 As System.Windows.Forms.Label
 End Class

@@ -27,7 +27,11 @@ Public Class 予約データ
         'セルを選択すると行全体が選択されるようにする
         DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
 
+        '予約日と種別と企業名以外の列をソート不可に設定
         For Each c As DataGridViewColumn In DataGridView1.Columns
+            If c.Name = "Ymd" OrElse c.Name = "Syu" OrElse c.Name = "Kana" OrElse c.Name = "Ind" Then
+                Continue For
+            End If
             c.SortMode = DataGridViewColumnSortMode.NotSortable
         Next c
 
@@ -130,24 +134,20 @@ Public Class 予約データ
         nameBox.Text = name
         kanaBox.Text = kana
         sexBox.Text = sex
-        birthDayBox.Text = birthDay
         resultDayBox.Text = resultDay
-
-        'ampmの表示処理
-        ampmBox.Text = ampm
-
-        '予約日の表示処理(和暦で表示させる)
-        'reserveDateBox.Text = convertADToWareki(reserveDay.Substring(0, 4)) & reserveDay.Substring(4, 6)
-
-        '仮
-        reserveEraBox.Text = convertADToWareki(reserveDay.Substring(0, 4))
-        reserveMonthBox.Text = reserveDay.Substring(5, 2)
-        reserveDayBox.Text = reserveDay.Substring(8, 2)
-
         postBox.Text = post
         memo1Box.Text = memo1
         memo2Box.Text = memo2
+        ampmBox.Text = ampm
 
+        '仮(生年月日、予約日)
+        birthDayEraBox.Text = birthDay.Substring(0, 3)
+        birthDayMonthBox.Text = birthDay.Substring(4, 2)
+        birthDayDateBox.Text = birthDay.Substring(7, 2)
+
+        reserveEraBox.Text = convertADToWareki(reserveDay.Substring(0, 4))
+        reserveMonthBox.Text = reserveDay.Substring(5, 2)
+        reserveDayBox.Text = reserveDay.Substring(8, 2)
 
         'タブ切り替え
         If type = "個人" Then
@@ -438,7 +438,7 @@ Public Class 予約データ
 
     End Sub
 
-    Private Sub displayDayColumun()
+    Private Sub displayDayColumn()
         Dim rowsCount As Integer = DataGridView1.Rows.Count
         Dim year As Integer
         Dim month As Integer
@@ -581,14 +581,15 @@ Public Class 予約データ
         displayAgeColumn()
 
         '曜日の表示設定
-        displayDayColumun()
+        displayDayColumn()
 
         '列名、幅の設定
         '固定
         DataGridView1.Columns(3).Frozen = True
 
         DataGridView1.Columns(0).HeaderText = "予約日"
-        DataGridView1.Columns(0).Width = 50
+        DataGridView1.Columns(0).Width = 70
+        DataGridView1.Columns(0).HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         DataGridView1.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns("day").HeaderText = "曜"
@@ -624,13 +625,13 @@ Public Class 予約データ
         DataGridView1.Columns("age").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns(7).HeaderText = "企業名"
-        DataGridView1.Columns(7).Width = 130
+        DataGridView1.Columns(7).Width = 125
 
         DataGridView1.Columns(8).HeaderText = "結果渡日"
-        DataGridView1.Columns(8).Width = 60
+        DataGridView1.Columns(8).Width = 80
 
         DataGridView1.Columns(9).HeaderText = "来院郵送"
-        DataGridView1.Columns(9).Width = 60
+        DataGridView1.Columns(9).Width = 80
 
         DataGridView1.Columns(10).HeaderText = "メモ1"
         DataGridView1.Columns(10).Width = 80
@@ -639,7 +640,7 @@ Public Class 予約データ
         DataGridView1.Columns(11).Width = 80
 
         DataGridView1.Columns(12).HeaderText = "窓口負担"
-        DataGridView1.Columns(12).Width = 60
+        DataGridView1.Columns(12).Width = 80
 
         For i As Integer = 0 To 12
             DataGridView1.Columns(i).HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -704,14 +705,14 @@ Public Class 予約データ
         displayAgeColumn()
 
         '曜日の表示設定
-        displayDayColumun()
+        displayDayColumn()
 
         '列名、幅の設定
         '固定
         DataGridView1.Columns(3).Frozen = True
 
         DataGridView1.Columns(0).HeaderText = "予約日"
-        DataGridView1.Columns(0).Width = 50
+        DataGridView1.Columns(0).Width = 70
         DataGridView1.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns("day").HeaderText = "曜"
@@ -747,13 +748,13 @@ Public Class 予約データ
         DataGridView1.Columns("age").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns(7).HeaderText = "企業名"
-        DataGridView1.Columns(7).Width = 130
+        DataGridView1.Columns(7).Width = 125
 
         DataGridView1.Columns(8).HeaderText = "結果渡日"
-        DataGridView1.Columns(8).Width = 60
+        DataGridView1.Columns(8).Width = 80
 
         DataGridView1.Columns(9).HeaderText = "来院郵送"
-        DataGridView1.Columns(9).Width = 60
+        DataGridView1.Columns(9).Width = 80
 
         DataGridView1.Columns(10).HeaderText = "メモ1"
         DataGridView1.Columns(10).Width = 80
@@ -819,7 +820,7 @@ Public Class 予約データ
             displayAgeColumn()
 
             '曜日の表示設定
-            displayDayColumun()
+            displayDayColumn()
 
             '選択行のクリア
             selectedClear()
@@ -838,7 +839,7 @@ Public Class 予約データ
             displayAgeColumn()
 
             '曜日の表示設定
-            displayDayColumun()
+            displayDayColumn()
 
             '選択行のクリア
             selectedClear()
@@ -968,11 +969,14 @@ Public Class 予約データ
         End If
 
         objExcel.DisplayAlerts = False
-        ' エクセル表示
-        objExcel.Visible = True
 
         '印刷
-        oSheet.PrintPreview(1)
+        If print.Checked = True Then
+            oSheet.PrintOut()
+        ElseIf printPreview.Checked = True Then
+            objExcel.Visible = True
+            oSheet.PrintPreview(1)
+        End If
 
         ' EXCEL解放
         objExcel.Quit()
@@ -1291,9 +1295,14 @@ Public Class 予約データ
                 sexBox.Text = "女"
             End If
             If HealthButton.Checked Then
-                birthDayBox.Text = reader("Birth")
+                birthDayEraBox.Text = reader("Birth").Substring(0, 3)
+                birthDayMonthBox.Text = reader("Birth").Substring(4, 2)
+                birthDayDateBox.Text = reader("Birth").Substring(7, 2)
             Else
-                birthDayBox.Text = convertBirthday(reader("Birth"))
+                Dim convStr As String = convertBirthday(reader("Birth"))
+                birthDayEraBox.Text = convStr.Substring(0, 3)
+                birthDayMonthBox.Text = convStr.Substring(4, 2)
+                birthDayDateBox.Text = convStr.Substring(7, 2)
             End If
 
         End While
@@ -1311,7 +1320,9 @@ Public Class 予約データ
         nameBox.Text = ""
         kanaBox.Text = ""
         sexBox.Text = ""
-        birthDayBox.Text = ""
+        birthDayEraBox.Text = ""
+        birthDayMonthBox.Text = ""
+        birthDayDateBox.Text = ""
         reserveEraBox.Text = ""
         reserveMonthBox.Text = ""
         reserveDayBox.Text = ""
@@ -1393,7 +1404,7 @@ Public Class 予約データ
         DataGridView1.DataSource = New DataTable
         DataGridView1.Columns.Clear()
 
-        '一覧表示の初期設定
+        '一覧の再表示
         reloadDataGridView()
 
         'セルの編集不可
@@ -1402,7 +1413,11 @@ Public Class 予約データ
         'セルを選択すると行全体が選択されるようにする
         DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
 
+        '予約日と種別と企業名以外の列をソート不可に設定
         For Each c As DataGridViewColumn In DataGridView1.Columns
+            If c.Name = "Ymd" OrElse c.Name = "Syu" OrElse c.Name = "Kana" OrElse c.Name = "Ind" Then
+                Continue For
+            End If
             c.SortMode = DataGridViewColumnSortMode.NotSortable
         Next c
 
@@ -1506,5 +1521,48 @@ Public Class 予約データ
         End If
 
         specificWindowPay.Text = totalPay
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        Dim totalPay As Integer = 0
+        Dim age As Integer = 0
+
+        '入力生年月日から年齢取得
+        If birthDayEraBox.Text <> "" AndAlso birthDayMonthBox.Text <> "" AndAlso birthDayDateBox.Text <> "" Then
+            Dim yyyy As Integer = convertWarekiToAD(birthDayEraBox.Text)
+            Dim MM As Integer = Integer.Parse(birthDayMonthBox.Text)
+            Dim dd As Integer = Integer.Parse(birthDayDateBox.Text)
+            age = GetAge(New Date(yyyy, MM, dd), DateTime.Today)
+        End If
+
+        If gastricCancerBox.Checked = True AndAlso age < 70 Then
+            totalPay = totalPay + 1000
+        End If
+
+        If colorectalCancerBox.Checked = True AndAlso age < 70 Then
+            totalPay = totalPay + 1000
+        End If
+
+        cancerWindowPay.Text = totalPay
+    End Sub
+
+    Private Sub DataGridView1_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataGridView1.Sorted
+        displayAgeColumn()
+        displayDayColumn()
+    End Sub
+
+    Private Sub typeBox_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles typeBox.SelectedValueChanged
+        Dim selectedValue As String = typeBox.Text
+        If selectedValue = "個人" Then
+            TabControl1.SelectedTab = personalTabPage
+        ElseIf selectedValue = "企業" Then
+            TabControl1.SelectedTab = companyTabPage
+        ElseIf selectedValue = "生活" Then
+            TabControl1.SelectedTab = lifeStyleTabPage
+        ElseIf selectedValue = "がん" Then
+            TabControl1.SelectedTab = cancerTabPage
+        ElseIf selectedValue = "特定" Then
+            TabControl1.SelectedTab = specificTabPage
+        End If
     End Sub
 End Class
