@@ -1164,6 +1164,7 @@ Public Class 予約データ
 
         Dim birthDay As String = DataGridView1("Birth", index).Value
         Dim name As String = DataGridView1("Nam", index).Value
+        Dim reserveDay As String = DataGridView1("Ymd", index).Value
 
         birthDay = birthDay.Replace(birthDay.Substring(0, 3), convertWarekiToAD(birthDay.Substring(0, 3)))
 
@@ -1172,7 +1173,7 @@ Public Class 予約データ
         Dim sqlcm As OleDbCommand = cn.CreateCommand
         Dim adapter As New OleDbDataAdapter(sqlcm)
         Dim table As New DataTable
-        sqlcm.CommandText = "delete from RsvD where Nam='" & name & "' AND Birth='" & birthDay & "'"
+        sqlcm.CommandText = "delete from RsvD where Nam='" & name & "' AND Birth='" & birthDay & "' AND Ymd='" & reserveDay & "'"
         adapter.Fill(table)
 
         MsgBox("削除しました")
@@ -1564,5 +1565,264 @@ Public Class 予約データ
         ElseIf selectedValue = "特定" Then
             TabControl1.SelectedTab = specificTabPage
         End If
+    End Sub
+
+    Private Sub btnRegist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRegist.Click
+        '入力内容取得
+        Dim type As String = typeBox.Text '種別
+        Dim companyName As String = companyNameBox.Text '企業名
+        Dim name As String = nameBox.Text '氏名
+        Dim kana As String = kanaBox.Text 'カナ
+        Dim sex As String = sexBox.Text '性別
+        Dim ampm As String = ampmBox.Text 'AmPm
+        Dim resultDay As String = resultDayBox.Text '結果渡日
+        Dim post As String = postBox.Text '来院郵送
+        Dim memo1 As String = memo1Box.Text 'メモ１
+        Dim memo2 As String = memo2Box.Text 'メモ２
+
+        '必須項目チェック
+        If type = "" Then
+            MsgBox("種別が未入力です")
+            Return
+        ElseIf companyName = "" Then
+            MsgBox("企業名が未入力です")
+            Return
+        ElseIf name = "" Then
+            MsgBox("氏名が未入力です")
+            Return
+        ElseIf reserveEraBox.Text = "" OrElse reserveMonthBox.Text = "" OrElse reserveDayBox.Text = "" Then
+            MsgBox("予約日が未入力です")
+            Return
+        ElseIf birthDayEraBox.Text = "" OrElse birthDayMonthBox.Text = "" OrElse birthDayDateBox.Text = "" Then
+            MsgBox("生年月日が未入力です")
+            Return
+        End If
+
+        '予約日(yyyy/MM/dd)
+        Dim reserveDay As String = convertWarekiToAD(reserveEraBox.Text) & "/" & reserveMonthBox.Text & "/" & reserveDayBox.Text
+        '生年月日(yyyy/MM/dd)
+        Dim birthDay As String = convertWarekiToAD(birthDayEraBox.Text) & "/" & birthDayMonthBox.Text & "/" & birthDayDateBox.Text
+
+        'タブページ部分の入力内容
+        Dim kjn(5) As Integer
+        Dim kig(5) As Integer
+        Dim sei(3) As Integer
+        Dim tok(7) As String
+        Dim tok9 As Integer = 0
+        Dim gan(1) As Integer
+        Dim sanken As String = ""
+        Dim windowPay As Integer = 0
+
+        If type = "個人" Then
+            If personalBlood.Checked = True Then
+                kjn(0) = 1
+            End If
+
+            If personalElectro.Checked = True Then
+                kjn(1) = 1
+            End If
+
+            If personalChestXP.Checked = True Then
+                kjn(2) = 1
+            End If
+
+            If personalUltrasonic.Checked = True Then
+                kjn(3) = 1
+            End If
+
+            If personalStomachBa.Checked = True Then
+                kjn(4) = 1
+            End If
+
+            If personalStomachCamera.Checked = True Then
+                kjn(5) = 1
+            End If
+
+            windowPay = If(personalWindowPay.Text = "", 0, Integer.Parse(personalWindowPay.Text))
+        ElseIf type = "企業" Then
+            If companyBlood.Checked = True Then
+                kig(0) = 1
+            End If
+
+            If companyElectro.Checked = True Then
+                kig(1) = 1
+            End If
+
+            If companyChestXP.Checked = True Then
+                kig(2) = 1
+            End If
+
+            If companyUltrasonic.Checked = True Then
+                kig(3) = 1
+            End If
+
+            If companyStomachBa.Checked = True Then
+                kig(4) = 1
+            End If
+
+            If companyStomachCamera.Checked = True Then
+                kig(5) = 1
+            End If
+
+            windowPay = If(companyWindowPay.Text = "", 0, Integer.Parse(companyWindowPay.Text))
+        ElseIf type = "生活" Then
+            If lifeStyleStomachBa.Checked = True Then
+                sei(2) = 1
+            End If
+
+            windowPay = If(lifeStyleWindowPay.Text = "", 0, Integer.Parse(lifeStyleWindowPay.Text))
+        ElseIf type = "特定" Then
+            tok(0) = insuranceTypeBox.Text
+            tok(1) = biochemistryBox.Text
+            tok(2) = bloodSugarBox.Text
+            tok(3) = anemiaBox.Text
+            tok(4) = cardiacBox.Text
+            tok(5) = gastricCancerRiskBox.Text
+            tok(6) = diabetesBox.Text
+            tok(7) = prostateCancerBox.Text
+            If couponTicketBox.Checked = True Then
+                tok9 = 1
+            End If
+
+            windowPay = If(specificWindowPay.Text = "", 0, Integer.Parse(specificWindowPay.Text))
+
+        ElseIf type = "がん" Then
+            If gastricCancerBox.Checked = True Then
+                gan(0) = 1
+            End If
+
+            If colorectalCancerBox.Checked = True Then
+                gan(1) = 1
+            End If
+
+            windowPay = If(cancerWindowPay.Text = "", 0, Integer.Parse(cancerWindowPay.Text))
+        End If
+
+        '選択されているセルの情報取得
+        Dim selectedRowIndex As Integer = DataGridView1.CurrentRow.Index
+        Dim selectedName As String = DataGridView1("Nam", selectedRowIndex).Value
+        Dim selectedBirth As String = DataGridView1("Birth", selectedRowIndex).Value
+        selectedBirth = convertWarekiToAD(selectedBirth.Substring(0, 3)) & "/" & selectedBirth.Substring(4, 5)
+        Dim selectedReserve As String = DataGridView1("Ymd", selectedRowIndex).Value
+
+        Dim Cn As New OleDbConnection(DB_reserve)
+        Dim SQLCm As OleDbCommand = Cn.CreateCommand
+        Dim SQL As String = ""
+        If selectedName = name AndAlso selectedBirth = birthDay AndAlso reserveDay = selectedReserve Then
+            '更新
+            SQL = "UPDATE RsvD SET "
+            SQL &= "Ymd='" & reserveDay & "', "
+            SQL &= "Apm='" & ampm & "', "
+            SQL &= "Syu='" & type & "', "
+            SQL &= "Nam='" & name & "', "
+            SQL &= "Kana='" & kana & "', "
+            SQL &= "Sex='" & sex & "',"
+            SQL &= "Birth='" & birthDay & "',"
+            SQL &= "Ind='" & companyName & "',"
+            SQL &= "Ymd2='" & resultDay & "',"
+            SQL &= "Send='" & post & "',"
+            SQL &= "Memo1='" & memo1 & "',"
+            SQL &= "Memo2='" & memo2 & "',"
+            SQL &= "Kjn1=" & kjn(0) & ","
+            SQL &= "Kjn2=" & kjn(1) & ","
+            SQL &= "Kjn3=" & kjn(2) & ","
+            SQL &= "Kjn4=" & kjn(3) & ","
+            SQL &= "Kjn5=" & kjn(4) & ","
+            SQL &= "Kjn6=" & kjn(5) & ","
+            SQL &= "Kig1=" & kig(0) & ","
+            SQL &= "Kig2=" & kig(1) & ","
+            SQL &= "Kig3=" & kig(2) & ","
+            SQL &= "Kig4=" & kig(3) & ","
+            SQL &= "Kig5=" & kig(4) & ","
+            SQL &= "Kig6=" & kig(5) & ","
+            SQL &= "Sei1=" & sei(0) & ","
+            SQL &= "Sei2=" & sei(1) & ","
+            SQL &= "Sei3=" & sei(2) & ","
+            SQL &= "Sei4=" & sei(3) & ","
+            SQL &= "Tok1='" & tok(0) & "',"
+            SQL &= "Tok2='" & tok(1) & "',"
+            SQL &= "Tok3='" & tok(2) & "',"
+            SQL &= "Tok4='" & tok(3) & "',"
+            SQL &= "Tok5='" & tok(4) & "',"
+            SQL &= "Tok6='" & tok(5) & "',"
+            SQL &= "Tok7='" & tok(6) & "',"
+            SQL &= "Tok8='" & tok(7) & "',"
+            SQL &= "Tok9=" & tok9 & ","
+            SQL &= "Gan1=" & gan(0) & ","
+            SQL &= "Gan2=" & gan(1) & ","
+            SQL &= "Futan=" & windowPay & ","
+            SQL &= "Sanken='" & sanken & "'"
+            SQL &= "WHERE "
+            SQL &= "Ymd='" & selectedReserve & "' AND Nam='" & selectedName & "' AND Birth='" & selectedBirth & "'"
+
+            SQLCm.CommandText = SQL
+            Cn.Open()
+            SQLCm.ExecuteNonQuery()
+
+            Cn.Close()
+            SQLCm.Dispose()
+            Cn.Dispose()
+
+            MsgBox("変更しました")
+            reserveListViewReload()
+
+        Else
+            '新規登録
+            SQL = "INSERT INTO RsvD VALUES("
+            SQL &= "'" & reserveDay & "', "
+            SQL &= "'" & ampm & "', "
+            SQL &= "'" & type & "', "
+            SQL &= "'" & name & "', "
+            SQL &= "'" & kana & "', "
+            SQL &= "'" & sex & "',"
+            SQL &= "'" & birthDay & "',"
+            SQL &= "'" & companyName & "',"
+            SQL &= "'" & resultDay & "',"
+            SQL &= "'" & post & "',"
+            SQL &= "'" & memo1 & "',"
+            SQL &= "'" & memo2 & "',"
+            SQL &= "" & kjn(0) & ","
+            SQL &= "" & kjn(1) & ","
+            SQL &= "" & kjn(2) & ","
+            SQL &= "" & kjn(3) & ","
+            SQL &= "" & kjn(4) & ","
+            SQL &= "" & kjn(5) & ","
+            SQL &= "" & kig(0) & ","
+            SQL &= "" & kig(1) & ","
+            SQL &= "" & kig(2) & ","
+            SQL &= "" & kig(3) & ","
+            SQL &= "" & kig(4) & ","
+            SQL &= "" & kig(5) & ","
+            SQL &= "" & sei(0) & ","
+            SQL &= "" & sei(1) & ","
+            SQL &= "" & sei(2) & ","
+            SQL &= "" & sei(3) & ","
+            SQL &= "'" & tok(0) & "',"
+            SQL &= "'" & tok(1) & "',"
+            SQL &= "'" & tok(2) & "',"
+            SQL &= "'" & tok(3) & "',"
+            SQL &= "'" & tok(4) & "',"
+            SQL &= "'" & tok(5) & "',"
+            SQL &= "'" & tok(6) & "',"
+            SQL &= "'" & tok(7) & "',"
+            SQL &= "" & tok9 & ","
+            SQL &= "" & gan(0) & ","
+            SQL &= "" & gan(1) & ","
+            SQL &= "" & windowPay & ","
+            SQL &= "'" & sanken & "'"
+            SQL &= ")"
+
+            SQLCm.CommandText = SQL
+            Cn.Open()
+            SQLCm.ExecuteNonQuery()
+
+            Cn.Close()
+            SQLCm.Dispose()
+            Cn.Dispose()
+
+            MsgBox("登録しました")
+            reserveListViewReload()
+        End If
+
     End Sub
 End Class
