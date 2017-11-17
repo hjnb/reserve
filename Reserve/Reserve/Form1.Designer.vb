@@ -25,7 +25,6 @@ Partial Class Form1
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.予約データToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.産健センター扱いToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.備忘六ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.検索ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.終了ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
@@ -33,7 +32,7 @@ Partial Class Form1
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.予約データToolStripMenuItem, Me.産健センター扱いToolStripMenuItem, Me.備忘六ToolStripMenuItem, Me.検索ToolStripMenuItem, Me.終了ToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.予約データToolStripMenuItem, Me.産健センター扱いToolStripMenuItem, Me.検索ToolStripMenuItem, Me.終了ToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(554, 24)
@@ -51,12 +50,6 @@ Partial Class Form1
         Me.産健センター扱いToolStripMenuItem.Name = "産健センター扱いToolStripMenuItem"
         Me.産健センター扱いToolStripMenuItem.Size = New System.Drawing.Size(101, 20)
         Me.産健センター扱いToolStripMenuItem.Text = "産健センター扱い"
-        '
-        '備忘六ToolStripMenuItem
-        '
-        Me.備忘六ToolStripMenuItem.Name = "備忘六ToolStripMenuItem"
-        Me.備忘六ToolStripMenuItem.Size = New System.Drawing.Size(55, 20)
-        Me.備忘六ToolStripMenuItem.Text = "備忘録"
         '
         '検索ToolStripMenuItem
         '
@@ -88,7 +81,6 @@ Partial Class Form1
     Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
     Friend WithEvents 予約データToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents 産健センター扱いToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents 備忘六ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents 検索ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents 終了ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 

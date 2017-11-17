@@ -8,12 +8,19 @@ Public Class 予約データ
     Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
     Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Diagnose.mdb"
     Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Health3.mdb"
-    Public calendarIconPath As String = System.IO.Path.GetFullPath("C:\Users\yoshi\Desktop\calendar.png")
-
+    
     Public initFlg As Boolean = True
 
     Private Sub 予約データ_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         Form1.f_yoyaku = Nothing
+    End Sub
+
+    Private Sub 予約データ_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            If e.Control = False Then
+                Me.SelectNextControl(Me.ActiveControl, Not e.Shift, True, True, True)
+            End If
+        End If
     End Sub
 
     Private Sub 予約データ_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -40,8 +47,6 @@ Public Class 予約データ
         TabControl1.SizeMode = TabSizeMode.Fixed
         TabControl1.ItemSize = New Size(65, 25)
         TabControl1.SelectedTab = referenceTabPage
-
-        btnShowCalendar.Image = System.Drawing.Image.FromFile(calendarIconPath)
 
     End Sub
 
@@ -139,15 +144,10 @@ Public Class 予約データ
         memo1Box.Text = memo1
         memo2Box.Text = memo2
         ampmBox.Text = ampm
-
-        '仮(生年月日、予約日)
-        birthDayEraBox.Text = birthDay.Substring(0, 3)
-        birthDayMonthBox.Text = birthDay.Substring(4, 2)
-        birthDayDateBox.Text = birthDay.Substring(7, 2)
-
-        reserveEraBox.Text = convertADToWareki(reserveDay.Substring(0, 4))
-        reserveMonthBox.Text = reserveDay.Substring(5, 2)
-        reserveDayBox.Text = reserveDay.Substring(8, 2)
+        birthYmdBox.EraText = birthDay.Substring(0, 3)
+        birthYmdBox.MonthText = birthDay.Substring(4, 2)
+        birthYmdBox.DateText = birthDay.Substring(7, 2)
+        reserveYmdBox.setADStr(reserveDay)
 
         'タブ切り替え
         If type = "個人" Then
@@ -201,8 +201,11 @@ Public Class 予約データ
             personalStomachCamera.Checked = False
         End If
         '窓口負担
-        personalWindowPay.Text = windowPay
-
+        If windowPay <> 0 AndAlso DataGridView1("Syu", rowIndex).Value = "個人" Then
+            personalWindowPay.Text = windowPay
+        Else
+            personalWindowPay.Text = ""
+        End If
 
         '企業
         '血液
@@ -242,7 +245,11 @@ Public Class 予約データ
             companyStomachCamera.Checked = False
         End If
         '窓口負担
-        companyWindowPay.Text = windowPay
+        If windowPay <> 0 AndAlso DataGridView1("Syu", rowIndex).Value = "企業" Then
+            companyWindowPay.Text = windowPay
+        Else
+            companyWindowPay.Text = ""
+        End If
 
 
         '生活
@@ -257,6 +264,12 @@ Public Class 予約データ
             lifeStyleStomachCamera.Checked = True
         Else
             lifeStyleStomachCamera.Checked = False
+        End If
+        '窓口負担
+        If windowPay <> 0 AndAlso DataGridView1("Syu", rowIndex).Value = "生活" Then
+            lifeStyleWindowPay.Text = windowPay
+        Else
+            lifeStyleWindowPay.Text = ""
         End If
 
 
@@ -299,9 +312,9 @@ Public Class 予約データ
         End If
         '糖尿病性腎症
         If DataGridView1("ToK7", rowIndex).Value <> "" Then
-            gastricCancerRiskBox.Text = DataGridView1("ToK7", rowIndex).Value
+            diabetesBox.Text = DataGridView1("ToK7", rowIndex).Value
         Else
-            gastricCancerRiskBox.Text = ""
+            diabetesBox.Text = ""
         End If
         '前立腺がん
         If DataGridView1("ToK8", rowIndex).Value <> "" Then
@@ -315,6 +328,13 @@ Public Class 予約データ
         Else
             couponTicketBox.Checked = False
         End If
+        '窓口負担
+        If windowPay <> 0 AndAlso DataGridView1("Syu", rowIndex).Value = "特定" Then
+            specificWindowPay.Text = windowPay
+        Else
+            specificWindowPay.Text = ""
+        End If
+
 
         'がん
         '胃がん
@@ -328,6 +348,12 @@ Public Class 予約データ
             colorectalCancerBox.Checked = True
         Else
             colorectalCancerBox.Checked = False
+        End If
+        '窓口負担
+        If windowPay <> 0 AndAlso DataGridView1("Syu", rowIndex).Value = "がん" Then
+            cancerWindowPay.Text = windowPay
+        Else
+            cancerWindowPay.Text = ""
         End If
 
     End Sub
@@ -682,7 +708,7 @@ Public Class 予約データ
         Dim todayDate As String = DateTime.Today.ToString("yyyy/MM/dd")
         Dim rowsCount As Integer = DataGridView1.Rows.Count
         For i = 0 To rowsCount - 2
-            If DataGridView1("Ymd", i).Value = todayDate Then
+            If DataGridView1("Ymd", i).Value >= todayDate Then
                 DataGridView1.FirstDisplayedScrollingRowIndex = i
                 Exit For
             End If
@@ -1296,14 +1322,14 @@ Public Class 予約データ
                 sexBox.Text = "女"
             End If
             If HealthButton.Checked Then
-                birthDayEraBox.Text = reader("Birth").Substring(0, 3)
-                birthDayMonthBox.Text = reader("Birth").Substring(4, 2)
-                birthDayDateBox.Text = reader("Birth").Substring(7, 2)
+                birthYmdBox.EraText = reader("Birth").Substring(0, 3)
+                birthYmdBox.MonthText = reader("Birth").Substring(4, 2)
+                birthYmdBox.DateText = reader("Birth").Substring(7, 2)
             Else
                 Dim convStr As String = convertBirthday(reader("Birth"))
-                birthDayEraBox.Text = convStr.Substring(0, 3)
-                birthDayMonthBox.Text = convStr.Substring(4, 2)
-                birthDayDateBox.Text = convStr.Substring(7, 2)
+                birthYmdBox.EraText = convStr.Substring(0, 3)
+                birthYmdBox.MonthText = convStr.Substring(4, 2)
+                birthYmdBox.DateText = convStr.Substring(7, 2)
             End If
 
         End While
@@ -1321,12 +1347,12 @@ Public Class 予約データ
         nameBox.Text = ""
         kanaBox.Text = ""
         sexBox.Text = ""
-        birthDayEraBox.Text = ""
-        birthDayMonthBox.Text = ""
-        birthDayDateBox.Text = ""
-        reserveEraBox.Text = ""
-        reserveMonthBox.Text = ""
-        reserveDayBox.Text = ""
+        birthYmdBox.EraText = ""
+        birthYmdBox.MonthText = ""
+        birthYmdBox.DateText = ""
+        reserveYmdBox.EraText = ""
+        reserveYmdBox.MonthText = ""
+        reserveYmdBox.DateText = ""
         ampmBox.Text = ""
         resultDayBox.Text = ""
         postBox.Text = ""
@@ -1335,6 +1361,7 @@ Public Class 予約データ
     End Sub
 
     Private Sub tabPageInputClear()
+
         '右の各タブの入力エリアのクリア
         '個人タブ
         personalBlood.Checked = False
@@ -1393,9 +1420,15 @@ Public Class 予約データ
         For i = 0 To rowsCount - 1
             DataGridView1.Rows.Item(i).Selected = False
         Next
+        tabPageInputClear()
+        TabControl1.SelectedTab = referenceTabPage
     End Sub
 
     Private Sub btnInputClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInputClear.Click
+        Dim rowsCount As Integer = DataGridView1.Rows.Count
+        For i = 0 To rowsCount - 1
+            DataGridView1.Rows.Item(i).Selected = False
+        Next
         inputClear()
         tabPageInputClear()
         TabControl1.SelectedTab = referenceTabPage
@@ -1457,27 +1490,6 @@ Public Class 予約データ
         End If
     End Sub
 
-    Private Sub btnShowCalendar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowCalendar.Click
-        If reserveCalendar.Visible = True Then
-            reserveCalendar.Visible = False
-        Else
-            '入力されている値があれば日付をカレンダーに反映
-            If reserveEraBox.Text <> "" AndAlso reserveMonthBox.Text <> "" AndAlso reserveDayBox.Text <> "" Then
-                reserveCalendar.SetDate(New Date(convertWarekiToAD(reserveEraBox.Text), Integer.Parse(reserveMonthBox.Text), Integer.Parse(reserveDayBox.Text)))
-            End If
-            reserveCalendar.Visible = True
-        End If
-    End Sub
-
-    Private Sub reserveCalendar_DateSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.DateRangeEventArgs) Handles reserveCalendar.DateSelected
-        Dim adStr As String = reserveCalendar.SelectionStart
-        Dim warekiStr = convertBirthday(adStr)
-        reserveEraBox.Text = warekiStr.Substring(0, 3)
-        reserveMonthBox.Text = warekiStr.Substring(4, 2)
-        reserveDayBox.Text = warekiStr.Substring(7, 2)
-        reserveCalendar.Visible = False
-    End Sub
-
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         If lifeStyleStomachBa.Checked = True OrElse lifeStyleStomachCamera.Checked = True Then
             lifeStyleWindowPay.Text = "7038"
@@ -1517,7 +1529,7 @@ Public Class 予約データ
             totalPay = totalPay + 1400
         End If
 
-        If prostateCancerBox.Text = "○" Then
+        If prostateCancerBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
             totalPay = totalPay + 1550
         End If
 
@@ -1529,10 +1541,10 @@ Public Class 予約データ
         Dim age As Integer = 0
 
         '入力生年月日から年齢取得
-        If birthDayEraBox.Text <> "" AndAlso birthDayMonthBox.Text <> "" AndAlso birthDayDateBox.Text <> "" Then
-            Dim yyyy As Integer = convertWarekiToAD(birthDayEraBox.Text)
-            Dim MM As Integer = Integer.Parse(birthDayMonthBox.Text)
-            Dim dd As Integer = Integer.Parse(birthDayDateBox.Text)
+        If birthYmdBox.EraText <> "" AndAlso birthYmdBox.MonthText <> "" AndAlso birthYmdBox.DateText <> "" Then
+            Dim yyyy As Integer = convertWarekiToAD(birthYmdBox.EraText)
+            Dim MM As Integer = Integer.Parse(birthYmdBox.MonthText)
+            Dim dd As Integer = Integer.Parse(birthYmdBox.DateText)
             age = GetAge(New Date(yyyy, MM, dd), DateTime.Today)
         End If
 
@@ -1590,18 +1602,21 @@ Public Class 予約データ
         ElseIf name = "" Then
             MsgBox("氏名が未入力です")
             Return
-        ElseIf reserveEraBox.Text = "" OrElse reserveMonthBox.Text = "" OrElse reserveDayBox.Text = "" Then
-            MsgBox("予約日が未入力です")
+        ElseIf sex = "" Then
+            MsgBox("性別が未入力です")
             Return
-        ElseIf birthDayEraBox.Text = "" OrElse birthDayMonthBox.Text = "" OrElse birthDayDateBox.Text = "" Then
+        ElseIf birthYmdBox.EraText = "" OrElse birthYmdBox.MonthText = "" OrElse birthYmdBox.DateText = "" Then
             MsgBox("生年月日が未入力です")
+            Return
+        ElseIf reserveYmdBox.EraText = "" OrElse reserveYmdBox.MonthText = "" OrElse reserveYmdBox.DateText = "" Then
+            MsgBox("予約日が未入力です")
             Return
         End If
 
         '予約日(yyyy/MM/dd)
-        Dim reserveDay As String = convertWarekiToAD(reserveEraBox.Text) & "/" & reserveMonthBox.Text & "/" & reserveDayBox.Text
+        Dim reserveDay As String = convertWarekiToAD(reserveYmdBox.EraText) & "/" & reserveYmdBox.MonthText & "/" & reserveYmdBox.DateText
         '生年月日(yyyy/MM/dd)
-        Dim birthDay As String = convertWarekiToAD(birthDayEraBox.Text) & "/" & birthDayMonthBox.Text & "/" & birthDayDateBox.Text
+        Dim birthDay As String = convertWarekiToAD(birthYmdBox.EraText) & "/" & birthYmdBox.MonthText & "/" & birthYmdBox.DateText
 
         'タブページ部分の入力内容
         Dim kjn(5) As Integer
@@ -1825,4 +1840,5 @@ Public Class 予約データ
         End If
 
     End Sub
+
 End Class
