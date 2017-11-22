@@ -4,6 +4,7 @@ Imports System.Runtime.InteropServices
 Public Class 産健ｾﾝﾀｰ扱い
 
     Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
+    'Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
 
     Public preData As New List(Of SankenData)
 
@@ -32,6 +33,10 @@ Public Class 産健ｾﾝﾀｰ扱い
     End Sub
 
     Private Sub 産健ｾﾝﾀｰ扱い_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        '位置
+        Me.Left = 800
+        Me.Top = 50
+
         'リスト表示
         displaySankenList()
 

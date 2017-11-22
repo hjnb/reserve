@@ -4,6 +4,7 @@ Imports System.Runtime.InteropServices
 Public Class searchForm
 
     Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
+    'Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
 
     Private Sub searchForm_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         Form1.f_search = Nothing
@@ -24,6 +25,10 @@ Public Class searchForm
         Dim Cn As New OleDbConnection(DB1)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim reader As System.Data.OleDb.OleDbDataReader
+
+        '位置
+        Me.Left = 800
+        Me.Top = 50
 
         '最新の予約日を取得
         SQLCm.CommandText = "SELECT TOP 1 * FROM RsvD ORDER BY Ymd DESC"
@@ -151,7 +156,37 @@ Public Class searchForm
             MsgBox("検索文字列を入力してください")
         Else
             displaySearchList(searchStr)
+            convertJapanCalender("Birth")
+            convertJapanCalender("Ymd")
         End If
 
+    End Sub
+
+    Private Sub convertJapanCalender(columnName As String)
+        '生年月日を和暦で表示
+        ' JapaneseCalendarクラスのインスタンスを作る
+        Dim calendarJp = New System.Globalization.JapaneseCalendar()
+        Dim tmpStr As String
+
+        Dim ci As New System.Globalization.CultureInfo("ja-JP", False)
+        ci.DateTimeFormat.Calendar = New System.Globalization.JapaneseCalendar()
+        Dim rowsCount As Integer = searchDataGridView.Rows.Count
+        Dim dt As DateTime
+        For i = 0 To rowsCount - 1
+            If searchDataGridView(columnName, i).Value Is Nothing Then
+                Continue For
+            End If
+            dt = searchDataGridView(columnName, i).Value
+            tmpStr = dt.ToString("gyy/MM/dd", ci)
+            If tmpStr.Substring(0, 2) = "平成" Then
+                searchDataGridView(columnName, i).Value = tmpStr.Replace("平成", "H")
+            ElseIf tmpStr.Substring(0, 2) = "昭和" Then
+                searchDataGridView(columnName, i).Value = tmpStr.Replace("昭和", "S")
+            ElseIf tmpStr.Substring(0, 2) = "大正" Then
+                searchDataGridView(columnName, i).Value = tmpStr.Replace("大正", "T")
+            ElseIf tmpStr.Substring(0, 2) = "明治" Then
+                searchDataGridView(columnName, i).Value = tmpStr.Replace("明治", "M")
+            End If
+        Next
     End Sub
 End Class

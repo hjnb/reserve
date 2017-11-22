@@ -8,7 +8,11 @@ Public Class 予約データ
     Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
     Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Diagnose.mdb"
     Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Health3.mdb"
-    
+
+    'Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
+    'Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Diagnose\Diagnose.mdb"
+    'Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Health3\Health3.mdb"
+
     Public initFlg As Boolean = True
 
     Private Sub 予約データ_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -24,6 +28,10 @@ Public Class 予約データ
     End Sub
 
     Private Sub 予約データ_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        '位置
+        Me.Left = 10
+        Me.Top = 50
 
         '一覧表示の初期設定
         initialSetting4DataGridView()
@@ -896,8 +904,8 @@ Public Class 予約データ
         objExcel = CreateObject("Excel.Application")
 
         objWorkBooks = objExcel.Workbooks
-        'objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Hakojun\事務\さかもと\Patient -入院患者-\Patient.xls")
-        objWorkBook = objWorkBooks.Open("C:\Users\yoshi\Desktop\Reserve.xls")
+        objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Reserve\Reserve.xls")
+        'objWorkBook = objWorkBooks.Open("C:\Users\yoshi\Desktop\Reserve.xls")
         oSheet = objWorkBook.Worksheets("予定表")
 
         '年月と時刻部分の書き込み
