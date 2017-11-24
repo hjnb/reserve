@@ -625,7 +625,7 @@ Partial Class 予約データ
         Me.Button1.Location = New System.Drawing.Point(188, 135)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(87, 23)
-        Me.Button1.TabIndex = 11
+        Me.Button1.TabIndex = 0
         Me.Button1.Text = "窓口負担表示"
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -647,7 +647,7 @@ Partial Class 予約データ
         Me.CheckBox1.Location = New System.Drawing.Point(46, 36)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(72, 16)
-        Me.CheckBox1.TabIndex = 9
+        Me.CheckBox1.TabIndex = 1
         Me.CheckBox1.Text = "付加健診"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '

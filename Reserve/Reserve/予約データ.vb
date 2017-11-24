@@ -1304,16 +1304,27 @@ Public Class 予約データ
             Cn = New OleDbConnection(DB_diagnose)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana, Birth, Sex, Ind FROM UsrM WHERE Ind='" & selectedInd & "' AND Nam='" & selectedName & "'"
+            If selectedInd = "個人健診" Then
+                typeBox.Text = "個人"
+            ElseIf selectedInd = "特定健診" Then
+                typeBox.Text = "特定"
+            ElseIf selectedInd = "がん検診" Then
+                typeBox.Text = "がん"
+            Else
+                typeBox.Text = "企業"
+            End If
         ElseIf HealthButton.Checked = True Then
             '生活習慣病
             Cn = New OleDbConnection(DB_health)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana, Birth, Sex, Ind FROM UsrM WHERE Ind='" & selectedInd & "' AND Nam='" & selectedName & "'"
+            typeBox.Text = "生活"
         Else
             '産健ｾﾝﾀｰ
             Cn = New OleDbConnection(DB_reserve)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana, Birth, Sex, Ind FROM RsvD WHERE Ind='" & selectedInd & "' AND Nam='" & selectedName & "'"
+            typeBox.Text = "企業"
         End If
 
         Cn.Open()
