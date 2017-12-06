@@ -1107,11 +1107,11 @@ Partial Class 予約データ
         '
         Me.birthYmdBox.DateText = ""
         Me.birthYmdBox.EraText = ""
-        Me.birthYmdBox.FirstLabel = "."
+        'Me.birthYmdBox.FirstLabel = "."
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 111)
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
-        Me.birthYmdBox.SecondLabel = "."
+        'Me.birthYmdBox.SecondLabel = "."
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
         Me.birthYmdBox.TabIndex = 6
         '
@@ -1119,11 +1119,11 @@ Partial Class 予約データ
         '
         Me.reserveYmdBox.DateText = ""
         Me.reserveYmdBox.EraText = ""
-        Me.reserveYmdBox.FirstLabel = "."
+        'Me.reserveYmdBox.FirstLabel = "."
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 129)
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
-        Me.reserveYmdBox.SecondLabel = "."
+        'Me.reserveYmdBox.SecondLabel = "."
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
         Me.reserveYmdBox.TabIndex = 7
         '
