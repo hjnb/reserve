@@ -2,6 +2,7 @@
 Imports System.Runtime.InteropServices
 Imports Microsoft.Office.Interop
 Imports Microsoft.Office.Core
+Imports System.Reflection
 
 Public Class 予約データ
 
@@ -14,6 +15,19 @@ Public Class 予約データ
     'Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Health3\Health3.mdb"
 
     Public initFlg As Boolean = True
+
+    ''' <summary>
+    ''' コントロールのDoubleBufferedプロパティをTrueにする
+    ''' </summary>
+    ''' <param name="control">対象のコントロール</param>
+    Public Shared Sub EnableDoubleBuffering(control As Control)
+        control.GetType().InvokeMember( _
+            "DoubleBuffered", _
+            BindingFlags.NonPublic Or BindingFlags.Instance Or BindingFlags.SetProperty, _
+            Nothing, _
+            control, _
+            New Object() {True})
+    End Sub
 
     Private Sub 予約データ_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         Form1.f_yoyaku = Nothing
@@ -28,6 +42,9 @@ Public Class 予約データ
     End Sub
 
     Private Sub 予約データ_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        'DoubleBufferedプロパティをTrueにする
+        EnableDoubleBuffering(DataGridView1)
 
         '位置
         Me.Left = 10
@@ -1522,7 +1539,7 @@ Public Class 予約データ
             biochemistryBox.Text = "○"
             bloodSugarBox.Text = "○"
             anemiaBox.Text = "○"
-        ElseIf insuranceTypeBox.Text = "社・家" Then
+        ElseIf insuranceTypeBox.Text = "社・家" OrElse insuranceTypeBox.Text = "共済" Then
             biochemistryBox.Text = "○"
             bloodSugarBox.Text = "○"
             anemiaBox.Text = "×"
@@ -1732,75 +1749,19 @@ Public Class 予約データ
             windowPay = If(cancerWindowPay.Text = "", 0, Integer.Parse(cancerWindowPay.Text))
         End If
 
-        '選択されているセルの情報取得
-        Dim selectedRowIndex As Integer = DataGridView1.CurrentRow.Index
-        Dim selectedName As String = DataGridView1("Nam", selectedRowIndex).Value
-        Dim selectedBirth As String = DataGridView1("Birth", selectedRowIndex).Value
-        selectedBirth = convertWarekiToAD(selectedBirth.Substring(0, 3)) & "/" & selectedBirth.Substring(4, 5)
-        Dim selectedReserve As String = DataGridView1("Ymd", selectedRowIndex).Value
 
         Dim Cn As New OleDbConnection(DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
+        Dim reader As System.Data.OleDb.OleDbDataReader
         Dim SQL As String = ""
-        If selectedName = name AndAlso selectedBirth = birthDay AndAlso reserveDay = selectedReserve Then
-            '更新
-            SQL = "UPDATE RsvD SET "
-            SQL &= "Ymd='" & reserveDay & "', "
-            SQL &= "Apm='" & ampm & "', "
-            SQL &= "Syu='" & type & "', "
-            SQL &= "Nam='" & name & "', "
-            SQL &= "Kana='" & kana & "', "
-            SQL &= "Sex='" & sex & "',"
-            SQL &= "Birth='" & birthDay & "',"
-            SQL &= "Ind='" & companyName & "',"
-            SQL &= "Ymd2='" & resultDay & "',"
-            SQL &= "Send='" & post & "',"
-            SQL &= "Memo1='" & memo1 & "',"
-            SQL &= "Memo2='" & memo2 & "',"
-            SQL &= "Kjn1=" & kjn(0) & ","
-            SQL &= "Kjn2=" & kjn(1) & ","
-            SQL &= "Kjn3=" & kjn(2) & ","
-            SQL &= "Kjn4=" & kjn(3) & ","
-            SQL &= "Kjn5=" & kjn(4) & ","
-            SQL &= "Kjn6=" & kjn(5) & ","
-            SQL &= "Kig1=" & kig(0) & ","
-            SQL &= "Kig2=" & kig(1) & ","
-            SQL &= "Kig3=" & kig(2) & ","
-            SQL &= "Kig4=" & kig(3) & ","
-            SQL &= "Kig5=" & kig(4) & ","
-            SQL &= "Kig6=" & kig(5) & ","
-            SQL &= "Sei1=" & sei(0) & ","
-            SQL &= "Sei2=" & sei(1) & ","
-            SQL &= "Sei3=" & sei(2) & ","
-            SQL &= "Sei4=" & sei(3) & ","
-            SQL &= "Tok1='" & tok(0) & "',"
-            SQL &= "Tok2='" & tok(1) & "',"
-            SQL &= "Tok3='" & tok(2) & "',"
-            SQL &= "Tok4='" & tok(3) & "',"
-            SQL &= "Tok5='" & tok(4) & "',"
-            SQL &= "Tok6='" & tok(5) & "',"
-            SQL &= "Tok7='" & tok(6) & "',"
-            SQL &= "Tok8='" & tok(7) & "',"
-            SQL &= "Tok9=" & tok9 & ","
-            SQL &= "Gan1=" & gan(0) & ","
-            SQL &= "Gan2=" & gan(1) & ","
-            SQL &= "Futan=" & windowPay & ","
-            SQL &= "Sanken='" & sanken & "'"
-            SQL &= "WHERE "
-            SQL &= "Ymd='" & selectedReserve & "' AND Nam='" & selectedName & "' AND Birth='" & selectedBirth & "'"
 
-            SQLCm.CommandText = SQL
-            Cn.Open()
-            SQLCm.ExecuteNonQuery()
-
-            Cn.Close()
-            SQLCm.Dispose()
-            Cn.Dispose()
-
-            MsgBox("変更しました")
-            reserveListViewReload()
-
-        Else
+        SQL = "select top 1 * from RsvD where Ymd='" & reserveDay & "' and Nam='" & name & "' and Birth='" & birthDay & "'"
+        SQLCm.CommandText = SQL
+        Cn.Open()
+        reader = SQLCm.ExecuteReader()
+        Dim changeFlg As Boolean = reader.Read()
+        Cn.Close()
+        If changeFlg = False Then
             '新規登録
             SQL = "INSERT INTO RsvD VALUES("
             SQL &= "'" & reserveDay & "', "
@@ -1855,6 +1816,66 @@ Public Class 予約データ
             Cn.Dispose()
 
             MsgBox("登録しました")
+            btnSelectClear.PerformClick()
+            reserveListViewReload()
+
+        Else
+            '更新処理
+            SQL = "UPDATE RsvD SET "
+            SQL &= "Ymd='" & reserveDay & "', "
+            SQL &= "Apm='" & ampm & "', "
+            SQL &= "Syu='" & type & "', "
+            SQL &= "Nam='" & name & "', "
+            SQL &= "Kana='" & kana & "', "
+            SQL &= "Sex='" & sex & "',"
+            SQL &= "Birth='" & birthDay & "',"
+            SQL &= "Ind='" & companyName & "',"
+            SQL &= "Ymd2='" & resultDay & "',"
+            SQL &= "Send='" & post & "',"
+            SQL &= "Memo1='" & memo1 & "',"
+            SQL &= "Memo2='" & memo2 & "',"
+            SQL &= "Kjn1=" & kjn(0) & ","
+            SQL &= "Kjn2=" & kjn(1) & ","
+            SQL &= "Kjn3=" & kjn(2) & ","
+            SQL &= "Kjn4=" & kjn(3) & ","
+            SQL &= "Kjn5=" & kjn(4) & ","
+            SQL &= "Kjn6=" & kjn(5) & ","
+            SQL &= "Kig1=" & kig(0) & ","
+            SQL &= "Kig2=" & kig(1) & ","
+            SQL &= "Kig3=" & kig(2) & ","
+            SQL &= "Kig4=" & kig(3) & ","
+            SQL &= "Kig5=" & kig(4) & ","
+            SQL &= "Kig6=" & kig(5) & ","
+            SQL &= "Sei1=" & sei(0) & ","
+            SQL &= "Sei2=" & sei(1) & ","
+            SQL &= "Sei3=" & sei(2) & ","
+            SQL &= "Sei4=" & sei(3) & ","
+            SQL &= "Tok1='" & tok(0) & "',"
+            SQL &= "Tok2='" & tok(1) & "',"
+            SQL &= "Tok3='" & tok(2) & "',"
+            SQL &= "Tok4='" & tok(3) & "',"
+            SQL &= "Tok5='" & tok(4) & "',"
+            SQL &= "Tok6='" & tok(5) & "',"
+            SQL &= "Tok7='" & tok(6) & "',"
+            SQL &= "Tok8='" & tok(7) & "',"
+            SQL &= "Tok9=" & tok9 & ","
+            SQL &= "Gan1=" & gan(0) & ","
+            SQL &= "Gan2=" & gan(1) & ","
+            SQL &= "Futan=" & windowPay & ","
+            SQL &= "Sanken='" & sanken & "'"
+            SQL &= "WHERE "
+            SQL &= "Ymd='" & reserveDay & "' AND Nam='" & name & "' AND Birth='" & birthDay & "'"
+
+            SQLCm.CommandText = SQL
+            Cn.Open()
+            SQLCm.ExecuteNonQuery()
+
+            Cn.Close()
+            SQLCm.Dispose()
+            Cn.Dispose()
+
+            MsgBox("変更しました")
+            btnSelectClear.PerformClick()
             reserveListViewReload()
         End If
 

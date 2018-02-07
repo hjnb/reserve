@@ -852,7 +852,7 @@ Partial Class 予約データ
         'insuranceTypeBox
         '
         Me.insuranceTypeBox.FormattingEnabled = True
-        Me.insuranceTypeBox.Items.AddRange(New Object() {"国保", "社・家"})
+        Me.insuranceTypeBox.Items.AddRange(New Object() {"国保", "社・家", "共済"})
         Me.insuranceTypeBox.Location = New System.Drawing.Point(90, 27)
         Me.insuranceTypeBox.Name = "insuranceTypeBox"
         Me.insuranceTypeBox.Size = New System.Drawing.Size(62, 20)
@@ -1107,11 +1107,12 @@ Partial Class 予約データ
         '
         Me.birthYmdBox.DateText = ""
         Me.birthYmdBox.EraText = ""
-        'Me.birthYmdBox.FirstLabel = "."
+        Me.birthYmdBox.FirstLabel = "."
+        Me.birthYmdBox.FontSize = 9
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 111)
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
-        'Me.birthYmdBox.SecondLabel = "."
+        Me.birthYmdBox.SecondLabel = "."
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
         Me.birthYmdBox.TabIndex = 6
         '
@@ -1119,11 +1120,12 @@ Partial Class 予約データ
         '
         Me.reserveYmdBox.DateText = ""
         Me.reserveYmdBox.EraText = ""
-        'Me.reserveYmdBox.FirstLabel = "."
+        Me.reserveYmdBox.FirstLabel = "."
+        Me.reserveYmdBox.FontSize = 9
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 129)
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
-        'Me.reserveYmdBox.SecondLabel = "."
+        Me.reserveYmdBox.SecondLabel = "."
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
         Me.reserveYmdBox.TabIndex = 7
         '
