@@ -6,6 +6,20 @@ Public Class searchForm
     Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
     'Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
 
+    Private eraTable As Dictionary(Of Integer, String)
+
+    Private ci As System.Globalization.CultureInfo
+
+    Public Sub New(eraTable As Dictionary(Of Integer, String))
+
+        InitializeComponent()
+
+        Me.eraTable = eraTable
+        ci = New System.Globalization.CultureInfo("ja-JP", False)
+        ci.DateTimeFormat.Calendar = New System.Globalization.JapaneseCalendar()
+
+    End Sub
+
     Private Sub searchForm_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         Form1.f_search = Nothing
     End Sub
@@ -19,6 +33,9 @@ Public Class searchForm
     End Sub
 
     Private Sub searchForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'ダブルバッファリングを有効
+        予約データ.EnableDoubleBuffering(searchDataGridView)
+
         Dim startDate As String = ""
         Dim endDate As String = ""
 
@@ -56,6 +73,16 @@ Public Class searchForm
         SQLCm.Dispose()
         Cn.Dispose()
 
+    End Sub
+
+    Private Sub searchDataGridView_CellFormatting(sender As Object, e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles searchDataGridView.CellFormatting
+        '予約日と生年月日を和暦表示に変換
+        If searchDataGridView.Columns(e.ColumnIndex).Name = "Ymd" OrElse searchDataGridView.Columns(e.ColumnIndex).Name = "Birth" Then
+            Dim dt As DateTime = e.Value
+            Dim eraIndex As Integer = ci.DateTimeFormat.Calendar.GetEra(dt)
+            e.Value = eraTable(eraIndex) & dt.ToString("yy/MM/dd", ci)
+            e.FormattingApplied = True
+        End If
     End Sub
 
     Private Sub searchDataGridView_CellPainting(ByVal sender As Object, _
@@ -156,37 +183,7 @@ Public Class searchForm
             MsgBox("検索文字列を入力してください")
         Else
             displaySearchList(searchStr)
-            convertJapanCalender("Birth")
-            convertJapanCalender("Ymd")
         End If
-
     End Sub
 
-    Private Sub convertJapanCalender(columnName As String)
-        '生年月日を和暦で表示
-        ' JapaneseCalendarクラスのインスタンスを作る
-        Dim calendarJp = New System.Globalization.JapaneseCalendar()
-        Dim tmpStr As String
-
-        Dim ci As New System.Globalization.CultureInfo("ja-JP", False)
-        ci.DateTimeFormat.Calendar = New System.Globalization.JapaneseCalendar()
-        Dim rowsCount As Integer = searchDataGridView.Rows.Count
-        Dim dt As DateTime
-        For i = 0 To rowsCount - 1
-            If searchDataGridView(columnName, i).Value Is Nothing Then
-                Continue For
-            End If
-            dt = searchDataGridView(columnName, i).Value
-            tmpStr = dt.ToString("gyy/MM/dd", ci)
-            If tmpStr.Substring(0, 2) = "平成" Then
-                searchDataGridView(columnName, i).Value = tmpStr.Replace("平成", "H")
-            ElseIf tmpStr.Substring(0, 2) = "昭和" Then
-                searchDataGridView(columnName, i).Value = tmpStr.Replace("昭和", "S")
-            ElseIf tmpStr.Substring(0, 2) = "大正" Then
-                searchDataGridView(columnName, i).Value = tmpStr.Replace("大正", "T")
-            ElseIf tmpStr.Substring(0, 2) = "明治" Then
-                searchDataGridView(columnName, i).Value = tmpStr.Replace("明治", "M")
-            End If
-        Next
-    End Sub
 End Class

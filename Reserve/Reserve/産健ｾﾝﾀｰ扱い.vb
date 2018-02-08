@@ -33,6 +33,9 @@ Public Class 産健ｾﾝﾀｰ扱い
     End Sub
 
     Private Sub 産健ｾﾝﾀｰ扱い_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'ダブルバッファリングを有効
+        予約データ.EnableDoubleBuffering(sankenDataGridView)
+
         '位置
         Me.Left = 800
         Me.Top = 50

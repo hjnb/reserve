@@ -6,7 +6,12 @@ Reserve
 </name>
 </assembly>
 <members>
-<member name="P:Reserve.My.Resources.Resources.ResourceManager">
+<member name="M:Reserve.Form1.createEraTable">
+	<summary>
+ 和暦年号テーブル作成
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Reserve.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
