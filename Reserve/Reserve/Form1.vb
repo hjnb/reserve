@@ -4,13 +4,14 @@
     Public f_search As searchForm
     Public f_sanken As 産健ｾﾝﾀｰ扱い
 
-    Public eraTable = New Dictionary(Of Integer, String)
+    Private eraTable = New Dictionary(Of Integer, String)
+    Private ci As System.Globalization.CultureInfo
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
         createEraTable()
 
-        f_yoyaku = New 予約データ()
+        f_yoyaku = New 予約データ(eraTable, ci)
         f_yoyaku.Owner = Me
         f_yoyaku.Show()
 
@@ -21,7 +22,7 @@
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub createEraTable()
-        Dim ci As New System.Globalization.CultureInfo("ja-JP", False)
+        ci = New System.Globalization.CultureInfo("ja-JP", False)
         ci.DateTimeFormat.Calendar = New System.Globalization.JapaneseCalendar()
         For code = AscW("A"c) To AscW("Z"c)
             Dim e As String = ChrW(code)
@@ -38,7 +39,7 @@
 
     Private Sub 予約データToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 予約データToolStripMenuItem.Click
         If f_yoyaku Is Nothing Then
-            f_yoyaku = New 予約データ()
+            f_yoyaku = New 予約データ(eraTable, ci)
             f_yoyaku.Owner = Me
             f_yoyaku.Show()
         End If
@@ -46,7 +47,7 @@
 
     Private Sub 検索ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 検索ToolStripMenuItem.Click
         If f_search Is Nothing Then
-            f_search = New searchForm(eraTable)
+            f_search = New searchForm(eraTable, ci)
             f_search.Owner = Me
             f_search.Show()
         End If

@@ -16,6 +16,21 @@ Public Class 予約データ
 
     Public initFlg As Boolean = True
 
+    Private eraTable As Dictionary(Of Integer, String)
+
+    Private ci As System.Globalization.CultureInfo
+
+    Public Sub New(eraTable As Dictionary(Of Integer, String), ci As System.Globalization.CultureInfo)
+
+        ' この呼び出しはデザイナーで必要です。
+        InitializeComponent()
+
+        ' InitializeComponent() 呼び出しの後で初期化を追加します。
+        Me.eraTable = eraTable
+        Me.ci = ci
+
+    End Sub
+
     ''' <summary>
     ''' コントロールのDoubleBufferedプロパティをTrueにする
     ''' </summary>
@@ -169,9 +184,7 @@ Public Class 予約データ
         memo1Box.Text = memo1
         memo2Box.Text = memo2
         ampmBox.Text = ampm
-        birthYmdBox.EraText = birthDay.Substring(0, 3)
-        birthYmdBox.MonthText = birthDay.Substring(4, 2)
-        birthYmdBox.DateText = birthDay.Substring(7, 2)
+        birthYmdBox.setADStr(birthDay)
         reserveYmdBox.setADStr(reserveDay)
 
         'タブ切り替え
@@ -412,7 +425,7 @@ Public Class 予約データ
         Handles DataGridView1.CellFormatting
 
         If DataGridView1.Columns(e.ColumnIndex).Name = "Ymd" Then
-            '予約日の表示設定とグループ化
+            '予約日の表示設定,グループ化
             If e.RowIndex > 0 AndAlso DataGridView1(e.ColumnIndex, e.RowIndex - 1).Value = e.Value Then
                 e.Value = ""
                 e.FormattingApplied = True
@@ -420,9 +433,26 @@ Public Class 予約データ
                 e.Value = Integer.Parse(e.Value.Substring(e.Value.ToString.Length - 2, 2))
             End If
         ElseIf DataGridView1.Columns(e.ColumnIndex).Name = "day" Then
-            '曜日のグループ化
+            '曜日の表示設定,グループ化
             If e.RowIndex > 0 AndAlso DataGridView1(e.ColumnIndex, e.RowIndex - 1).Value = e.Value Then
                 e.Value = ""
+                e.FormattingApplied = True
+            Else
+                If e.Value = 1 Then
+                    e.Value = "日"
+                ElseIf e.Value = 2 Then
+                    e.Value = "月"
+                ElseIf e.Value = 3 Then
+                    e.Value = "火"
+                ElseIf e.Value = 4 Then
+                    e.Value = "水"
+                ElseIf e.Value = 5 Then
+                    e.Value = "木"
+                ElseIf e.Value = 6 Then
+                    e.Value = "金"
+                ElseIf e.Value = 7 Then
+                    e.Value = "土"
+                End If
                 e.FormattingApplied = True
             End If
         ElseIf DataGridView1.Columns(e.ColumnIndex).Name = "Apm" Then
@@ -431,37 +461,14 @@ Public Class 予約データ
                 e.Value = ""
                 e.FormattingApplied = True
             End If
+        ElseIf DataGridView1.Columns(e.ColumnIndex).Name = "Birth" Then
+            '生年月日の和暦表示
+            Dim dt As DateTime = e.Value
+            Dim eraIndex As Integer = ci.DateTimeFormat.Calendar.GetEra(dt)
+            e.Value = eraTable(eraIndex) & dt.ToString("yy/MM/dd", ci)
+            e.FormattingApplied = True
         End If
 
-    End Sub
-
-    Private Sub convertJapanCalender()
-        '生年月日を和暦で表示
-        ' JapaneseCalendarクラスのインスタンスを作る
-        Dim calendarJp = New System.Globalization.JapaneseCalendar()
-        Dim tmpStr As String
-
-        Dim ci As New System.Globalization.CultureInfo("ja-JP", False)
-        ci.DateTimeFormat.Calendar = New System.Globalization.JapaneseCalendar()
-        Dim rowsCount As Integer = DataGridView1.Rows.Count
-        Dim dt As DateTime
-        For i = 0 To rowsCount - 1
-            If DataGridView1("Birth", i).Value Is Nothing Then
-                Continue For
-            End If
-            dt = DataGridView1("Birth", i).Value
-            tmpStr = dt.ToString("gyy/MM/dd", ci)
-            If tmpStr.Substring(0, 2) = "平成" Then
-
-                DataGridView1("Birth", i).Value = tmpStr.Replace("平成", "H")
-            ElseIf tmpStr.Substring(0, 2) = "昭和" Then
-                DataGridView1("Birth", i).Value = tmpStr.Replace("昭和", "S")
-            ElseIf tmpStr.Substring(0, 2) = "大正" Then
-                DataGridView1("Birth", i).Value = tmpStr.Replace("大正", "T")
-            ElseIf tmpStr.Substring(0, 2) = "明治" Then
-                DataGridView1("Birth", i).Value = tmpStr.Replace("明治", "M")
-            End If
-        Next
     End Sub
 
     Private Sub displayReserveList()
@@ -474,7 +481,7 @@ Public Class 予約データ
         Dim Adapter As New OleDbDataAdapter(SQLCm)
         Dim Table As New DataTable
 
-        SQLCm.CommandText = "SELECT Ymd, Apm, Syu, Nam, Kana, Sex, Birth, Ind, Ymd2, Send, Memo1, Memo2, Futan, Kjn1, Kjn2, Kjn3, Kjn4, Kjn5, Kjn6, Kig1, Kig2, Kig3, Kig4, Kig5, Kig6, Sei1, Sei2, Sei3, Sei4, Tok1, Tok2, Tok3, Tok4, Tok5, Tok6, Tok7, Tok8, Tok9, Gan1, Gan2, Sanken FROM RsvD WHERE Ymd LIKE '%" & targetDateStr & "%' ORDER BY Ymd ASC, Apm ASC, Kana ASC"
+        SQLCm.CommandText = "SELECT Ymd, WeekDay(Ymd) as [day], Apm, Syu, Nam, Kana, Sex, Birth, Int((Format(NOW(),'YYYYMMDD')-Format(Birth, 'YYYYMMDD'))/10000) as age, Ind, Ymd2, Send, Memo1, Memo2, Futan, Kjn1, Kjn2, Kjn3, Kjn4, Kjn5, Kjn6, Kig1, Kig2, Kig3, Kig4, Kig5, Kig6, Sei1, Sei2, Sei3, Sei4, Tok1, Tok2, Tok3, Tok4, Tok5, Tok6, Tok7, Tok8, Tok9, Gan1, Gan2, Sanken FROM RsvD WHERE Ymd LIKE '%" & targetDateStr & "%' ORDER BY Ymd ASC, Apm ASC, Kana ASC"
         Adapter.Fill(Table)
 
         '▼値の表示
@@ -486,52 +493,6 @@ Public Class 予約データ
         Adapter.Dispose()
         SQLCm.Dispose()
         Cn.Dispose()
-
-    End Sub
-
-    Private Sub displayDayColumn()
-        Dim rowsCount As Integer = DataGridView1.Rows.Count
-        Dim year As Integer
-        Dim month As Integer
-        Dim day As Integer
-        Dim dateTime As DateTime
-
-        For i = 0 To rowsCount - 1
-            If DataGridView1("Ymd", i).Value Is Nothing Then
-                Continue For
-            End If
-            year = Integer.Parse(DataGridView1("Ymd", i).Value.ToString.Substring(0, 4))
-            month = Integer.Parse(DataGridView1("Ymd", i).Value.ToString.Substring(5, 2))
-            day = Integer.Parse(DataGridView1("Ymd", i).Value.ToString.Substring(8, 2))
-            dateTime = New DateTime(year, month, day)
-
-            DataGridView1("day", i).Value = dateTime.ToString("ddd")
-        Next
-
-    End Sub
-
-    Private Sub displayAgeColumn()
-        Dim rowsCount As Integer = DataGridView1.Rows.Count
-        Dim birthStr As String
-        Dim birthYear As String
-        Dim birthMonth As String
-        Dim birthDate As String
-        Dim birthDateTime As DateTime
-        Dim age As Integer
-        Dim todayDateTime As DateTime = DateTime.Today
-
-        For i = 0 To rowsCount - 1
-            If DataGridView1("Birth", i).Value Is Nothing Then
-                Continue For
-            End If
-            birthStr = DataGridView1("Birth", i).Value
-            birthYear = convertWarekiToAD(birthStr.Substring(0, 3))
-            birthMonth = birthStr.Substring(4, 2)
-            birthDate = birthStr.Substring(7, 2)
-            birthDateTime = New DateTime(birthYear, birthMonth, birthDate)
-            age = GetAge(birthDateTime, todayDateTime)
-            DataGridView1("age", i).Value = age
-        Next
 
     End Sub
 
@@ -569,46 +530,6 @@ Public Class 予約データ
         Return warekiStr
     End Function
 
-    Private Function convertBirthday(ByVal adBirthday As String) As String
-        Dim convertStr As String = ""
-        Dim yyyy As Integer = Integer.Parse(adBirthday.Substring(0, 4))
-        Dim MM As String = adBirthday.Substring(5, 2)
-        Dim dd As String = adBirthday.Substring(8, 2)
-
-        If yyyy >= 1990 Then
-            Dim era As Integer = yyyy - 1988
-            convertStr = "H" & If(era < 10, "0" & era, era) & "/" & MM & "/" & dd
-        ElseIf yyyy = 1989 Then
-            If MM = "01" AndAlso dd < "08" Then
-                convertStr = "S64" & "/" & MM & "/" & dd
-            Else
-                convertStr = "H01" & "/" & MM & "/" & dd
-            End If
-        ElseIf yyyy >= 1927 Then
-            Dim era As Integer = yyyy - 1925
-            convertStr = "S" & If(era < 10, "0" & era, era) & "/" & MM & "/" & dd
-        ElseIf yyyy = 1926 Then
-            If MM = "12" AndAlso dd < "25" Then
-                convertStr = "T15" & "/" & MM & "/" & dd
-            Else
-                convertStr = "S01" & "/" & MM & "/" & dd
-            End If
-        ElseIf yyyy >= 1912 Then
-            Dim era As Integer = yyyy - 1911
-            convertStr = "T" & If(era < 10, "0" & era, era) & "/" & MM & "/" & dd
-        End If
-
-        Return convertStr
-    End Function
-
-    Private Sub addColumn()
-        DataGridView1.Columns.Add("day", "曜日")
-        DataGridView1.Columns("day").DisplayIndex = 1
-
-        DataGridView1.Columns.Add("age", "年齢")
-        DataGridView1.Columns("age").DisplayIndex = 8
-    End Sub
-
     Private Sub initialSetting4DataGridView()
 
         '現在の年月を取得 
@@ -622,76 +543,64 @@ Public Class 予約データ
         '一覧表示
         displayReserveList()
 
-        '曜日、年齢の列を追加
-        addColumn()
-
-        '西暦を和暦表示に変更
-        convertJapanCalender()
-
-        '年齢の表示設定
-        displayAgeColumn()
-
-        '曜日の表示設定
-        displayDayColumn()
-
         '列名、幅の設定
         '固定
         DataGridView1.Columns(3).Frozen = True
 
-        DataGridView1.Columns(0).HeaderText = "予約日"
-        DataGridView1.Columns(0).Width = 70
-        DataGridView1.Columns(0).HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridView1.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Ymd").HeaderText = "予約日"
+        DataGridView1.Columns("Ymd").Width = 70
+        DataGridView1.Columns("Ymd").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Ymd").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns("day").HeaderText = "曜"
         DataGridView1.Columns("day").Width = 30
         DataGridView1.Columns("day").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         DataGridView1.Columns("day").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(1).HeaderText = "AmPm"
-        DataGridView1.Columns(1).Width = 50
-        DataGridView1.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Apm").HeaderText = "AmPm"
+        DataGridView1.Columns("Apm").Width = 50
+        DataGridView1.Columns("Apm").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(2).HeaderText = "種別"
-        DataGridView1.Columns(2).Width = 40
-        DataGridView1.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Syu").HeaderText = "種別"
+        DataGridView1.Columns("Syu").Width = 40
+        DataGridView1.Columns("Syu").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(3).HeaderText = "氏名"
-        DataGridView1.Columns(3).Width = 90
+        DataGridView1.Columns("Nam").HeaderText = "氏名"
+        DataGridView1.Columns("Nam").Width = 90
 
-        DataGridView1.Columns(4).HeaderText = "カナ"
-        DataGridView1.Columns(4).Width = 80
+        DataGridView1.Columns("Kana").HeaderText = "カナ"
+        DataGridView1.Columns("Kana").Width = 80
 
-        DataGridView1.Columns(5).HeaderText = "性別"
-        DataGridView1.Columns(5).Width = 35
-        DataGridView1.Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Sex").HeaderText = "性別"
+        DataGridView1.Columns("Sex").Width = 35
+        DataGridView1.Columns("Sex").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(6).HeaderText = "生年月日"
-        DataGridView1.Columns(6).Width = 80
-        DataGridView1.Columns(6).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Birth").HeaderText = "生年月日"
+        DataGridView1.Columns("Birth").Width = 80
+        DataGridView1.Columns("Birth").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns("age").HeaderText = "年齢"
         DataGridView1.Columns("age").Width = 40
         DataGridView1.Columns("age").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         DataGridView1.Columns("age").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(7).HeaderText = "企業名"
-        DataGridView1.Columns(7).Width = 125
+        DataGridView1.Columns("Ind").HeaderText = "企業名"
+        DataGridView1.Columns("Ind").Width = 125
 
-        DataGridView1.Columns(8).HeaderText = "結果渡日"
-        DataGridView1.Columns(8).Width = 80
+        DataGridView1.Columns("Ymd2").HeaderText = "結果渡日"
+        DataGridView1.Columns("Ymd2").Width = 80
 
-        DataGridView1.Columns(9).HeaderText = "来院郵送"
-        DataGridView1.Columns(9).Width = 80
+        DataGridView1.Columns("Send").HeaderText = "来院郵送"
+        DataGridView1.Columns("Send").Width = 80
 
-        DataGridView1.Columns(10).HeaderText = "メモ1"
-        DataGridView1.Columns(10).Width = 80
+        DataGridView1.Columns("Memo1").HeaderText = "メモ1"
+        DataGridView1.Columns("Memo1").Width = 80
 
-        DataGridView1.Columns(11).HeaderText = "メモ2"
-        DataGridView1.Columns(11).Width = 80
+        DataGridView1.Columns("Memo2").HeaderText = "メモ2"
+        DataGridView1.Columns("Memo2").Width = 80
 
-        DataGridView1.Columns(12).HeaderText = "窓口負担"
-        DataGridView1.Columns(12).Width = 80
+        DataGridView1.Columns("Futan").HeaderText = "窓口負担"
+        DataGridView1.Columns("Futan").Width = 80
 
         For i As Integer = 0 To 12
             DataGridView1.Columns(i).HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -746,75 +655,63 @@ Public Class 予約データ
         '一覧表示
         displayReserveList()
 
-        '曜日、年齢の列を追加
-        addColumn()
-
-        '西暦を和暦表示に変更
-        convertJapanCalender()
-
-        '年齢の表示設定
-        displayAgeColumn()
-
-        '曜日の表示設定
-        displayDayColumn()
-
         '列名、幅の設定
         '固定
         DataGridView1.Columns(3).Frozen = True
 
-        DataGridView1.Columns(0).HeaderText = "予約日"
-        DataGridView1.Columns(0).Width = 70
-        DataGridView1.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Ymd").HeaderText = "予約日"
+        DataGridView1.Columns("Ymd").Width = 70
+        DataGridView1.Columns("Ymd").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns("day").HeaderText = "曜"
         DataGridView1.Columns("day").Width = 30
         DataGridView1.Columns("day").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         DataGridView1.Columns("day").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(1).HeaderText = "AmPm"
-        DataGridView1.Columns(1).Width = 50
-        DataGridView1.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Apm").HeaderText = "AmPm"
+        DataGridView1.Columns("Apm").Width = 50
+        DataGridView1.Columns("Apm").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(2).HeaderText = "種別"
-        DataGridView1.Columns(2).Width = 40
-        DataGridView1.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Syu").HeaderText = "種別"
+        DataGridView1.Columns("Syu").Width = 40
+        DataGridView1.Columns("Syu").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(3).HeaderText = "氏名"
-        DataGridView1.Columns(3).Width = 90
+        DataGridView1.Columns("Nam").HeaderText = "氏名"
+        DataGridView1.Columns("Nam").Width = 90
 
-        DataGridView1.Columns(4).HeaderText = "カナ"
-        DataGridView1.Columns(4).Width = 80
+        DataGridView1.Columns("Kana").HeaderText = "カナ"
+        DataGridView1.Columns("Kana").Width = 80
 
-        DataGridView1.Columns(5).HeaderText = "性別"
-        DataGridView1.Columns(5).Width = 35
-        DataGridView1.Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Sex").HeaderText = "性別"
+        DataGridView1.Columns("Sex").Width = 35
+        DataGridView1.Columns("Sex").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(6).HeaderText = "生年月日"
-        DataGridView1.Columns(6).Width = 80
-        DataGridView1.Columns(6).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridView1.Columns("Birth").HeaderText = "生年月日"
+        DataGridView1.Columns("Birth").Width = 80
+        DataGridView1.Columns("Birth").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
         DataGridView1.Columns("age").HeaderText = "年齢"
         DataGridView1.Columns("age").Width = 40
         DataGridView1.Columns("age").HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         DataGridView1.Columns("age").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-        DataGridView1.Columns(7).HeaderText = "企業名"
-        DataGridView1.Columns(7).Width = 125
+        DataGridView1.Columns("Ind").HeaderText = "企業名"
+        DataGridView1.Columns("Ind").Width = 125
 
-        DataGridView1.Columns(8).HeaderText = "結果渡日"
-        DataGridView1.Columns(8).Width = 80
+        DataGridView1.Columns("Ymd2").HeaderText = "結果渡日"
+        DataGridView1.Columns("Ymd2").Width = 80
 
-        DataGridView1.Columns(9).HeaderText = "来院郵送"
-        DataGridView1.Columns(9).Width = 80
+        DataGridView1.Columns("Send").HeaderText = "来院郵送"
+        DataGridView1.Columns("Send").Width = 80
 
-        DataGridView1.Columns(10).HeaderText = "メモ1"
-        DataGridView1.Columns(10).Width = 80
+        DataGridView1.Columns("Memo1").HeaderText = "メモ1"
+        DataGridView1.Columns("Memo1").Width = 80
 
-        DataGridView1.Columns(11).HeaderText = "メモ2"
-        DataGridView1.Columns(11).Width = 80
+        DataGridView1.Columns("Memo2").HeaderText = "メモ2"
+        DataGridView1.Columns("Memo2").Width = 80
 
-        DataGridView1.Columns(12).HeaderText = "窓口負担"
-        DataGridView1.Columns(12).Width = 60
+        DataGridView1.Columns("Futan").HeaderText = "窓口負担"
+        DataGridView1.Columns("Futan").Width = 60
 
         For i As Integer = 0 To 12
             DataGridView1.Columns(i).HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -864,15 +761,6 @@ Public Class 予約データ
             '一覧表示
             displayReserveList()
 
-            '西暦を和暦表示に変更
-            convertJapanCalender()
-
-            '年齢の表示設定
-            displayAgeColumn()
-
-            '曜日の表示設定
-            displayDayColumn()
-
             '選択行のクリア
             selectedClear()
         End If
@@ -882,15 +770,6 @@ Public Class 予約データ
         If initFlg = False Then
             '一覧表示
             displayReserveList()
-
-            '西暦を和暦表示に変更
-            convertJapanCalender()
-
-            '年齢の表示設定
-            displayAgeColumn()
-
-            '曜日の表示設定
-            displayDayColumn()
 
             '選択行のクリア
             selectedClear()
@@ -1184,6 +1063,7 @@ Public Class 予約データ
             ElseIf type = "がん" Then
                 If DataGridView1("Gan1", i).Value = 1 Then
                     oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 1 '胃がん
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
                 Else
                     oSheet.Range("Z" & (rowIndex + excelIndex)).Value = ""
                 End If
@@ -1217,15 +1097,14 @@ Public Class 予約データ
         Dim name As String = DataGridView1("Nam", index).Value
         Dim reserveDay As String = DataGridView1("Ymd", index).Value
 
-        birthDay = birthDay.Replace(birthDay.Substring(0, 3), convertWarekiToAD(birthDay.Substring(0, 3)))
-
         '削除処理
         Dim cn As New OleDbConnection(DB_reserve)
         Dim sqlcm As OleDbCommand = cn.CreateCommand
-        Dim adapter As New OleDbDataAdapter(sqlcm)
-        Dim table As New DataTable
         sqlcm.CommandText = "delete from RsvD where Nam='" & name & "' AND Birth='" & birthDay & "' AND Ymd='" & reserveDay & "'"
-        adapter.Fill(table)
+        cn.Open()
+        sqlcm.ExecuteNonQuery()
+        cn.Close()
+        cn.Dispose()
 
         MsgBox("削除しました")
         inputClear()
@@ -1362,10 +1241,7 @@ Public Class 予約データ
                 birthYmdBox.MonthText = reader("Birth").Substring(4, 2)
                 birthYmdBox.DateText = reader("Birth").Substring(7, 2)
             Else
-                Dim convStr As String = convertBirthday(reader("Birth"))
-                birthYmdBox.EraText = convStr.Substring(0, 3)
-                birthYmdBox.MonthText = convStr.Substring(4, 2)
-                birthYmdBox.DateText = convStr.Substring(7, 2)
+                birthYmdBox.setADStr(reader("Birth"))
             End If
 
         End While
@@ -1593,11 +1469,6 @@ Public Class 予約データ
         End If
 
         cancerWindowPay.Text = totalPay
-    End Sub
-
-    Private Sub DataGridView1_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataGridView1.Sorted
-        displayAgeColumn()
-        displayDayColumn()
     End Sub
 
     Private Sub typeBox_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles typeBox.SelectedValueChanged
@@ -1881,4 +1752,5 @@ Public Class 予約データ
 
     End Sub
 
+    
 End Class

@@ -10,13 +10,12 @@ Public Class searchForm
 
     Private ci As System.Globalization.CultureInfo
 
-    Public Sub New(eraTable As Dictionary(Of Integer, String))
+    Public Sub New(eraTable As Dictionary(Of Integer, String), ci As System.Globalization.CultureInfo)
 
         InitializeComponent()
 
         Me.eraTable = eraTable
-        ci = New System.Globalization.CultureInfo("ja-JP", False)
-        ci.DateTimeFormat.Calendar = New System.Globalization.JapaneseCalendar()
+        Me.ci = ci
 
     End Sub
 
@@ -48,7 +47,7 @@ Public Class searchForm
         Me.Top = 50
 
         '最新の予約日を取得
-        SQLCm.CommandText = "SELECT TOP 1 * FROM RsvD ORDER BY Ymd DESC"
+        SQLCm.CommandText = "SELECT TOP 1 Ymd FROM RsvD ORDER BY Ymd DESC"
         Cn.Open()
         reader = SQLCm.ExecuteReader()
 
@@ -60,7 +59,7 @@ Public Class searchForm
         endDateLabel.Text = endDate
 
         '最古の予約日を取得
-        SQLCm.CommandText = "SELECT TOP 1 * FROM RsvD ORDER BY Ymd"
+        SQLCm.CommandText = "SELECT TOP 1 Ymd FROM RsvD ORDER BY Ymd"
         reader = SQLCm.ExecuteReader()
 
         While reader.Read() = True
