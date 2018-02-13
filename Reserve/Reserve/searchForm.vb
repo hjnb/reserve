@@ -3,9 +3,6 @@ Imports System.Runtime.InteropServices
 
 Public Class searchForm
 
-    Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
-    'Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
-
     Private eraTable As Dictionary(Of Integer, String)
 
     Private ci As System.Globalization.CultureInfo
@@ -38,7 +35,7 @@ Public Class searchForm
         Dim startDate As String = ""
         Dim endDate As String = ""
 
-        Dim Cn As New OleDbConnection(DB1)
+        Dim Cn As New OleDbConnection(Form1.DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim reader As System.Data.OleDb.OleDbDataReader
 
@@ -109,7 +106,7 @@ Public Class searchForm
     End Sub
 
     Private Sub displaySearchList(ByVal searchText As String)
-        Dim Cn As New OleDbConnection(DB1)
+        Dim Cn As New OleDbConnection(Form1.DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim Adapter As New OleDbDataAdapter(SQLCm)
         Dim Table As New DataTable

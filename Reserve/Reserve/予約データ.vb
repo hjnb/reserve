@@ -6,14 +6,6 @@ Imports System.Reflection
 
 Public Class 予約データ
 
-    Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
-    Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Diagnose.mdb"
-    Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Health3.mdb"
-
-    'Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
-    'Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Diagnose\Diagnose.mdb"
-    'Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Health3\Health3.mdb"
-
     Public initFlg As Boolean = True
 
     Private eraTable As Dictionary(Of Integer, String)
@@ -93,7 +85,7 @@ Public Class 予約データ
     Private Sub displayDiagnose()
         referenceListBox.Items.Clear()
 
-        Dim Cn As New OleDbConnection(DB_diagnose)
+        Dim Cn As New OleDbConnection(Form1.DB_diagnose)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim reader As System.Data.OleDb.OleDbDataReader
 
@@ -113,7 +105,7 @@ Public Class 予約データ
     Private Sub displayHealth()
         referenceListBox.Items.Clear()
 
-        Dim Cn As New OleDbConnection(DB_health)
+        Dim Cn As New OleDbConnection(Form1.DB_health)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim reader As System.Data.OleDb.OleDbDataReader
 
@@ -133,7 +125,7 @@ Public Class 予約データ
     Private Sub displaySankenCenter()
         referenceListBox.Items.Clear()
 
-        Dim Cn As New OleDbConnection(DB_reserve)
+        Dim Cn As New OleDbConnection(Form1.DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim reader As System.Data.OleDb.OleDbDataReader
 
@@ -476,7 +468,7 @@ Public Class 予約データ
         Dim monthStr As String = monthBox.Text
         Dim targetDateStr As String = convertWarekiToAD(eraStr) & "/" & monthStr
 
-        Dim Cn As New OleDbConnection(DB_reserve)
+        Dim Cn As New OleDbConnection(Form1.DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim Adapter As New OleDbDataAdapter(SQLCm)
         Dim Table As New DataTable
@@ -524,17 +516,13 @@ Public Class 予約データ
         Return ADStr
     End Function
 
-    Public Shared Function convertADToWareki(ByVal adStr As String) As String
-        Dim warekiStr As String = ""
-        warekiStr = "H" & (Integer.Parse(adStr) - 1988)
-        Return warekiStr
-    End Function
-
     Private Sub initialSetting4DataGridView()
 
         '現在の年月を取得 
-        Dim eraStr As String = convertADToWareki(DateTime.Today.ToString("yyyy"))
-        Dim monthStr As String = DateTime.Today.ToString("MM")
+        Dim dt As DateTime = DateTime.Today
+        Dim eraIndex As Integer = ci.DateTimeFormat.Calendar.GetEra(dt)
+        Dim eraStr As String = eraTable(eraIndex) & dt.ToString("yy", ci)
+        Dim monthStr As String = dt.ToString("MM")
 
         'コンボボックスに設定
         eraBox.Text = eraStr
@@ -1098,7 +1086,7 @@ Public Class 予約データ
         Dim reserveDay As String = DataGridView1("Ymd", index).Value
 
         '削除処理
-        Dim cn As New OleDbConnection(DB_reserve)
+        Dim cn As New OleDbConnection(Form1.DB_reserve)
         Dim sqlcm As OleDbCommand = cn.CreateCommand
         sqlcm.CommandText = "delete from RsvD where Nam='" & name & "' AND Birth='" & birthDay & "' AND Ymd='" & reserveDay & "'"
         cn.Open()
@@ -1153,17 +1141,17 @@ Public Class 予約データ
 
         If diagnoseButton.Checked = True Then
             '健診
-            Cn = New OleDbConnection(DB_diagnose)
+            Cn = New OleDbConnection(Form1.DB_diagnose)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana FROM UsrM WHERE Ind='" & ind & " 'ORDER BY Kana"
         ElseIf HealthButton.Checked = True Then
             '生活習慣病
-            Cn = New OleDbConnection(DB_health)
+            Cn = New OleDbConnection(Form1.DB_health)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana FROM UsrM WHERE Ind='" & ind & "' ORDER BY Kana"
         Else
             '産健ｾﾝﾀｰ
-            Cn = New OleDbConnection(DB_reserve)
+            Cn = New OleDbConnection(Form1.DB_reserve)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT distinct Nam, Kana FROM RsvD WHERE Ind='" & ind & "' ORDER BY Kana"
         End If
@@ -1197,7 +1185,7 @@ Public Class 予約データ
 
         If diagnoseButton.Checked = True Then
             '健診
-            Cn = New OleDbConnection(DB_diagnose)
+            Cn = New OleDbConnection(Form1.DB_diagnose)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana, Birth, Sex, Ind FROM UsrM WHERE Ind='" & selectedInd & "' AND Nam='" & selectedName & "'"
             If selectedInd = "個人健診" Then
@@ -1211,13 +1199,13 @@ Public Class 予約データ
             End If
         ElseIf HealthButton.Checked = True Then
             '生活習慣病
-            Cn = New OleDbConnection(DB_health)
+            Cn = New OleDbConnection(Form1.DB_health)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana, Birth, Sex, Ind FROM UsrM WHERE Ind='" & selectedInd & "' AND Nam='" & selectedName & "'"
             typeBox.Text = "生活"
         Else
             '産健ｾﾝﾀｰ
-            Cn = New OleDbConnection(DB_reserve)
+            Cn = New OleDbConnection(Form1.DB_reserve)
             SQLCm = Cn.CreateCommand
             SQLCm.CommandText = "SELECT Nam, Kana, Birth, Sex, Ind FROM RsvD WHERE Ind='" & selectedInd & "' AND Nam='" & selectedName & "'"
             typeBox.Text = "企業"
@@ -1471,7 +1459,7 @@ Public Class 予約データ
         cancerWindowPay.Text = totalPay
     End Sub
 
-    Private Sub typeBox_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles typeBox.SelectedValueChanged
+    Private Sub typeBox_TextChanged(sender As Object, e As System.EventArgs) Handles typeBox.TextChanged
         Dim selectedValue As String = typeBox.Text
         If selectedValue = "個人" Then
             TabControl1.SelectedTab = personalTabPage
@@ -1521,9 +1509,9 @@ Public Class 予約データ
         End If
 
         '予約日(yyyy/MM/dd)
-        Dim reserveDay As String = convertWarekiToAD(reserveYmdBox.EraText) & "/" & reserveYmdBox.MonthText & "/" & reserveYmdBox.DateText
+        Dim reserveDay As String = reserveYmdBox.getADStr()
         '生年月日(yyyy/MM/dd)
-        Dim birthDay As String = convertWarekiToAD(birthYmdBox.EraText) & "/" & birthYmdBox.MonthText & "/" & birthYmdBox.DateText
+        Dim birthDay As String = birthYmdBox.getADStr()
 
         'タブページ部分の入力内容
         Dim kjn(5) As Integer
@@ -1621,7 +1609,7 @@ Public Class 予約データ
         End If
 
 
-        Dim Cn As New OleDbConnection(DB_reserve)
+        Dim Cn As New OleDbConnection(Form1.DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim reader As System.Data.OleDb.OleDbDataReader
         Dim SQL As String = ""
@@ -1752,5 +1740,4 @@ Public Class 予約データ
 
     End Sub
 
-    
 End Class

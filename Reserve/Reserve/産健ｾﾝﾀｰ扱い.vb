@@ -3,9 +3,6 @@ Imports System.Runtime.InteropServices
 
 Public Class 産健ｾﾝﾀｰ扱い
 
-    Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
-    'Public DB1 As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
-
     Public preData As New List(Of SankenData)
 
     Public Class SankenData
@@ -52,7 +49,7 @@ Public Class 産健ｾﾝﾀｰ扱い
     End Sub
 
     Private Sub displaySankenList()
-        Dim Cn As New OleDbConnection(DB1)
+        Dim Cn As New OleDbConnection(Form1.DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
         Dim Adapter As New OleDbDataAdapter(SQLCm)
         Dim Table As New DataTable
@@ -161,7 +158,7 @@ Public Class 産健ｾﾝﾀｰ扱い
     End Sub
 
     Private Sub updateSankenData(ByVal nowSankenDataList As List(Of SankenData), ByVal updateIndexList As List(Of Integer))
-        Dim Cn As New OleDbConnection(DB1)
+        Dim Cn As New OleDbConnection(Form1.DB_reserve)
         Dim SQLCm As OleDbCommand = Cn.CreateCommand
 
         Cn.Open()
