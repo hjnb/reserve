@@ -1044,7 +1044,7 @@ Public Class 予約データ
                 oSheet.Range("W" & (rowIndex + excelIndex)).Value = DataGridView1("Tok1", i).Value '保険種別
                 If DataGridView1("Tok1", i).Value = "国保" Then
                     oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 3 '採血数
-                ElseIf DataGridView1("Tok1", i).Value = "社・家" Then
+                ElseIf DataGridView1("Tok1", i).Value = "社・家" OrElse DataGridView1("Tok1", i).Value = "共済" Then
                     oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 2 '採血数
                 End If
 
