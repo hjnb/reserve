@@ -961,6 +961,12 @@ Public Class 予約データ
             End If
 
             oSheet.Range("P" & (rowIndex + excelIndex)).Value = DataGridView1("Memo1", i).FormattedValue 'メモ
+            If DataGridView1("Memo1", i).FormattedValue.ToString().IndexOf("胃") >= 0 Then
+                oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+                oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 1 '胃がん
+            ElseIf DataGridView1("Memo1", i).FormattedValue.ToString().IndexOf("大腸") >= 0 Then
+                oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '大腸がん
+            End If
 
             type = DataGridView1("Syu", i).FormattedValue
             If type = "個人" Then
