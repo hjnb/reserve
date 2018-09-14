@@ -62,7 +62,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="ymdBox">
-      <HintPath>..\..\..\..\..\Documents\Visual Studio 2010\ymdBox.dll</HintPath>
+      <HintPath>\\primergytx100s1\Hakojun\事務\さかもと\Visual Studio 2010\Projects\ymdBox\ymdBox\ymdBox\bin\Release\ymdBox.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -34,7 +34,6 @@ Partial Class 予約データ
         Me.postBox = New System.Windows.Forms.ComboBox()
         Me.nameBox = New System.Windows.Forms.TextBox()
         Me.kanaBox = New System.Windows.Forms.TextBox()
-        Me.resultDayBox = New System.Windows.Forms.TextBox()
         Me.memo1Box = New System.Windows.Forms.TextBox()
         Me.memo2Box = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -51,6 +50,7 @@ Partial Class 予約データ
         Me.Label12 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.personalTabPage = New System.Windows.Forms.TabPage()
+        Me.personalLumbarXP = New System.Windows.Forms.CheckBox()
         Me.personalWindowPay = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.personalNone = New System.Windows.Forms.RadioButton()
@@ -61,6 +61,7 @@ Partial Class 予約データ
         Me.personalElectro = New System.Windows.Forms.CheckBox()
         Me.personalBlood = New System.Windows.Forms.CheckBox()
         Me.companyTabPage = New System.Windows.Forms.TabPage()
+        Me.companyLumbarXP = New System.Windows.Forms.CheckBox()
         Me.companyWindowPay = New System.Windows.Forms.TextBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.companyNone = New System.Windows.Forms.RadioButton()
@@ -71,6 +72,7 @@ Partial Class 予約データ
         Me.companyElectro = New System.Windows.Forms.CheckBox()
         Me.companyBlood = New System.Windows.Forms.CheckBox()
         Me.lifeStyleTabPage = New System.Windows.Forms.TabPage()
+        Me.lifeStyleLumbarXP = New System.Windows.Forms.CheckBox()
         Me.lifeStyleWindowPay = New System.Windows.Forms.TextBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
@@ -120,6 +122,7 @@ Partial Class 予約データ
         Me.btnDownMonth = New System.Windows.Forms.Button()
         Me.printPreview = New System.Windows.Forms.RadioButton()
         Me.print = New System.Windows.Forms.RadioButton()
+        Me.resultDayBox = New System.Windows.Forms.TextBox()
         Me.birthYmdBox = New ymdBox.ymdBox()
         Me.reserveYmdBox = New ymdBox.ymdBox()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -198,8 +201,8 @@ Partial Class 予約データ
         'ampmBox
         '
         Me.ampmBox.FormattingEnabled = True
-        Me.ampmBox.Items.AddRange(New Object() {" 9:00", "11:00", "13:00", "15:00"})
-        Me.ampmBox.Location = New System.Drawing.Point(81, 148)
+        Me.ampmBox.Items.AddRange(New Object() {" 9:00", "10:30", "11:00", "13:00", "15:00", "15:30"})
+        Me.ampmBox.Location = New System.Drawing.Point(81, 156)
         Me.ampmBox.Name = "ampmBox"
         Me.ampmBox.Size = New System.Drawing.Size(121, 20)
         Me.ampmBox.TabIndex = 12
@@ -216,10 +219,11 @@ Partial Class 予約データ
         '
         Me.postBox.FormattingEnabled = True
         Me.postBox.Items.AddRange(New Object() {"来院", "郵送"})
-        Me.postBox.Location = New System.Drawing.Point(81, 185)
+        Me.postBox.Location = New System.Drawing.Point(81, 257)
         Me.postBox.Name = "postBox"
         Me.postBox.Size = New System.Drawing.Size(121, 20)
         Me.postBox.TabIndex = 14
+        Me.postBox.Visible = False
         '
         'nameBox
         '
@@ -237,28 +241,22 @@ Partial Class 予約データ
         Me.kanaBox.Size = New System.Drawing.Size(121, 19)
         Me.kanaBox.TabIndex = 4
         '
-        'resultDayBox
-        '
-        Me.resultDayBox.Location = New System.Drawing.Point(81, 167)
-        Me.resultDayBox.Name = "resultDayBox"
-        Me.resultDayBox.Size = New System.Drawing.Size(121, 19)
-        Me.resultDayBox.TabIndex = 13
-        '
         'memo1Box
         '
         Me.memo1Box.ImeMode = System.Windows.Forms.ImeMode.Hiragana
-        Me.memo1Box.Location = New System.Drawing.Point(81, 204)
+        Me.memo1Box.Location = New System.Drawing.Point(80, 189)
         Me.memo1Box.Name = "memo1Box"
-        Me.memo1Box.Size = New System.Drawing.Size(121, 19)
+        Me.memo1Box.Size = New System.Drawing.Size(168, 19)
         Me.memo1Box.TabIndex = 15
         '
         'memo2Box
         '
         Me.memo2Box.ImeMode = System.Windows.Forms.ImeMode.Hiragana
-        Me.memo2Box.Location = New System.Drawing.Point(81, 222)
+        Me.memo2Box.Location = New System.Drawing.Point(81, 220)
         Me.memo2Box.Name = "memo2Box"
         Me.memo2Box.Size = New System.Drawing.Size(121, 19)
         Me.memo2Box.TabIndex = 16
+        Me.memo2Box.Visible = False
         '
         'Label1
         '
@@ -317,7 +315,7 @@ Partial Class 予約データ
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(22, 132)
+        Me.Label7.Location = New System.Drawing.Point(22, 138)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(53, 12)
         Me.Label7.TabIndex = 27
@@ -326,7 +324,7 @@ Partial Class 予約データ
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(26, 151)
+        Me.Label8.Location = New System.Drawing.Point(26, 159)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(38, 12)
         Me.Label8.TabIndex = 28
@@ -335,38 +333,41 @@ Partial Class 予約データ
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(23, 170)
+        Me.Label9.Location = New System.Drawing.Point(23, 242)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(53, 12)
         Me.Label9.TabIndex = 29
         Me.Label9.Text = "結果渡日"
+        Me.Label9.Visible = False
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(23, 188)
+        Me.Label10.Location = New System.Drawing.Point(23, 260)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(53, 12)
         Me.Label10.TabIndex = 30
         Me.Label10.Text = "来院郵送"
+        Me.Label10.Visible = False
         '
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(29, 207)
+        Me.Label11.Location = New System.Drawing.Point(28, 192)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(30, 12)
+        Me.Label11.Size = New System.Drawing.Size(22, 12)
         Me.Label11.TabIndex = 31
-        Me.Label11.Text = "メモ１"
+        Me.Label11.Text = "メモ"
         '
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(29, 226)
+        Me.Label12.Location = New System.Drawing.Point(29, 224)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(30, 12)
         Me.Label12.TabIndex = 32
         Me.Label12.Text = "メモ２"
+        Me.Label12.Visible = False
         '
         'TabControl1
         '
@@ -385,6 +386,7 @@ Partial Class 予約データ
         'personalTabPage
         '
         Me.personalTabPage.BackColor = System.Drawing.Color.White
+        Me.personalTabPage.Controls.Add(Me.personalLumbarXP)
         Me.personalTabPage.Controls.Add(Me.personalWindowPay)
         Me.personalTabPage.Controls.Add(Me.Label13)
         Me.personalTabPage.Controls.Add(Me.personalNone)
@@ -400,6 +402,16 @@ Partial Class 予約データ
         Me.personalTabPage.Size = New System.Drawing.Size(386, 195)
         Me.personalTabPage.TabIndex = 0
         Me.personalTabPage.Text = "個人"
+        '
+        'personalLumbarXP
+        '
+        Me.personalLumbarXP.AutoSize = True
+        Me.personalLumbarXP.Location = New System.Drawing.Point(127, 77)
+        Me.personalLumbarXP.Name = "personalLumbarXP"
+        Me.personalLumbarXP.Size = New System.Drawing.Size(62, 16)
+        Me.personalLumbarXP.TabIndex = 21
+        Me.personalLumbarXP.Text = "腰椎XP"
+        Me.personalLumbarXP.UseVisualStyleBackColor = True
         '
         'personalWindowPay
         '
@@ -491,6 +503,7 @@ Partial Class 予約データ
         '
         'companyTabPage
         '
+        Me.companyTabPage.Controls.Add(Me.companyLumbarXP)
         Me.companyTabPage.Controls.Add(Me.companyWindowPay)
         Me.companyTabPage.Controls.Add(Me.Label14)
         Me.companyTabPage.Controls.Add(Me.companyNone)
@@ -507,6 +520,16 @@ Partial Class 予約データ
         Me.companyTabPage.TabIndex = 1
         Me.companyTabPage.Text = "企業"
         Me.companyTabPage.UseVisualStyleBackColor = True
+        '
+        'companyLumbarXP
+        '
+        Me.companyLumbarXP.AutoSize = True
+        Me.companyLumbarXP.Location = New System.Drawing.Point(127, 77)
+        Me.companyLumbarXP.Name = "companyLumbarXP"
+        Me.companyLumbarXP.Size = New System.Drawing.Size(62, 16)
+        Me.companyLumbarXP.TabIndex = 22
+        Me.companyLumbarXP.Text = "腰椎XP"
+        Me.companyLumbarXP.UseVisualStyleBackColor = True
         '
         'companyWindowPay
         '
@@ -599,6 +622,7 @@ Partial Class 予約データ
         '
         'lifeStyleTabPage
         '
+        Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleLumbarXP)
         Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleWindowPay)
         Me.lifeStyleTabPage.Controls.Add(Me.Button1)
         Me.lifeStyleTabPage.Controls.Add(Me.CheckBox2)
@@ -612,6 +636,16 @@ Partial Class 予約データ
         Me.lifeStyleTabPage.TabIndex = 2
         Me.lifeStyleTabPage.Text = "生活"
         Me.lifeStyleTabPage.UseVisualStyleBackColor = True
+        '
+        'lifeStyleLumbarXP
+        '
+        Me.lifeStyleLumbarXP.AutoSize = True
+        Me.lifeStyleLumbarXP.Location = New System.Drawing.Point(46, 136)
+        Me.lifeStyleLumbarXP.Name = "lifeStyleLumbarXP"
+        Me.lifeStyleLumbarXP.Size = New System.Drawing.Size(62, 16)
+        Me.lifeStyleLumbarXP.TabIndex = 23
+        Me.lifeStyleLumbarXP.Text = "腰椎XP"
+        Me.lifeStyleLumbarXP.UseVisualStyleBackColor = True
         '
         'lifeStyleWindowPay
         '
@@ -1028,7 +1062,7 @@ Partial Class 予約データ
         'eraBox
         '
         Me.eraBox.FormattingEnabled = True
-        Me.eraBox.Items.AddRange(New Object() {"H22", "H23", "H24", "H25", "H26", "H27", "H28", "H29", "H30"})
+        Me.eraBox.Items.AddRange(New Object() {"H22", "H23", "H24", "H25", "H26", "H27", "H28", "H29", "H30", "H31"})
         Me.eraBox.Location = New System.Drawing.Point(25, 288)
         Me.eraBox.Name = "eraBox"
         Me.eraBox.Size = New System.Drawing.Size(44, 20)
@@ -1103,37 +1137,47 @@ Partial Class 予約データ
         Me.print.Text = "印刷"
         Me.print.UseVisualStyleBackColor = True
         '
+        'resultDayBox
+        '
+        Me.resultDayBox.Location = New System.Drawing.Point(81, 239)
+        Me.resultDayBox.Name = "resultDayBox"
+        Me.resultDayBox.Size = New System.Drawing.Size(121, 19)
+        Me.resultDayBox.TabIndex = 13
+        Me.resultDayBox.Visible = False
+        '
         'birthYmdBox
         '
+        Me.birthYmdBox.boxType = 0
         Me.birthYmdBox.DateText = ""
+        Me.birthYmdBox.EraLabelText = "H30"
         Me.birthYmdBox.EraText = ""
-        Me.birthYmdBox.FirstLabel = "."
-        Me.birthYmdBox.FontSize = 9
-        Me.birthYmdBox.Location = New System.Drawing.Point(80, 111)
+        Me.birthYmdBox.Location = New System.Drawing.Point(80, 113)
+        Me.birthYmdBox.MonthLabelText = "09"
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
-        Me.birthYmdBox.SecondLabel = "."
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
-        Me.birthYmdBox.TabIndex = 6
+        Me.birthYmdBox.TabIndex = 49
         '
         'reserveYmdBox
         '
+        Me.reserveYmdBox.boxType = 0
         Me.reserveYmdBox.DateText = ""
+        Me.reserveYmdBox.EraLabelText = "H30"
         Me.reserveYmdBox.EraText = ""
-        Me.reserveYmdBox.FirstLabel = "."
-        Me.reserveYmdBox.FontSize = 9
-        Me.reserveYmdBox.Location = New System.Drawing.Point(80, 129)
+        Me.reserveYmdBox.Location = New System.Drawing.Point(80, 134)
+        Me.reserveYmdBox.MonthLabelText = "09"
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
-        Me.reserveYmdBox.SecondLabel = "."
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
-        Me.reserveYmdBox.TabIndex = 7
+        Me.reserveYmdBox.TabIndex = 50
         '
         '予約データ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(733, 609)
+        Me.Controls.Add(Me.reserveYmdBox)
+        Me.Controls.Add(Me.birthYmdBox)
         Me.Controls.Add(Me.print)
         Me.Controls.Add(Me.printPreview)
         Me.Controls.Add(Me.btnDownMonth)
@@ -1170,8 +1214,6 @@ Partial Class 予約データ
         Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnPrint)
         Me.Controls.Add(Me.DataGridView1)
-        Me.Controls.Add(Me.birthYmdBox)
-        Me.Controls.Add(Me.reserveYmdBox)
         Me.KeyPreview = True
         Me.Name = "予約データ"
         Me.Text = "予約データ"
@@ -1205,7 +1247,6 @@ Partial Class 予約データ
     Friend WithEvents postBox As System.Windows.Forms.ComboBox
     Friend WithEvents nameBox As System.Windows.Forms.TextBox
     Friend WithEvents kanaBox As System.Windows.Forms.TextBox
-    Friend WithEvents resultDayBox As System.Windows.Forms.TextBox
     Friend WithEvents memo1Box As System.Windows.Forms.TextBox
     Friend WithEvents memo2Box As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -1291,6 +1332,10 @@ Partial Class 予約データ
     Friend WithEvents btnDownMonth As System.Windows.Forms.Button
     Friend WithEvents printPreview As System.Windows.Forms.RadioButton
     Friend WithEvents print As System.Windows.Forms.RadioButton
+    Friend WithEvents resultDayBox As System.Windows.Forms.TextBox
+    Friend WithEvents personalLumbarXP As System.Windows.Forms.CheckBox
+    Friend WithEvents companyLumbarXP As System.Windows.Forms.CheckBox
+    Friend WithEvents lifeStyleLumbarXP As System.Windows.Forms.CheckBox
     Friend WithEvents birthYmdBox As ymdBox.ymdBox
     Friend WithEvents reserveYmdBox As ymdBox.ymdBox
 End Class

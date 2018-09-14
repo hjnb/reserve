@@ -4,13 +4,13 @@
     Public f_search As searchForm
     Public f_sanken As 産健ｾﾝﾀｰ扱い
 
-    Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
-    Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Diagnose.mdb"
-    Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Health3.mdb"
+    'Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Reserve.mdb"
+    'Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Diagnose.mdb"
+    'Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\yoshi\Desktop\Health3.mdb"
 
-    'Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
-    'Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Diagnose\Diagnose.mdb"
-    'Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Health3\Health3.mdb"
+    Public DB_reserve As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Reserve\Reserve.mdb"
+    Public DB_diagnose As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Diagnose\Diagnose.mdb"
+    Public DB_health As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\Primergytx100s1\Health3\Health3.mdb"
 
     Private eraTable = New Dictionary(Of Integer, String)
     Private ci As System.Globalization.CultureInfo

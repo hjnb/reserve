@@ -147,7 +147,7 @@ Public Class 予約データ
             Return
         End If
 
-        Dim type, companyName, name, kana, sex, birthDay, reserveDay, ampm, resultDay, post, memo1, memo2, windowPay As String
+        Dim type, companyName, name, kana, sex, birthDay, reserveDay, ampm, resultDay, post, memo1, memo2, windowPay, lumbarXP As String
         Dim rowIndex As Integer = DataGridView1.CurrentRow.Index
 
         '選択した行の値を取得
@@ -164,6 +164,7 @@ Public Class 予約データ
         memo1 = DataGridView1("Memo1", rowIndex).Value
         memo2 = DataGridView1("Memo2", rowIndex).Value
         windowPay = DataGridView1("Futan", rowIndex).Value
+        lumbarXP = DataGridView1("LumbarXP", rowIndex).Value
 
         'テキストボックスへ反映
         typeBox.Text = type
@@ -236,6 +237,12 @@ Public Class 予約データ
         Else
             personalWindowPay.Text = ""
         End If
+        '腰椎XP
+        If lumbarXP = 1 AndAlso DataGridView1("Syu", rowIndex).Value = "個人" Then
+            personalLumbarXP.Checked = True
+        Else
+            personalLumbarXP.Checked = False
+        End If
 
         '企業
         '血液
@@ -280,6 +287,12 @@ Public Class 予約データ
         Else
             companyWindowPay.Text = ""
         End If
+        '腰椎XP
+        If lumbarXP = 1 AndAlso DataGridView1("Syu", rowIndex).Value = "企業" Then
+            companyLumbarXP.Checked = True
+        Else
+            companyLumbarXP.Checked = False
+        End If
 
 
         '生活
@@ -300,6 +313,12 @@ Public Class 予約データ
             lifeStyleWindowPay.Text = windowPay
         Else
             lifeStyleWindowPay.Text = ""
+        End If
+        '腰椎XP
+        If lumbarXP = 1 AndAlso DataGridView1("Syu", rowIndex).Value = "生活" Then
+            lifeStyleLumbarXP.Checked = True
+        Else
+            lifeStyleLumbarXP.Checked = False
         End If
 
 
@@ -473,7 +492,7 @@ Public Class 予約データ
         Dim Adapter As New OleDbDataAdapter(SQLCm)
         Dim Table As New DataTable
 
-        SQLCm.CommandText = "SELECT Ymd, WeekDay(Ymd) as [day], Apm, Syu, Nam, Kana, Sex, Birth, Int((Format(NOW(),'YYYYMMDD')-Format(Birth, 'YYYYMMDD'))/10000) as age, Ind, Ymd2, Send, Memo1, Memo2, Futan, Kjn1, Kjn2, Kjn3, Kjn4, Kjn5, Kjn6, Kig1, Kig2, Kig3, Kig4, Kig5, Kig6, Sei1, Sei2, Sei3, Sei4, Tok1, Tok2, Tok3, Tok4, Tok5, Tok6, Tok7, Tok8, Tok9, Gan1, Gan2, Sanken FROM RsvD WHERE Ymd LIKE '%" & targetDateStr & "%' ORDER BY Ymd ASC, Apm ASC, Kana ASC"
+        SQLCm.CommandText = "SELECT Ymd, WeekDay(Ymd) as [day], Apm, Syu, Nam, Kana, Sex, Birth, Int((Format(NOW(),'YYYYMMDD')-Format(Birth, 'YYYYMMDD'))/10000) as age, Ind, Ymd2, Send, Memo1, Memo2, Futan, Kjn1, Kjn2, Kjn3, Kjn4, Kjn5, Kjn6, Kig1, Kig2, Kig3, Kig4, Kig5, Kig6, Sei1, Sei2, Sei3, Sei4, Tok1, Tok2, Tok3, Tok4, Tok5, Tok6, Tok7, Tok8, Tok9, Gan1, Gan2, Sanken, LumbarXP FROM RsvD WHERE Ymd LIKE '%" & targetDateStr & "%' ORDER BY Ymd ASC, Apm ASC, Kana ASC"
         Adapter.Fill(Table)
 
         '▼値の表示
@@ -623,6 +642,7 @@ Public Class 予約データ
         DataGridView1.Columns("Gan1").Visible = False
         DataGridView1.Columns("Gan2").Visible = False
         DataGridView1.Columns("Sanken").Visible = False
+        DataGridView1.Columns("LumbarXP").Visible = False
 
         initFlg = False
 
@@ -734,6 +754,7 @@ Public Class 予約データ
         DataGridView1.Columns("Gan1").Visible = False
         DataGridView1.Columns("Gan2").Visible = False
         DataGridView1.Columns("Sanken").Visible = False
+        DataGridView1.Columns("LumbarXP").Visible = False
 
     End Sub
 
@@ -788,8 +809,8 @@ Public Class 予約データ
         objExcel = CreateObject("Excel.Application")
 
         objWorkBooks = objExcel.Workbooks
-        objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Reserve\Reserve.xls")
-        'objWorkBook = objWorkBooks.Open("C:\Users\yoshi\Desktop\Reserve.xls")
+        'objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Reserve\Reserve.xls")
+        objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Hakojun\事務\さかもと\Reserve-健診予約-\Reserve.xls")
         oSheet = objWorkBook.Worksheets("予定表")
 
         '年月と時刻部分の書き込み
@@ -807,7 +828,7 @@ Public Class 予約データ
         oSheet.Range("AA" & 4).Value = ""
 
         'クリップボードにコピーする
-        Dim xlRange As Excel.Range = oSheet.Cells.Range("B1:AA38")
+        Dim xlRange As Excel.Range = oSheet.Cells.Range("B1:AF38")
         xlRange.Copy()
 
         If selectedRowsIndexList.Count = 0 Then
@@ -929,7 +950,7 @@ Public Class 予約データ
 
             '予約日で区切りの罫線をいれる
             If i <> 0 AndAlso DataGridView1("Ymd", i).Value <> DataGridView1("Ymd", i - 1).Value Then
-                border = oSheet.Range("B" & (rowIndex + excelIndex), "AA" & (rowIndex + excelIndex)).Borders(Excel.XlBordersIndex.xlEdgeTop)
+                border = oSheet.Range("B" & (rowIndex + excelIndex), "AF" & (rowIndex + excelIndex)).Borders(Excel.XlBordersIndex.xlEdgeTop)
                 border.LineStyle = Excel.XlLineStyle.xlContinuous
                 border.Weight = Excel.XlBorderWeight.xlThin
             End If
@@ -942,13 +963,7 @@ Public Class 予約データ
             oSheet.Range("I" & (rowIndex + excelIndex)).Value = DataGridView1("Sex", i).FormattedValue '性別
             oSheet.Range("J" & (rowIndex + excelIndex)).Value = DataGridView1("Birth", i).FormattedValue '生年月日
             oSheet.Range("K" & (rowIndex + excelIndex)).Value = DataGridView1("age", i).FormattedValue '年齢
-
-            '企業名
-            If DataGridView1("Ind", i).FormattedValue.ToString.Length > 10 Then
-                oSheet.Range("L" & (rowIndex + excelIndex)).Value = DataGridView1("Ind", i).FormattedValue.ToString.Substring(0, 10)
-            Else
-                oSheet.Range("L" & (rowIndex + excelIndex)).Value = DataGridView1("Ind", i).FormattedValue
-            End If
+            oSheet.Range("L" & (rowIndex + excelIndex)).Value = DataGridView1("Ind", i).FormattedValue '企業名
 
             oSheet.Range("M" & (rowIndex + excelIndex)).Value = DataGridView1("Ymd2", i).FormattedValue '結果渡日
             oSheet.Range("N" & (rowIndex + excelIndex)).Value = DataGridView1("Send", i).FormattedValue '来院郵送
@@ -963,11 +978,11 @@ Public Class 予約データ
             oSheet.Range("P" & (rowIndex + excelIndex)).Value = DataGridView1("Memo1", i).FormattedValue 'メモ
             'メモに「胃」「大腸」が含まれる場合
             If DataGridView1("Memo1", i).FormattedValue.ToString().IndexOf("胃") >= 0 Then
-                oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
-                oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 1 '胃がん
+                oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+                oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '胃がん
             End If
             If DataGridView1("Memo1", i).FormattedValue.ToString().IndexOf("大腸") >= 0 Then
-                oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '大腸がん
+                oSheet.Range("AB" & (rowIndex + excelIndex)).Value = 1 '大腸がん
             End If
 
             type = DataGridView1("Syu", i).FormattedValue
@@ -988,19 +1003,24 @@ Public Class 予約データ
                     oSheet.Range("S" & (rowIndex + excelIndex)).Value = ""
                 End If
                 If DataGridView1("Kjn4", i).Value = 1 Then
-                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = 1 '超音波
-                Else
-                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
-                End If
-                If DataGridView1("Kjn5", i).Value = 1 Then
-                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '超音波
                 Else
                     oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
                 End If
-                If DataGridView1("Kjn6", i).Value = 1 Then
-                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                If DataGridView1("Kjn5", i).Value = 1 Then
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃Ba
                 Else
                     oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kjn6", i).Value = 1 Then
+                    oSheet.Range("W" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                Else
+                    oSheet.Range("W" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("LumbarXP", i).Value = 1 Then
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = 2 '腰椎XP
+                Else
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
                 End If
             ElseIf type = "企業" Then
                 If DataGridView1("Kig1", i).Value = 1 Then
@@ -1019,19 +1039,24 @@ Public Class 予約データ
                     oSheet.Range("S" & (rowIndex + excelIndex)).Value = ""
                 End If
                 If DataGridView1("Kig4", i).Value = 1 Then
-                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = 1 '超音波
-                Else
-                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
-                End If
-                If DataGridView1("Kig5", i).Value = 1 Then
-                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
+                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '超音波
                 Else
                     oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
                 End If
-                If DataGridView1("Kig6", i).Value = 1 Then
-                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                If DataGridView1("Kig5", i).Value = 1 Then
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃Ba
                 Else
                     oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Kig6", i).Value = 1 Then
+                    oSheet.Range("W" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                Else
+                    oSheet.Range("W" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("LumbarXP", i).Value = 1 Then
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = 2 '腰椎XP
+                Else
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
                 End If
             ElseIf type = "生活" Then
                 oSheet.Range("Q" & (rowIndex + excelIndex)).Value = 1 '血液
@@ -1039,34 +1064,65 @@ Public Class 予約データ
                 oSheet.Range("S" & (rowIndex + excelIndex)).Value = 1 '胸部XP
 
                 If DataGridView1("Sei3", i).Value = 1 Then
-                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
-                Else
-                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = ""
-                End If
-                If DataGridView1("Sei4", i).Value = 1 Then
-                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃Ba
                 Else
                     oSheet.Range("V" & (rowIndex + excelIndex)).Value = ""
                 End If
+                If DataGridView1("Sei4", i).Value = 1 Then
+                    oSheet.Range("W" & (rowIndex + excelIndex)).Value = 1 '胃カメラ
+                Else
+                    oSheet.Range("W" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("LumbarXP", i).Value = 1 Then
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = 2 '腰椎XP
+                Else
+                    oSheet.Range("T" & (rowIndex + excelIndex)).Value = ""
+                End If
             ElseIf type = "特定" Then
-                oSheet.Range("W" & (rowIndex + excelIndex)).Value = DataGridView1("Tok1", i).Value '保険種別
+                oSheet.Range("X" & (rowIndex + excelIndex)).Value = DataGridView1("Tok1", i).Value '保険種別
+                '尿採取
+                If DataGridView1("Tok7", i).Value = "○" Then
+                    oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 1
+                End If
+
+                '採血数
                 If DataGridView1("Tok1", i).Value = "国保" Then
-                    oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 3 '採血数
+                    oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 3
                 ElseIf DataGridView1("Tok1", i).Value = "社・家" OrElse DataGridView1("Tok1", i).Value = "共済" Then
-                    oSheet.Range("Y" & (rowIndex + excelIndex)).Value = 2 '採血数
+                    oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 2
+                End If
+
+                'ABC
+                If DataGridView1("Tok6", i).Value = "○" Then
+                    oSheet.Range("AC" & (rowIndex + excelIndex)).Value = 1
+                End If
+
+                'NT
+                If DataGridView1("Tok5", i).Value = "○" Then
+                    oSheet.Range("AD" & (rowIndex + excelIndex)).Value = 1
+                End If
+
+                'PSA
+                If DataGridView1("Tok8", i).Value = "○" Then
+                    oSheet.Range("AE" & (rowIndex + excelIndex)).Value = 1
+                End If
+
+                '尿中Alb
+                If DataGridView1("Tok7", i).Value = "○" Then
+                    oSheet.Range("AF" & (rowIndex + excelIndex)).Value = 1
                 End If
 
             ElseIf type = "がん" Then
                 If DataGridView1("Gan1", i).Value = 1 Then
-                    oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 1 '胃がん
-                    oSheet.Range("U" & (rowIndex + excelIndex)).Value = 1 '胃Ba
-                Else
-                    oSheet.Range("Z" & (rowIndex + excelIndex)).Value = ""
-                End If
-                If DataGridView1("Gan2", i).Value = 1 Then
-                    oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '大腸がん
+                    oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '胃がん
+                    oSheet.Range("V" & (rowIndex + excelIndex)).Value = 1 '胃Ba
                 Else
                     oSheet.Range("AA" & (rowIndex + excelIndex)).Value = ""
+                End If
+                If DataGridView1("Gan2", i).Value = 1 Then
+                    oSheet.Range("AB" & (rowIndex + excelIndex)).Value = 1 '大腸がん
+                Else
+                    oSheet.Range("AB" & (rowIndex + excelIndex)).Value = ""
                 End If
             End If
             excelIndex += 1
@@ -1280,6 +1336,7 @@ Public Class 予約データ
         personalStomachCamera.Checked = False
         personalNone.Checked = False
         personalWindowPay.Text = ""
+        personalLumbarXP.Checked = False
 
         '企業タブ
         companyBlood.Checked = False
@@ -1290,12 +1347,14 @@ Public Class 予約データ
         companyStomachCamera.Checked = False
         companyNone.Checked = False
         companyWindowPay.Text = ""
+        companyLumbarXP.Checked = False
 
         '生活タブ
         lifeStyleStomachBa.Checked = False
         lifeStyleStomachCamera.Checked = False
         lifeStyleNone.Checked = False
         lifeStyleWindowPay.Text = ""
+        lifeStyleLumbarXP.Checked = False
 
         '特定タブ
         insuranceTypeBox.Text = ""
@@ -1530,6 +1589,7 @@ Public Class 予約データ
         Dim gan(1) As Integer
         Dim sanken As String = ""
         Dim windowPay As Integer = 0
+        Dim lumbarXP As Integer = 0
 
         If type = "個人" Then
             If personalBlood.Checked = True Then
@@ -1554,6 +1614,10 @@ Public Class 予約データ
 
             If personalStomachCamera.Checked = True Then
                 kjn(5) = 1
+            End If
+
+            If personalLumbarXP.Checked = True Then
+                lumbarXP = 1
             End If
 
             windowPay = If(personalWindowPay.Text = "", 0, Integer.Parse(personalWindowPay.Text))
@@ -1582,10 +1646,18 @@ Public Class 予約データ
                 kig(5) = 1
             End If
 
+            If companyLumbarXP.Checked = True Then
+                lumbarXP = 1
+            End If
+
             windowPay = If(companyWindowPay.Text = "", 0, Integer.Parse(companyWindowPay.Text))
         ElseIf type = "生活" Then
             If lifeStyleStomachBa.Checked = True Then
                 sei(2) = 1
+            End If
+
+            If lifeStyleLumbarXP.Checked = True Then
+                lumbarXP = 1
             End If
 
             windowPay = If(lifeStyleWindowPay.Text = "", 0, Integer.Parse(lifeStyleWindowPay.Text))
@@ -1671,7 +1743,8 @@ Public Class 予約データ
             SQL &= "" & gan(0) & ","
             SQL &= "" & gan(1) & ","
             SQL &= "" & windowPay & ","
-            SQL &= "'" & sanken & "'"
+            SQL &= "'" & sanken & "',"
+            SQL &= "" & lumbarXP & ""
             SQL &= ")"
 
             SQLCm.CommandText = SQL
@@ -1729,7 +1802,8 @@ Public Class 予約データ
             SQL &= "Gan1=" & gan(0) & ","
             SQL &= "Gan2=" & gan(1) & ","
             SQL &= "Futan=" & windowPay & ","
-            SQL &= "Sanken='" & sanken & "'"
+            SQL &= "Sanken='" & sanken & "',"
+            SQL &= "LumbarXP=" & lumbarXP & " "
             SQL &= "WHERE "
             SQL &= "Ymd='" & reserveDay & "' AND Nam='" & name & "' AND Birth='" & birthDay & "'"
 
