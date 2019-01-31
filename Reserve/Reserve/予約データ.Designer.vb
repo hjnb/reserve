@@ -167,7 +167,7 @@ Partial Class 予約データ
         Me.btnRegist.Location = New System.Drawing.Point(390, 262)
         Me.btnRegist.Name = "btnRegist"
         Me.btnRegist.Size = New System.Drawing.Size(75, 38)
-        Me.btnRegist.TabIndex = 20
+        Me.btnRegist.TabIndex = 10
         Me.btnRegist.Text = "登録"
         Me.btnRegist.UseVisualStyleBackColor = True
         '
@@ -205,7 +205,7 @@ Partial Class 予約データ
         Me.ampmBox.Location = New System.Drawing.Point(81, 156)
         Me.ampmBox.Name = "ampmBox"
         Me.ampmBox.Size = New System.Drawing.Size(121, 20)
-        Me.ampmBox.TabIndex = 12
+        Me.ampmBox.TabIndex = 8
         '
         'companyNameBox
         '
@@ -247,7 +247,7 @@ Partial Class 予約データ
         Me.memo1Box.Location = New System.Drawing.Point(80, 189)
         Me.memo1Box.Name = "memo1Box"
         Me.memo1Box.Size = New System.Drawing.Size(168, 19)
-        Me.memo1Box.TabIndex = 15
+        Me.memo1Box.TabIndex = 9
         '
         'memo2Box
         '
@@ -1149,27 +1149,27 @@ Partial Class 予約データ
         '
         Me.birthYmdBox.boxType = 0
         Me.birthYmdBox.DateText = ""
-        Me.birthYmdBox.EraLabelText = "H30"
+        Me.birthYmdBox.EraLabelText = "H31"
         Me.birthYmdBox.EraText = ""
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 113)
-        Me.birthYmdBox.MonthLabelText = "09"
+        Me.birthYmdBox.MonthLabelText = "01"
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
-        Me.birthYmdBox.TabIndex = 49
+        Me.birthYmdBox.TabIndex = 6
         '
         'reserveYmdBox
         '
         Me.reserveYmdBox.boxType = 0
         Me.reserveYmdBox.DateText = ""
-        Me.reserveYmdBox.EraLabelText = "H30"
+        Me.reserveYmdBox.EraLabelText = "H31"
         Me.reserveYmdBox.EraText = ""
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 134)
-        Me.reserveYmdBox.MonthLabelText = "09"
+        Me.reserveYmdBox.MonthLabelText = "01"
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
-        Me.reserveYmdBox.TabIndex = 50
+        Me.reserveYmdBox.TabIndex = 7
         '
         '予約データ
         '

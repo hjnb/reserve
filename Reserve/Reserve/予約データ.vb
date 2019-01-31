@@ -180,6 +180,39 @@ Public Class 予約データ
         birthYmdBox.setADStr(birthDay)
         reserveYmdBox.setADStr(reserveDay)
 
+        '参照タブ部分
+        If type = "生活" Then
+            HealthButton.Checked = True
+            For i As Integer = 0 To referenceListBox.Items.Count - 1
+                Dim itemName As String = referenceListBox.Items(i)
+                If itemName = companyName Then
+                    referenceListBox.SelectedIndex = i
+                    Exit For
+                End If
+            Next
+        ElseIf type = "企業" Then
+            Dim selectFlg As Boolean = False
+            diagnoseButton.Checked = True
+            For i As Integer = 0 To referenceListBox.Items.Count - 1
+                Dim itemName As String = referenceListBox.Items(i)
+                If itemName = companyName Then
+                    referenceListBox.SelectedIndex = i
+                    selectFlg = True
+                    Exit For
+                End If
+            Next
+            If selectFlg = False Then
+                sankenCenterButton.Checked = True
+                For i As Integer = 0 To referenceListBox.Items.Count - 1
+                    Dim itemName As String = referenceListBox.Items(i)
+                    If itemName = companyName Then
+                        referenceListBox.SelectedIndex = i
+                        Exit For
+                    End If
+                Next
+            End If
+        End If
+
         'タブ切り替え
         If type = "個人" Then
             TabControl1.SelectedTab = personalTabPage
@@ -1168,7 +1201,6 @@ Public Class 予約データ
 
     Private Sub diagnoseButton_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles diagnoseButton.CheckedChanged
         If diagnoseButton.Checked = True Then
-            inputClear()
             personListBox.Items.Clear()
             displayDiagnose()
         End If
@@ -1176,7 +1208,6 @@ Public Class 予約データ
 
     Private Sub HealthButton_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HealthButton.CheckedChanged
         If HealthButton.Checked = True Then
-            inputClear()
             personListBox.Items.Clear()
             displayHealth()
         End If
@@ -1184,7 +1215,6 @@ Public Class 予約データ
 
     Private Sub sankenCenterButton_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles sankenCenterButton.CheckedChanged
         If sankenCenterButton.Checked = True Then
-            inputClear()
             personListBox.Items.Clear()
             displaySankenCenter()
         End If
@@ -1822,4 +1852,12 @@ Public Class 予約データ
 
     End Sub
 
+    Private Sub LumbarXP_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles personalLumbarXP.CheckedChanged, companyLumbarXP.CheckedChanged, lifeStyleLumbarXP.CheckedChanged
+        Dim xpChk As CheckBox = CType(sender, CheckBox)
+        If xpChk.Checked Then
+            memo1Box.Text = "腰椎XP"
+        Else
+            memo1Box.Text = memo1Box.Text.Replace("腰椎XP", "")
+        End If
+    End Sub
 End Class
