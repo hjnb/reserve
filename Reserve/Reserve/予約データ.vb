@@ -80,6 +80,8 @@ Public Class 予約データ
         TabControl1.ItemSize = New Size(65, 25)
         TabControl1.SelectedTab = referenceTabPage
 
+        YmBox.setFocus(4)
+        YmBox.setFocusedTextBoxNum(2)
     End Sub
 
     Private Sub displayDiagnose()
@@ -478,7 +480,7 @@ Public Class 予約データ
             End If
         ElseIf DataGridView1.Columns(e.ColumnIndex).Name = "day" Then
             '曜日の表示設定,グループ化
-            If e.RowIndex > 0 AndAlso DataGridView1(e.ColumnIndex, e.RowIndex - 1).Value = e.Value Then
+            If e.RowIndex > 0 AndAlso (DataGridView1("Ymd", e.RowIndex - 1).Value = DataGridView1("Ymd", e.RowIndex).Value) AndAlso DataGridView1(e.ColumnIndex, e.RowIndex - 1).Value = e.Value Then
                 e.Value = ""
                 e.FormattingApplied = True
             Else
@@ -501,7 +503,7 @@ Public Class 予約データ
             End If
         ElseIf DataGridView1.Columns(e.ColumnIndex).Name = "Apm" Then
             '時間のグループ化
-            If e.RowIndex > 0 AndAlso DataGridView1("day", e.RowIndex).Value = DataGridView1("day", e.RowIndex - 1).Value AndAlso DataGridView1(e.ColumnIndex, e.RowIndex - 1).Value = e.Value Then
+            If e.RowIndex > 0 AndAlso (DataGridView1("Ymd", e.RowIndex - 1).Value = DataGridView1("Ymd", e.RowIndex).Value) AndAlso DataGridView1("day", e.RowIndex).Value = DataGridView1("day", e.RowIndex - 1).Value AndAlso DataGridView1(e.ColumnIndex, e.RowIndex - 1).Value = e.Value Then
                 e.Value = ""
                 e.FormattingApplied = True
             End If
@@ -516,8 +518,8 @@ Public Class 予約データ
     End Sub
 
     Private Sub displayReserveList()
-        Dim eraStr As String = eraBox.Text
-        Dim monthStr As String = monthBox.Text
+        Dim eraStr As String = YmBox.EraText
+        Dim monthStr As String = YmBox.MonthText
         Dim targetDateStr As String = convertWarekiToAD(eraStr) & "/" & monthStr
 
         Dim Cn As New OleDbConnection(Form1.DB_reserve)
@@ -537,7 +539,6 @@ Public Class 予約データ
         Adapter.Dispose()
         SQLCm.Dispose()
         Cn.Dispose()
-
     End Sub
 
     Private Function GetAge(ByVal birthDate As DateTime, ByVal today As DateTime) As Integer
@@ -563,6 +564,8 @@ Public Class 予約データ
             ADStr = 1925 + num
         ElseIf initialStr = "H" Then
             ADStr = 1988 + num
+        ElseIf initialStr = "R" Then
+            ADStr = 2018 + num
         End If
 
         Return ADStr
@@ -572,13 +575,9 @@ Public Class 予約データ
 
         '現在の年月を取得 
         Dim dt As DateTime = DateTime.Today
-        Dim eraIndex As Integer = ci.DateTimeFormat.Calendar.GetEra(dt)
-        Dim eraStr As String = eraTable(eraIndex) & dt.ToString("yy", ci)
-        Dim monthStr As String = dt.ToString("MM")
 
         'コンボボックスに設定
-        eraBox.Text = eraStr
-        monthBox.Text = monthStr
+        YmBox.setADStr(dt.ToString("yyyy/MM/01"))
 
         '一覧表示
         displayReserveList()
@@ -798,17 +797,7 @@ Public Class 予約データ
         Next
     End Sub
 
-    Private Sub eraBox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles eraBox.TextChanged
-        If initFlg = False Then
-            '一覧表示
-            displayReserveList()
-
-            '選択行のクリア
-            selectedClear()
-        End If
-    End Sub
-
-    Private Sub monthBox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles monthBox.TextChanged
+    Private Sub YmBox_YmdTextChange(sender As Object, e As System.EventArgs) Handles YmBox.YmdTextChange
         If initFlg = False Then
             '一覧表示
             displayReserveList()
@@ -847,7 +836,7 @@ Public Class 予約データ
         oSheet = objWorkBook.Worksheets("予定表")
 
         '年月と時刻部分の書き込み
-        Dim ymStr As String = eraBox.Text & " 年 " & monthBox.Text & " 月"
+        Dim ymStr As String = YmBox.getWarekiStr().Split("/")(0) & " 年 " & YmBox.getWarekiStr().Split("/")(1) & " 月"
         Dim nowTime As DateTime = DateTime.Now
         oSheet.Range("G2").Value = ymStr
         oSheet.Range("I2").Value = nowTime.ToString
@@ -1453,38 +1442,6 @@ Public Class 予約データ
         Next c
 
         DataGridView1.AllowUserToAddRows = False
-    End Sub
-
-    Private Sub btnUpMonth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpMonth.Click
-        Dim currentMonthStr As String = monthBox.Text
-        Dim currentMonthInt As Integer = Integer.Parse(currentMonthStr)
-        Dim uppedMonthStr As String = ""
-        If currentMonthInt = 12 Then
-            Dim eraStr As String = eraBox.Text.Substring(1, 2)
-            If eraStr <> "30" Then
-                eraBox.Text = eraBox.Items(eraBox.SelectedIndex + 1)
-                monthBox.Text = "01"
-            End If
-        Else
-            uppedMonthStr = If((currentMonthInt + 1) >= 10, (currentMonthInt + 1), "0" & (currentMonthInt + 1))
-            monthBox.Text = uppedMonthStr
-        End If
-    End Sub
-
-    Private Sub btnDownMonth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDownMonth.Click
-        Dim currentMonthStr As String = monthBox.Text
-        Dim currentMonthInt As Integer = Integer.Parse(currentMonthStr)
-        Dim downedMonthStr As String = ""
-        If currentMonthInt = 1 Then
-            Dim eraStr As String = eraBox.Text.Substring(1, 2)
-            If eraStr <> "22" Then
-                eraBox.Text = eraBox.Items(eraBox.SelectedIndex - 1)
-                monthBox.Text = "12"
-            End If
-        Else
-            downedMonthStr = If((currentMonthInt - 1) >= 10, (currentMonthInt - 1), "0" & (currentMonthInt - 1))
-            monthBox.Text = downedMonthStr
-        End If
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click

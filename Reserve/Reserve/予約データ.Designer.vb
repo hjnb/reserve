@@ -26,7 +26,6 @@ Partial Class 予約データ
         Me.btnPrint = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRegist = New System.Windows.Forms.Button()
-        Me.dotLabel = New System.Windows.Forms.Label()
         Me.typeBox = New System.Windows.Forms.ComboBox()
         Me.sexBox = New System.Windows.Forms.ComboBox()
         Me.ampmBox = New System.Windows.Forms.ComboBox()
@@ -114,17 +113,14 @@ Partial Class 予約データ
         Me.sankenCenterButton = New System.Windows.Forms.RadioButton()
         Me.HealthButton = New System.Windows.Forms.RadioButton()
         Me.diagnoseButton = New System.Windows.Forms.RadioButton()
-        Me.eraBox = New System.Windows.Forms.ComboBox()
-        Me.monthBox = New System.Windows.Forms.ComboBox()
         Me.btnSelectClear = New System.Windows.Forms.Button()
         Me.btnInputClear = New System.Windows.Forms.Button()
-        Me.btnUpMonth = New System.Windows.Forms.Button()
-        Me.btnDownMonth = New System.Windows.Forms.Button()
         Me.printPreview = New System.Windows.Forms.RadioButton()
         Me.print = New System.Windows.Forms.RadioButton()
         Me.resultDayBox = New System.Windows.Forms.TextBox()
         Me.birthYmdBox = New ymdBox.ymdBox()
         Me.reserveYmdBox = New ymdBox.ymdBox()
+        Me.YmBox = New ymdBox.ymdBox()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.personalTabPage.SuspendLayout()
@@ -138,7 +134,7 @@ Partial Class 予約データ
         'DataGridView1
         '
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Location = New System.Drawing.Point(25, 318)
+        Me.DataGridView1.Location = New System.Drawing.Point(25, 333)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowTemplate.Height = 21
         Me.DataGridView1.Size = New System.Drawing.Size(683, 260)
@@ -171,15 +167,6 @@ Partial Class 予約データ
         Me.btnRegist.Text = "登録"
         Me.btnRegist.UseVisualStyleBackColor = True
         '
-        'dotLabel
-        '
-        Me.dotLabel.AutoSize = True
-        Me.dotLabel.Location = New System.Drawing.Point(71, 292)
-        Me.dotLabel.Name = "dotLabel"
-        Me.dotLabel.Size = New System.Drawing.Size(7, 12)
-        Me.dotLabel.TabIndex = 7
-        Me.dotLabel.Text = "."
-        '
         'typeBox
         '
         Me.typeBox.FormattingEnabled = True
@@ -201,7 +188,7 @@ Partial Class 予約データ
         'ampmBox
         '
         Me.ampmBox.FormattingEnabled = True
-        Me.ampmBox.Items.AddRange(New Object() {" 9:00", "10:30", "11:00", "13:00", "15:00", "15:30"})
+        Me.ampmBox.Items.AddRange(New Object() {" 9:00", "10:30", "11:00", "13:00", "13:30", "15:00", "15:30"})
         Me.ampmBox.Location = New System.Drawing.Point(81, 156)
         Me.ampmBox.Name = "ampmBox"
         Me.ampmBox.Size = New System.Drawing.Size(121, 20)
@@ -1059,24 +1046,6 @@ Partial Class 予約データ
         Me.diagnoseButton.Text = "健診（Diagnose）"
         Me.diagnoseButton.UseVisualStyleBackColor = True
         '
-        'eraBox
-        '
-        Me.eraBox.FormattingEnabled = True
-        Me.eraBox.Items.AddRange(New Object() {"H22", "H23", "H24", "H25", "H26", "H27", "H28", "H29", "H30", "H31"})
-        Me.eraBox.Location = New System.Drawing.Point(25, 288)
-        Me.eraBox.Name = "eraBox"
-        Me.eraBox.Size = New System.Drawing.Size(44, 20)
-        Me.eraBox.TabIndex = 34
-        '
-        'monthBox
-        '
-        Me.monthBox.FormattingEnabled = True
-        Me.monthBox.Items.AddRange(New Object() {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"})
-        Me.monthBox.Location = New System.Drawing.Point(81, 288)
-        Me.monthBox.Name = "monthBox"
-        Me.monthBox.Size = New System.Drawing.Size(36, 20)
-        Me.monthBox.TabIndex = 35
-        '
         'btnSelectClear
         '
         Me.btnSelectClear.Location = New System.Drawing.Point(181, 285)
@@ -1094,26 +1063,6 @@ Partial Class 予約データ
         Me.btnInputClear.TabIndex = 37
         Me.btnInputClear.Text = "入力クリア"
         Me.btnInputClear.UseVisualStyleBackColor = True
-        '
-        'btnUpMonth
-        '
-        Me.btnUpMonth.Font = New System.Drawing.Font("MS UI Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
-        Me.btnUpMonth.Location = New System.Drawing.Point(126, 280)
-        Me.btnUpMonth.Name = "btnUpMonth"
-        Me.btnUpMonth.Size = New System.Drawing.Size(27, 16)
-        Me.btnUpMonth.TabIndex = 43
-        Me.btnUpMonth.Text = " ▲"
-        Me.btnUpMonth.UseVisualStyleBackColor = True
-        '
-        'btnDownMonth
-        '
-        Me.btnDownMonth.Font = New System.Drawing.Font("MS UI Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
-        Me.btnDownMonth.Location = New System.Drawing.Point(126, 298)
-        Me.btnDownMonth.Name = "btnDownMonth"
-        Me.btnDownMonth.Size = New System.Drawing.Size(27, 16)
-        Me.btnDownMonth.TabIndex = 44
-        Me.btnDownMonth.Text = " ▼"
-        Me.btnDownMonth.UseVisualStyleBackColor = True
         '
         'printPreview
         '
@@ -1149,10 +1098,10 @@ Partial Class 予約データ
         '
         Me.birthYmdBox.boxType = 0
         Me.birthYmdBox.DateText = ""
-        Me.birthYmdBox.EraLabelText = "H31"
+        Me.birthYmdBox.EraLabelText = "R01"
         Me.birthYmdBox.EraText = ""
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 113)
-        Me.birthYmdBox.MonthLabelText = "01"
+        Me.birthYmdBox.MonthLabelText = "05"
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
@@ -1162,30 +1111,40 @@ Partial Class 予約データ
         '
         Me.reserveYmdBox.boxType = 0
         Me.reserveYmdBox.DateText = ""
-        Me.reserveYmdBox.EraLabelText = "H31"
+        Me.reserveYmdBox.EraLabelText = "R01"
         Me.reserveYmdBox.EraText = ""
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 134)
-        Me.reserveYmdBox.MonthLabelText = "01"
+        Me.reserveYmdBox.MonthLabelText = "05"
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
         Me.reserveYmdBox.TabIndex = 7
+        '
+        'YmBox
+        '
+        Me.YmBox.boxType = 7
+        Me.YmBox.DateText = ""
+        Me.YmBox.EraLabelText = "R01"
+        Me.YmBox.EraText = ""
+        Me.YmBox.Location = New System.Drawing.Point(25, 283)
+        Me.YmBox.MonthLabelText = "05"
+        Me.YmBox.MonthText = ""
+        Me.YmBox.Name = "YmBox"
+        Me.YmBox.Size = New System.Drawing.Size(120, 46)
+        Me.YmBox.TabIndex = 49
         '
         '予約データ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(733, 609)
+        Me.Controls.Add(Me.YmBox)
         Me.Controls.Add(Me.reserveYmdBox)
         Me.Controls.Add(Me.birthYmdBox)
         Me.Controls.Add(Me.print)
         Me.Controls.Add(Me.printPreview)
-        Me.Controls.Add(Me.btnDownMonth)
-        Me.Controls.Add(Me.btnUpMonth)
         Me.Controls.Add(Me.btnInputClear)
         Me.Controls.Add(Me.btnSelectClear)
-        Me.Controls.Add(Me.monthBox)
-        Me.Controls.Add(Me.eraBox)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.Label11)
@@ -1209,7 +1168,6 @@ Partial Class 予約データ
         Me.Controls.Add(Me.ampmBox)
         Me.Controls.Add(Me.sexBox)
         Me.Controls.Add(Me.typeBox)
-        Me.Controls.Add(Me.dotLabel)
         Me.Controls.Add(Me.btnRegist)
         Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnPrint)
@@ -1239,7 +1197,6 @@ Partial Class 予約データ
     Friend WithEvents btnPrint As System.Windows.Forms.Button
     Friend WithEvents btnDelete As System.Windows.Forms.Button
     Friend WithEvents btnRegist As System.Windows.Forms.Button
-    Friend WithEvents dotLabel As System.Windows.Forms.Label
     Friend WithEvents typeBox As System.Windows.Forms.ComboBox
     Friend WithEvents sexBox As System.Windows.Forms.ComboBox
     Friend WithEvents ampmBox As System.Windows.Forms.ComboBox
@@ -1296,8 +1253,6 @@ Partial Class 予約データ
     Friend WithEvents sankenCenterButton As System.Windows.Forms.RadioButton
     Friend WithEvents HealthButton As System.Windows.Forms.RadioButton
     Friend WithEvents diagnoseButton As System.Windows.Forms.RadioButton
-    Friend WithEvents eraBox As System.Windows.Forms.ComboBox
-    Friend WithEvents monthBox As System.Windows.Forms.ComboBox
     Friend WithEvents anemiaBox As System.Windows.Forms.ComboBox
     Friend WithEvents bloodSugarBox As System.Windows.Forms.ComboBox
     Friend WithEvents biochemistryBox As System.Windows.Forms.ComboBox
@@ -1328,8 +1283,6 @@ Partial Class 予約データ
     Friend WithEvents personListBox As System.Windows.Forms.ListBox
     Friend WithEvents btnSelectClear As System.Windows.Forms.Button
     Friend WithEvents btnInputClear As System.Windows.Forms.Button
-    Friend WithEvents btnUpMonth As System.Windows.Forms.Button
-    Friend WithEvents btnDownMonth As System.Windows.Forms.Button
     Friend WithEvents printPreview As System.Windows.Forms.RadioButton
     Friend WithEvents print As System.Windows.Forms.RadioButton
     Friend WithEvents resultDayBox As System.Windows.Forms.TextBox
@@ -1338,4 +1291,5 @@ Partial Class 予約データ
     Friend WithEvents lifeStyleLumbarXP As System.Windows.Forms.CheckBox
     Friend WithEvents birthYmdBox As ymdBox.ymdBox
     Friend WithEvents reserveYmdBox As ymdBox.ymdBox
+    Friend WithEvents YmBox As ymdBox.ymdBox
 End Class

@@ -27,6 +27,12 @@ ymdBox
 	<value>設定する日にち</value>
 	<returns>日にちの文字列</returns>
 	<remarks></remarks>
+</member><member name="M:ymdBox.ymdBox.setFocus(System.Int32)">
+	<summary>
+ 対象文字を選択状態にする
+ </summary>
+	<param name="targetIndex">選択対象文字インデックス</param>
+	<remarks></remarks>
 </member><member name="M:ymdBox.ymdBox.getEraChar">
 	<summary>
  和暦の１文字目（記号）を取得する
