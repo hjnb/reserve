@@ -80,6 +80,7 @@ Partial Class 予約データ
         Me.lifeStyleStomachCamera = New System.Windows.Forms.RadioButton()
         Me.lifeStyleStomachBa = New System.Windows.Forms.RadioButton()
         Me.specificTabPage = New System.Windows.Forms.TabPage()
+        Me.checkECG = New System.Windows.Forms.CheckBox()
         Me.gastricCancerRiskBox = New System.Windows.Forms.ComboBox()
         Me.diabetesBox = New System.Windows.Forms.ComboBox()
         Me.prostateCancerBox = New System.Windows.Forms.ComboBox()
@@ -121,6 +122,7 @@ Partial Class 予約データ
         Me.birthYmdBox = New ymdBox.ymdBox()
         Me.reserveYmdBox = New ymdBox.ymdBox()
         Me.YmBox = New ymdBox.ymdBox()
+        Me.Label26 = New System.Windows.Forms.Label()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.personalTabPage.SuspendLayout()
@@ -707,6 +709,8 @@ Partial Class 予約データ
         '
         'specificTabPage
         '
+        Me.specificTabPage.Controls.Add(Me.Label26)
+        Me.specificTabPage.Controls.Add(Me.checkECG)
         Me.specificTabPage.Controls.Add(Me.gastricCancerRiskBox)
         Me.specificTabPage.Controls.Add(Me.diabetesBox)
         Me.specificTabPage.Controls.Add(Me.prostateCancerBox)
@@ -735,6 +739,16 @@ Partial Class 予約データ
         Me.specificTabPage.TabIndex = 3
         Me.specificTabPage.Text = "特定"
         Me.specificTabPage.UseVisualStyleBackColor = True
+        '
+        'checkECG
+        '
+        Me.checkECG.AutoSize = True
+        Me.checkECG.Location = New System.Drawing.Point(44, 125)
+        Me.checkECG.Name = "checkECG"
+        Me.checkECG.Size = New System.Drawing.Size(60, 16)
+        Me.checkECG.TabIndex = 26
+        Me.checkECG.Text = "心電図"
+        Me.checkECG.UseVisualStyleBackColor = True
         '
         'gastricCancerRiskBox
         '
@@ -1101,11 +1115,12 @@ Partial Class 予約データ
         Me.birthYmdBox.EraLabelText = "R01"
         Me.birthYmdBox.EraText = ""
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 113)
-        Me.birthYmdBox.MonthLabelText = "05"
+        Me.birthYmdBox.MonthLabelText = "08"
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
         Me.birthYmdBox.TabIndex = 6
+        Me.birthYmdBox.textReadOnly = False
         '
         'reserveYmdBox
         '
@@ -1114,11 +1129,12 @@ Partial Class 予約データ
         Me.reserveYmdBox.EraLabelText = "R01"
         Me.reserveYmdBox.EraText = ""
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 134)
-        Me.reserveYmdBox.MonthLabelText = "05"
+        Me.reserveYmdBox.MonthLabelText = "08"
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
         Me.reserveYmdBox.TabIndex = 7
+        Me.reserveYmdBox.textReadOnly = False
         '
         'YmBox
         '
@@ -1127,11 +1143,22 @@ Partial Class 予約データ
         Me.YmBox.EraLabelText = "R01"
         Me.YmBox.EraText = ""
         Me.YmBox.Location = New System.Drawing.Point(25, 283)
-        Me.YmBox.MonthLabelText = "05"
+        Me.YmBox.MonthLabelText = "08"
         Me.YmBox.MonthText = ""
         Me.YmBox.Name = "YmBox"
         Me.YmBox.Size = New System.Drawing.Size(120, 46)
         Me.YmBox.TabIndex = 49
+        Me.YmBox.textReadOnly = False
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.ForeColor = System.Drawing.Color.Blue
+        Me.Label26.Location = New System.Drawing.Point(41, 145)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(158, 12)
+        Me.Label26.TabIndex = 27
+        Me.Label26.Text = "(60歳以上は基本チェック入れる)"
         '
         '予約データ
         '
@@ -1292,4 +1319,6 @@ Partial Class 予約データ
     Friend WithEvents birthYmdBox As ymdBox.ymdBox
     Friend WithEvents reserveYmdBox As ymdBox.ymdBox
     Friend WithEvents YmBox As ymdBox.ymdBox
+    Friend WithEvents checkECG As System.Windows.Forms.CheckBox
+    Friend WithEvents Label26 As System.Windows.Forms.Label
 End Class

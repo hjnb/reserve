@@ -418,7 +418,12 @@ Public Class 予約データ
         Else
             specificWindowPay.Text = ""
         End If
-
+        '心電図
+        If DataGridView1("Kig2", rowIndex).Value = 1 Then
+            checkECG.Checked = True
+        Else
+            checkECG.Checked = False
+        End If
 
         'がん
         '胃がん
@@ -1134,6 +1139,11 @@ Public Class 予約データ
                     oSheet.Range("AF" & (rowIndex + excelIndex)).Value = 1
                 End If
 
+                '心電図
+                If DataGridView1("Kig2", i).Value = "1" Then
+                    oSheet.Range("R" & (rowIndex + excelIndex)).Value = 1
+                End If
+
             ElseIf type = "がん" Then
                 If DataGridView1("Gan1", i).Value = 1 Then
                     oSheet.Range("AA" & (rowIndex + excelIndex)).Value = 1 '胃がん
@@ -1453,6 +1463,16 @@ Public Class 予約データ
     End Sub
 
     Private Sub insuranceTypeBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles insuranceTypeBox.SelectedIndexChanged
+        '生年月日と現在日付から年齢計算
+        Dim age As Integer = calcAge(birthYmdBox.getADStr(), Today.ToString("yyyy/MM/dd"))
+
+        '60歳以上ならば心電図にチェック
+        If age >= 60 Then
+            checkECG.Checked = True
+        Else
+            checkECG.Checked = False
+        End If
+
         If insuranceTypeBox.Text = "国保" Then
             biochemistryBox.Text = "○"
             bloodSugarBox.Text = "○"
@@ -1661,6 +1681,11 @@ Public Class 予約データ
                 tok9 = 1
             End If
 
+            '心電図
+            If checkECG.Checked Then
+                kig(1) = 1
+            End If
+
             windowPay = If(specificWindowPay.Text = "", 0, Integer.Parse(specificWindowPay.Text))
 
         ElseIf type = "がん" Then
@@ -1817,4 +1842,21 @@ Public Class 予約データ
             memo1Box.Text = memo1Box.Text.Replace("腰椎XP", "")
         End If
     End Sub
+
+    ''' <summary>
+    ''' 現在年齢算出
+    ''' </summary>
+    ''' <param name="birthYmd"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function calcAge(birthYmd As String, nowYmd As String) As Integer
+        Dim doDate As DateTime = New DateTime(CInt(nowYmd.Split("/")(0)), CInt(nowYmd.Split("/")(1)), CInt(nowYmd.Split("/")(2)))
+        Dim birthDate As DateTime = New DateTime(CInt(birthYmd.Split("/")(0)), CInt(birthYmd.Split("/")(1)), CInt(birthYmd.Split("/")(2)))
+        Dim age As Integer = doDate.Year - birthDate.Year
+        '誕生日がまだ来ていなければ、1引く
+        If doDate.Month < birthDate.Month OrElse (doDate.Month = birthDate.Month AndAlso doDate.Day < birthDate.Day) Then
+            age -= 1
+        End If
+        Return age
+    End Function
 End Class

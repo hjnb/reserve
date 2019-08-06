@@ -29,6 +29,13 @@ Reserve
  コントロールのDoubleBufferedプロパティをTrueにする
  </summary>
 	<param name="control">対象のコントロール</param>
+</member><member name="M:Reserve.予約データ.calcAge(System.String,System.String)">
+	<summary>
+ 現在年齢算出
+ </summary>
+	<param name="birthYmd"></param>
+	<returns></returns>
+	<remarks></remarks>
 </member>
 </members>
 </doc>
