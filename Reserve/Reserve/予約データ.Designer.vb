@@ -80,6 +80,7 @@ Partial Class 予約データ
         Me.lifeStyleStomachCamera = New System.Windows.Forms.RadioButton()
         Me.lifeStyleStomachBa = New System.Windows.Forms.RadioButton()
         Me.specificTabPage = New System.Windows.Forms.TabPage()
+        Me.Label26 = New System.Windows.Forms.Label()
         Me.checkECG = New System.Windows.Forms.CheckBox()
         Me.gastricCancerRiskBox = New System.Windows.Forms.ComboBox()
         Me.diabetesBox = New System.Windows.Forms.ComboBox()
@@ -122,7 +123,6 @@ Partial Class 予約データ
         Me.birthYmdBox = New ymdBox.ymdBox()
         Me.reserveYmdBox = New ymdBox.ymdBox()
         Me.YmBox = New ymdBox.ymdBox()
-        Me.Label26 = New System.Windows.Forms.Label()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.personalTabPage.SuspendLayout()
@@ -190,7 +190,7 @@ Partial Class 予約データ
         'ampmBox
         '
         Me.ampmBox.FormattingEnabled = True
-        Me.ampmBox.Items.AddRange(New Object() {" 9:00", "10:30", "11:00", "13:00", "13:30", "15:00", "15:30"})
+        Me.ampmBox.Items.AddRange(New Object() {" 9:00", "10:30", "11:00", "13:00", "13:30", "14:00", "15:00", "15:30"})
         Me.ampmBox.Location = New System.Drawing.Point(81, 156)
         Me.ampmBox.Name = "ampmBox"
         Me.ampmBox.Size = New System.Drawing.Size(121, 20)
@@ -740,6 +740,16 @@ Partial Class 予約データ
         Me.specificTabPage.Text = "特定"
         Me.specificTabPage.UseVisualStyleBackColor = True
         '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.ForeColor = System.Drawing.Color.Blue
+        Me.Label26.Location = New System.Drawing.Point(41, 145)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(158, 12)
+        Me.Label26.TabIndex = 27
+        Me.Label26.Text = "(60歳以上は基本チェック入れる)"
+        '
         'checkECG
         '
         Me.checkECG.AutoSize = True
@@ -1115,7 +1125,7 @@ Partial Class 予約データ
         Me.birthYmdBox.EraLabelText = "R01"
         Me.birthYmdBox.EraText = ""
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 113)
-        Me.birthYmdBox.MonthLabelText = "08"
+        Me.birthYmdBox.MonthLabelText = "09"
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
@@ -1129,7 +1139,7 @@ Partial Class 予約データ
         Me.reserveYmdBox.EraLabelText = "R01"
         Me.reserveYmdBox.EraText = ""
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 134)
-        Me.reserveYmdBox.MonthLabelText = "08"
+        Me.reserveYmdBox.MonthLabelText = "09"
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
@@ -1143,22 +1153,12 @@ Partial Class 予約データ
         Me.YmBox.EraLabelText = "R01"
         Me.YmBox.EraText = ""
         Me.YmBox.Location = New System.Drawing.Point(25, 283)
-        Me.YmBox.MonthLabelText = "08"
+        Me.YmBox.MonthLabelText = "09"
         Me.YmBox.MonthText = ""
         Me.YmBox.Name = "YmBox"
         Me.YmBox.Size = New System.Drawing.Size(120, 46)
         Me.YmBox.TabIndex = 49
         Me.YmBox.textReadOnly = False
-        '
-        'Label26
-        '
-        Me.Label26.AutoSize = True
-        Me.Label26.ForeColor = System.Drawing.Color.Blue
-        Me.Label26.Location = New System.Drawing.Point(41, 145)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(158, 12)
-        Me.Label26.TabIndex = 27
-        Me.Label26.Text = "(60歳以上は基本チェック入れる)"
         '
         '予約データ
         '
