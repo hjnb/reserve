@@ -1488,7 +1488,7 @@ Public Class 予約データ
         Dim totalPay As Integer = 0
 
         If insuranceTypeBox.Text = "社・家" Then
-            totalPay = totalPay + 1160
+            totalPay = totalPay + 1180
         End If
 
         If cardiacBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
