@@ -1458,7 +1458,7 @@ Public Class 予約データ
         If lifeStyleStomachBa.Checked = True OrElse lifeStyleStomachCamera.Checked = True Then
             lifeStyleWindowPay.Text = "7169"
         Else
-            lifeStyleWindowPay.Text = "3750"
+            lifeStyleWindowPay.Text = "3819"
         End If
     End Sub
 
