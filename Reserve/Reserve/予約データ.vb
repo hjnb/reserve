@@ -1456,7 +1456,7 @@ Public Class 予約データ
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         If lifeStyleStomachBa.Checked = True OrElse lifeStyleStomachCamera.Checked = True Then
-            lifeStyleWindowPay.Text = "7038"
+            lifeStyleWindowPay.Text = "7169"
         Else
             lifeStyleWindowPay.Text = "3750"
         End If
