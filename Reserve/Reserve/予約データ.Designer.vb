@@ -897,7 +897,7 @@ Partial Class 予約データ
         'insuranceTypeBox
         '
         Me.insuranceTypeBox.FormattingEnabled = True
-        Me.insuranceTypeBox.Items.AddRange(New Object() {"国保", "社・家", "共済"})
+        Me.insuranceTypeBox.Items.AddRange(New Object() {"国保", "後期", "社・家", "共済"})
         Me.insuranceTypeBox.Location = New System.Drawing.Point(90, 27)
         Me.insuranceTypeBox.Name = "insuranceTypeBox"
         Me.insuranceTypeBox.Size = New System.Drawing.Size(62, 20)
@@ -1122,10 +1122,10 @@ Partial Class 予約データ
         '
         Me.birthYmdBox.boxType = 0
         Me.birthYmdBox.DateText = ""
-        Me.birthYmdBox.EraLabelText = "R01"
+        Me.birthYmdBox.EraLabelText = "R02"
         Me.birthYmdBox.EraText = ""
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 113)
-        Me.birthYmdBox.MonthLabelText = "09"
+        Me.birthYmdBox.MonthLabelText = "02"
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
@@ -1136,10 +1136,10 @@ Partial Class 予約データ
         '
         Me.reserveYmdBox.boxType = 0
         Me.reserveYmdBox.DateText = ""
-        Me.reserveYmdBox.EraLabelText = "R01"
+        Me.reserveYmdBox.EraLabelText = "R02"
         Me.reserveYmdBox.EraText = ""
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 134)
-        Me.reserveYmdBox.MonthLabelText = "09"
+        Me.reserveYmdBox.MonthLabelText = "02"
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
@@ -1150,10 +1150,10 @@ Partial Class 予約データ
         '
         Me.YmBox.boxType = 7
         Me.YmBox.DateText = ""
-        Me.YmBox.EraLabelText = "R01"
+        Me.YmBox.EraLabelText = "R02"
         Me.YmBox.EraText = ""
         Me.YmBox.Location = New System.Drawing.Point(25, 283)
-        Me.YmBox.MonthLabelText = "09"
+        Me.YmBox.MonthLabelText = "02"
         Me.YmBox.MonthText = ""
         Me.YmBox.Name = "YmBox"
         Me.YmBox.Size = New System.Drawing.Size(120, 46)

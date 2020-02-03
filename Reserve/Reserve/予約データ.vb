@@ -1113,7 +1113,7 @@ Public Class 予約データ
                 End If
 
                 '採血数
-                If DataGridView1("Tok1", i).Value = "国保" Then
+                If DataGridView1("Tok1", i).Value = "国保" OrElse DataGridView1("Tok1", i).Value = "後期" Then
                     oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 3
                 ElseIf DataGridView1("Tok1", i).Value = "社・家" OrElse DataGridView1("Tok1", i).Value = "共済" Then
                     oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 2
@@ -1473,7 +1473,7 @@ Public Class 予約データ
             checkECG.Checked = False
         End If
 
-        If insuranceTypeBox.Text = "国保" Then
+        If insuranceTypeBox.Text = "国保" OrElse insuranceTypeBox.Text = "後期" Then
             biochemistryBox.Text = "○"
             bloodSugarBox.Text = "○"
             anemiaBox.Text = "○"
