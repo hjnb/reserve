@@ -1118,6 +1118,9 @@ Public Class 予約データ
                 ElseIf DataGridView1("Tok1", i).Value = "社・家" OrElse DataGridView1("Tok1", i).Value = "共済" Then
                     oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 2
                 End If
+                If DataGridView1("Memo1", i).FormattedValue.ToString().IndexOf("採血数２") >= 0 OrElse DataGridView1("Memo1", i).FormattedValue.ToString().IndexOf("採血数2") >= 0 Then
+                    oSheet.Range("Z" & (rowIndex + excelIndex)).Value = 2
+                End If
 
                 'ABC
                 If DataGridView1("Tok6", i).Value = "○" Then
