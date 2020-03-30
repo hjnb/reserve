@@ -1491,23 +1491,23 @@ Public Class 予約データ
         Dim totalPay As Integer = 0
 
         If insuranceTypeBox.Text = "社・家" Then
-            totalPay = totalPay + 1180
+            totalPay = totalPay + 680
         End If
 
         If cardiacBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
-            totalPay = totalPay + 1550
+            totalPay = totalPay + 1600
         End If
 
         If gastricCancerRiskBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
-            totalPay = totalPay + 3600
+            totalPay = totalPay + 3700
         End If
 
         If diabetesBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
-            totalPay = totalPay + 1400
+            totalPay = totalPay + 1450
         End If
 
         If prostateCancerBox.Text = "○" AndAlso couponTicketBox.Checked <> True Then
-            totalPay = totalPay + 1550
+            totalPay = totalPay + 1600
         End If
 
         specificWindowPay.Text = totalPay
