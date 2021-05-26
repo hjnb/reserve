@@ -71,6 +71,7 @@ Partial Class 予約データ
         Me.companyElectro = New System.Windows.Forms.CheckBox()
         Me.companyBlood = New System.Windows.Forms.CheckBox()
         Me.lifeStyleTabPage = New System.Windows.Forms.TabPage()
+        Me.btnPersonalPrint = New System.Windows.Forms.Button()
         Me.lifeStyleLumbarXP = New System.Windows.Forms.CheckBox()
         Me.lifeStyleWindowPay = New System.Windows.Forms.TextBox()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -123,6 +124,7 @@ Partial Class 予約データ
         Me.birthYmdBox = New ymdBox.ymdBox()
         Me.reserveYmdBox = New ymdBox.ymdBox()
         Me.YmBox = New ymdBox.ymdBox()
+        Me.btnMedec = New System.Windows.Forms.Button()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.personalTabPage.SuspendLayout()
@@ -492,6 +494,7 @@ Partial Class 予約データ
         '
         'companyTabPage
         '
+        Me.companyTabPage.Controls.Add(Me.btnMedec)
         Me.companyTabPage.Controls.Add(Me.companyLumbarXP)
         Me.companyTabPage.Controls.Add(Me.companyWindowPay)
         Me.companyTabPage.Controls.Add(Me.Label14)
@@ -611,6 +614,7 @@ Partial Class 予約データ
         '
         'lifeStyleTabPage
         '
+        Me.lifeStyleTabPage.Controls.Add(Me.btnPersonalPrint)
         Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleLumbarXP)
         Me.lifeStyleTabPage.Controls.Add(Me.lifeStyleWindowPay)
         Me.lifeStyleTabPage.Controls.Add(Me.Button1)
@@ -625,6 +629,15 @@ Partial Class 予約データ
         Me.lifeStyleTabPage.TabIndex = 2
         Me.lifeStyleTabPage.Text = "生活"
         Me.lifeStyleTabPage.UseVisualStyleBackColor = True
+        '
+        'btnPersonalPrint
+        '
+        Me.btnPersonalPrint.Location = New System.Drawing.Point(281, 58)
+        Me.btnPersonalPrint.Name = "btnPersonalPrint"
+        Me.btnPersonalPrint.Size = New System.Drawing.Size(87, 30)
+        Me.btnPersonalPrint.TabIndex = 24
+        Me.btnPersonalPrint.Text = "個人用印刷"
+        Me.btnPersonalPrint.UseVisualStyleBackColor = True
         '
         'lifeStyleLumbarXP
         '
@@ -1122,10 +1135,10 @@ Partial Class 予約データ
         '
         Me.birthYmdBox.boxType = 0
         Me.birthYmdBox.DateText = ""
-        Me.birthYmdBox.EraLabelText = "R02"
+        Me.birthYmdBox.EraLabelText = "R03"
         Me.birthYmdBox.EraText = ""
         Me.birthYmdBox.Location = New System.Drawing.Point(80, 113)
-        Me.birthYmdBox.MonthLabelText = "02"
+        Me.birthYmdBox.MonthLabelText = "05"
         Me.birthYmdBox.MonthText = ""
         Me.birthYmdBox.Name = "birthYmdBox"
         Me.birthYmdBox.Size = New System.Drawing.Size(86, 20)
@@ -1136,10 +1149,10 @@ Partial Class 予約データ
         '
         Me.reserveYmdBox.boxType = 0
         Me.reserveYmdBox.DateText = ""
-        Me.reserveYmdBox.EraLabelText = "R02"
+        Me.reserveYmdBox.EraLabelText = "R03"
         Me.reserveYmdBox.EraText = ""
         Me.reserveYmdBox.Location = New System.Drawing.Point(80, 134)
-        Me.reserveYmdBox.MonthLabelText = "02"
+        Me.reserveYmdBox.MonthLabelText = "05"
         Me.reserveYmdBox.MonthText = ""
         Me.reserveYmdBox.Name = "reserveYmdBox"
         Me.reserveYmdBox.Size = New System.Drawing.Size(86, 20)
@@ -1150,15 +1163,24 @@ Partial Class 予約データ
         '
         Me.YmBox.boxType = 7
         Me.YmBox.DateText = ""
-        Me.YmBox.EraLabelText = "R02"
+        Me.YmBox.EraLabelText = "R03"
         Me.YmBox.EraText = ""
         Me.YmBox.Location = New System.Drawing.Point(25, 283)
-        Me.YmBox.MonthLabelText = "02"
+        Me.YmBox.MonthLabelText = "05"
         Me.YmBox.MonthText = ""
         Me.YmBox.Name = "YmBox"
         Me.YmBox.Size = New System.Drawing.Size(120, 46)
         Me.YmBox.TabIndex = 49
         Me.YmBox.textReadOnly = False
+        '
+        'btnMedec
+        '
+        Me.btnMedec.Location = New System.Drawing.Point(283, 41)
+        Me.btnMedec.Name = "btnMedec"
+        Me.btnMedec.Size = New System.Drawing.Size(75, 21)
+        Me.btnMedec.TabIndex = 23
+        Me.btnMedec.Text = "メデック"
+        Me.btnMedec.UseVisualStyleBackColor = True
         '
         '予約データ
         '
@@ -1321,4 +1343,6 @@ Partial Class 予約データ
     Friend WithEvents YmBox As ymdBox.ymdBox
     Friend WithEvents checkECG As System.Windows.Forms.CheckBox
     Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents btnPersonalPrint As System.Windows.Forms.Button
+    Friend WithEvents btnMedec As System.Windows.Forms.Button
 End Class

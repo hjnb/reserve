@@ -1862,4 +1862,107 @@ Public Class 予約データ
         End If
         Return age
     End Function
+
+    Private Sub btnPersonalPrint_Click(sender As System.Object, e As System.EventArgs) Handles btnPersonalPrint.Click
+        Dim objExcel As Object
+        Dim objWorkBooks As Object
+        Dim objWorkBook As Object
+        Dim oSheet As Object
+
+        objExcel = CreateObject("Excel.Application")
+
+        objWorkBooks = objExcel.Workbooks
+        objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Hakojun\事務\さかもと\Reserve-健診予約-\生活習慣病を受けられる方.xls")
+
+        If lifeStyleStomachBa.Checked = True Then
+            oSheet = objWorkBook.Worksheets("Baあり")
+        Else
+            oSheet = objWorkBook.Worksheets("Baなし")
+        End If
+
+        '年月と時刻部分の書き込み
+        Dim ymStr As String = reserveYmdBox.getWarekiStr().Split("/")(0) & " 年 " & reserveYmdBox.getWarekiStr().Split("/")(1) & " 月" & reserveYmdBox.getWarekiStr().Split("/")(2) & " 日 "
+        Dim reserveWeekday As String = WeekdayName(Weekday(reserveYmdBox.getADStr()))
+        Dim reserveTime As String = ampmBox.Text
+
+        oSheet.Range("B2").Value = nameBox.Text
+        oSheet.Range("E3").Value = ymStr & "(" & Strings.Left(reserveWeekday, 1) & ") " & reserveTime & "～"
+
+        objExcel.DisplayAlerts = False
+
+        '印刷
+        If print.Checked = True Then
+            oSheet.PrintOut()
+        ElseIf printPreview.Checked = True Then
+            objExcel.Visible = True
+            oSheet.PrintPreview(1)
+        End If
+
+        ' EXCEL解放
+        objExcel.Quit()
+        Marshal.ReleaseComObject(oSheet)
+        Marshal.ReleaseComObject(objWorkBook)
+        Marshal.ReleaseComObject(objExcel)
+        oSheet = Nothing
+
+        objWorkBook = Nothing
+        objExcel = Nothing
+    End Sub
+
+    Private Sub btnMedec_Click(sender As System.Object, e As System.EventArgs) Handles btnMedec.Click
+        Dim objExcel As Object
+        Dim objWorkBooks As Object
+        Dim objWorkBook As Object
+        Dim oSheet As Object
+
+        objExcel = CreateObject("Excel.Application")
+
+        objWorkBooks = objExcel.Workbooks
+        objWorkBook = objWorkBooks.Open("\\PRIMERGYTX100S1\Hakojun\事務\さかもと\Reserve-健診予約-\生活習慣病を受けられる方.xls")
+
+        If companyStomachBa.Checked = True Then
+            oSheet = objWorkBook.Worksheets("メデック 胃バリウム")
+        Else
+            If companyUltrasonic.Checked = True Then
+                oSheet = objWorkBook.Worksheets("メデック")
+            Else
+                oSheet = objWorkBook.Worksheets("Baなし")
+            End If
+
+        End If
+
+        '年月と時刻部分の書き込み
+        Dim ymStr As String = reserveYmdBox.getWarekiStr().Split("/")(0) & " 年 " & reserveYmdBox.getWarekiStr().Split("/")(1) & " 月" & reserveYmdBox.getWarekiStr().Split("/")(2) & " 日 "
+        Dim reserveWeekday As String = WeekdayName(Weekday(reserveYmdBox.getADStr()))
+        Dim reserveTime As String = ampmBox.Text
+
+        oSheet.Range("B2").Value = nameBox.Text
+        oSheet.Range("E3").Value = ymStr & "(" & Strings.Left(reserveWeekday, 1) & ") " & reserveTime & "～"
+        oSheet.Range("B8").Value = "　　　（" & ampmBox.Text & "までに　ご来院いただきますようお願い致します）"
+        If ampmBox.Text = " 9:00" Then
+            oSheet.Range("B10").Value = "　　　・検査の当日　２１：００　～　検査終了　までは、禁食です。"
+        Else
+            oSheet.Range("B10").Value = "　　　・検査の当日　７：００　～　検査終了　までは、禁食です。"
+        End If
+
+        objExcel.DisplayAlerts = False
+
+        '印刷
+        If print.Checked = True Then
+            oSheet.PrintOut()
+        ElseIf printPreview.Checked = True Then
+            objExcel.Visible = True
+            oSheet.PrintPreview(1)
+        End If
+
+        ' EXCEL解放
+        objExcel.Quit()
+        Marshal.ReleaseComObject(oSheet)
+        Marshal.ReleaseComObject(objWorkBook)
+        Marshal.ReleaseComObject(objExcel)
+        oSheet = Nothing
+
+        objWorkBook = Nothing
+        objExcel = Nothing
+    End Sub
 End Class

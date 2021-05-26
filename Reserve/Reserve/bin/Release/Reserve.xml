@@ -6,12 +6,7 @@ Reserve
 </name>
 </assembly>
 <members>
-<member name="M:Reserve.Form1.createEraTable">
-	<summary>
- 和暦年号テーブル作成
- </summary>
-	<remarks></remarks>
-</member><member name="P:Reserve.My.Resources.Resources.ResourceManager">
+<member name="P:Reserve.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
@@ -35,6 +30,11 @@ Reserve
  </summary>
 	<param name="birthYmd"></param>
 	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Reserve.Form1.createEraTable">
+	<summary>
+ 和暦年号テーブル作成
+ </summary>
 	<remarks></remarks>
 </member>
 </members>
